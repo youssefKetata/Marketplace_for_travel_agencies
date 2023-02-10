@@ -1,0 +1,23 @@
+
+
+
+
+        <div>
+            <table data-toggle="table" data-search="true" data-show-columns="true" data-page-size="10"
+                   data-buttons-class="md btn-soft-primary" data-pagination="true"
+                   data-show-pagination-switch="true" class="table-bordered">
+                <thead class="table-primary">
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody data-reload-content-target="myThreeCustomContent">
+            {{ include('admin/currency/currency/_list.html.twig') }}
+                </tbody>
+            </table>
+        </div>
+
+

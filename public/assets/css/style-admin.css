@@ -1,0 +1,53 @@
+.site-footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 10;
+  background: var(--ct-bg-topbar-dark);
+  color: #fff;
+  padding: 10px 0;
+}
+
+.mySelect {
+  border: none;
+  padding: 0.2rem 1.7rem 0.2rem 0.9rem;
+  font-size: .875rem;
+  font-weight: 400;
+  color: var(--ct-form-select-color);
+  background-size: 14px 10px;
+  border-radius: 0.25rem;
+}
+
+.go-top {
+  margin-right: 1%;
+  float: right;
+  background: rgba(255, 255, 255, .5);
+  color: #38414a;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
+
+a[aria-expanded="true"].btn-new {
+  background-color: #dae9fd;
+}
+.btn-new {
+  background: #f3f7f9;
+  padding: 0.45rem;
+  margin-right: 8px;
+  border-radius: 0.15rem;
+}
+
+.required-field label {
+  font-weight: bold;
+}
+.required-field label:after {
+  color: #e32;
+  content: ' *';
+  display:inline;
+}
+
+div .borderLeft {
+  border-left: 1px solid lightgrey;
+}

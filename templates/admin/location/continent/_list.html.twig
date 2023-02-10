@@ -1,0 +1,37 @@
+
+    {% for continent in continents %}
+        <tr>
+            <td>{{ continent.code }}</td>
+            <td>{{ continent.name }}</td>
+            <td>{{ continent.active ? 'Yes' : 'No' }}</td>
+            <td>
+                {# <a href="{{ path('app_admin_location_continent_show', {'code': continent.code}) }}">show</a> #}
+                {# <a href="{{ path('app_admin_location_continent_edit', {'code': continent.code}) }}">edit</a> #}
+
+     <button
+
+             class="btn btn-success waves-effect waves-light"
+             data-action="modal-form#openModal"
+             data-form-url-value="{{ path('app_admin_location_continent_edit', {'code': continent.code}) }}"
+             data-url-value="{{ path('app_admin_location_continent_index', { ajax: 1 } ) }}"
+             data-node-dest-id-value="myOneCustomContent"
+             data-modal-title-value="{{ 'Buttons.General.Modifier'|trans }}"
+             data-refresh-key-value="refresh-html"
+     >
+                        <i class="fe-edit"></i>
+                    </button>
+
+
+
+{#                    {% include 'buttons_grid.html.twig' with {'show': 'false', 'edit': 'true', 'delete': 'false', 'add': 'false',} %}#}
+
+
+
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">no records found</td>
+        </tr>
+    {% endfor %}
+

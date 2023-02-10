@@ -1,0 +1,61 @@
+Configuration:
+    Societe:
+        raison: 'Raison Sociale'
+        MF: 'Matricule fiscale'
+        RC: 'Registre de commerce'
+        Adresse: 'Adresse'
+        Phone: 'Téléphone'
+        Fax: 'Fax'
+        EmailContact: 'Email de contact'
+        Hotline: 'Hotline'
+        Description: 'Description'
+    DocsPrint:
+        Couleur:
+            Fond: 'Couleur de fond impression'
+        Hauteur:
+            Logo: 'Hauteur logo'
+            Cachet: 'Hauteur Cachet'
+            PiedPageCm: 'Hauteur pide de page (cm)'
+        Largeur:
+            Logo: 'Largeur logo'
+            Cachet: 'Largeur Cachet'
+            BasPage: 'Largeur Bas de page'
+    Email:
+        Address:
+            SendMail: "Adresse email d'envoie"
+            Password: 'Mote de passe adresse envoi'
+            SMTP: 'serveur SMTP'
+            SendMailUsername: 'Username adresse envoi'
+            ServiceCommercial: 'Email service commerciale'
+            ServiceComptabilite: 'Email Service comptabilité'
+            AdressCC: 'Adresse email en copie CC'
+            AdressCCInvisible: 'Adresse Email Invisible'
+        Config:
+            StateEnvoiMail: 'Activer envoi par email'
+            StateEnvoiMailClientAdminVente: 'Activer envoi par email pour le client admin'
+            StateAffichageConditionsAnnulation: 'Afficher conditions annulation'
+        Texte:
+            DdeConfirmation: 'Texte demande de confirmation'
+            DdeAnnulation: "Texte demande d'annulation"
+            ConfirmationVente: 'Texte confirmation de vente'
+            AnnulationVente: 'Texte annulation vente'
+        Note:
+            AnnulationVente: 'Annulation de vente'
+    FrontEnd:
+        Config:
+            MaxChambreFront: 'Maximum Chambres Front'
+    BackEnd:
+        Config:
+            NombreJoursFiltreParDefaut: 'Nombre de jours filtre par défaut'
+    System:
+        Config:
+            ApiKeyHub: 'Api Key Hub'
+            UrlHub: 'Url Hub'
+            CodeClientWalkin: 'Code client passager'
+            StateAutoCancelVente: 'Annulation automatique des ventes'
+            StateAutoLettrageVente: 'Lettrage automatique des ventes'
+Configuration.Societe: 'Société'
+Configuration.DocsPrint: 'Documents & Impression'
+Configuration.Email: 'Emails'
+Configuration.System: 'Système'
+Configuration.FrontEnd: 'Front-End'

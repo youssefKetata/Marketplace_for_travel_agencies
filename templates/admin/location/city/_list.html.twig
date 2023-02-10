@@ -1,0 +1,26 @@
+
+    {% for city in cities %}
+        <tr>
+            <td>{{ city.id }}</td>
+            <td>{{ city.name }}</td>
+            <td>{{ city.latitude }}</td>
+            <td>{{ city.longitude }}</td>
+            <td>{{ city.active ? 'Yes' : 'No' }}</td>
+            <td>
+                {# <a href="{{ path('app_admin_location_city_show', {'id': city.id}) }}">show</a> #}
+                {# <a href="{{ path('app_admin_location_city_edit', {'id': city.id}) }}">edit</a> #}
+
+{#                <span {{ stimulus_controller('modal-form', {#}
+{#                    formUrl: path('app_admin_location_city_edit', {'id': city.id}) }) }}#}
+{#                        data-action="hidden.bs.modal->modal-form#modalHidden"#}
+{#                >#}
+{#                    {% include 'buttons_grid.html.twig' with {'show': 'false', 'edit': 'true', 'delete': 'false', 'add': 'false',} %}#}
+
+{#                </span>#}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="6">no records found</td>
+        </tr>
+    {% endfor %}

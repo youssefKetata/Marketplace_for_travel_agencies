@@ -1,0 +1,29 @@
+
+    {% for country in countries %}
+        <tr>
+            <td>{{ country.code }}</td>
+            <td>{{ country.alpha3 }}</td>
+            <td>{{ country.name }}</td>
+            <td>{{ country.phoneCode }}</td>
+            <td>{{ country.capital }}</td>
+            <td>{{ country.active ? 'Yes' : 'No' }}</td>
+            <td>
+{#                <a href="{{ path('app_admin_location_country_show', {'code': country.code}) }}">show</a>#}
+{#                <a href="{{ path('app_admin_location_country_edit', {'code': country.code}) }}">edit</a>#}
+
+{#                <span {{ stimulus_controller('modal-form', {#}
+{#                    formUrl: path('app_admin_location_country_edit', {'code': country.code}) })#}
+{#                }}#}
+{#                        data-action = "hidden.bs.modal->modal-form#modalHidden"#}
+{#                >#}
+{#                    {% include 'buttons_grid.html.twig' with {'show': 'false', 'edit': 'true', 'delete': 'false', 'add': 'false',} %}#}
+
+
+{#                </span>#}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7">no records found</td>
+        </tr>
+    {% endfor %}

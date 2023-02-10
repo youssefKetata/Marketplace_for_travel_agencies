@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    {% block metas %}{% endblock %}
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <link rel="icon" href="{{ asset('assets/images/logo/logo.png') }}" type="image/x-icon">
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+
+        <!-- Plugins css -->
+        <link href="{{ asset('assets/libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet"
+              type="text/css"/>
+        <link href="{{ asset('assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/libs/clockpicker/bootstrap-clockpicker.min.css') }}" rel="stylesheet"
+              type="text/css"/>
+        <link href="{{ asset('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+              type="text/css"/>
+        <link href="{{ asset('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+              type="text/css"/>
+
+        <link href="{{ asset('assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/libs/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css"/>
+
+        <link href="{{ asset('assets/libs/mohithg-switchery/switchery.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/libs/multiselect/css/multi-select.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet"
+              type="text/css"/>
+        <link href="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
+              type="text/css"/>
+
+        <!-- third party css -->
+        <link href="{{ asset('assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
+              type="text/css"/>
+        <link href="{{ asset('assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
+              rel="stylesheet"
+              type="text/css"/>
+        <link href="{{ asset('assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}"
+              rel="stylesheet"
+              type="text/css"/>
+        <link href="{{ asset('assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
+              type="text/css"/>
+        <!-- third party css end -->
+
+        <!-- Bootstrap Tables css -->
+        <link href="{{ asset('assets/libs/bootstrap-table/bootstrap-table.min.css') }}" rel="stylesheet"
+              type="text/css"/>
+
+        <!-- Bootstrap css -->
+        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- App css -->
+        <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style"/>
+        <!-- icons -->
+        <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css"/>
+
+        <link rel="stylesheet" href="{{ asset('assets/css/style-admin.css') }}"/> {# styles admin #}
+
+        {# ****** BLOCK LINK addFlashe ***** #}
+        <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet'>
+        <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}"/>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+
+        <!-- Head js -->
+        <script src="{{ asset('assets/js/head.js') }}"></script>
+
+
+        <script src="//code.jquery.com/jquery.js"></script>
+        <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    {% endblock %}
+
+</head>
+
+<body data-theme="light" data-layout-mode="horizontal" data-topbar-color="dark" data-menu-position="fixed">
+<!-- Begin page -->
+<div>
+    <div id="wrapper">
+
+        {% block body %}
+            <div id="resultat">
+
+            </div>
+
+
+
+
+
+
+            {% block header %}
+                {% include'admin/partial/header.html.twig' %}
+            {% endblock %}
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid" id="mainContent">
+                        <!-- start page title -->
+                        <div class="row">
+
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Page title</a>
+                                            </li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Page title</a>
+                                            </li>
+                                            <li class="breadcrumb-item active">Page title</li>
+                                        </ol>
+                                    </div>
+                                    <h4 class="page-title">{{ block('title') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div data-controller="reload-content" data-action="modal-form:success@window->reload-content#refreshContent"
+
+                        >
+                            <div data-controller="modal-form"
+                                 data-action="hidden.bs.modal->modal-form#modalHidden"
+                            >
+
+                                <div id="myDivExampleModal">
+                                    {{ include('_modal.html.twig', {
+                                        modalTitle: 'Title...',
+                                        modalContent : 'Loading ...',
+                                    }) }}
+                                </div>
+                                <div id="myDivExampleModal2" >
+                                    {{ include('_modal.html.twig', {
+                                        modalTitle: 'Title...',
+                                        modalContent : 'Loading ...',
+                                        is_second_modal: true
+                                    }) }}
+                                </div>
+
+
+                                <div>
+                                    {% block container %}
+                                    {% endblock %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+            </div>
+
+            {% block footer %}
+                {% include 'admin/partial/footer.html.twig' %}
+            {% endblock %}
+
+            <!-- Vendor js -->
+            <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
+
+            <!-- Plugins js -->
+            <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/clockpicker/bootstrap-clockpicker.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+            <script src="{{ asset('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/dropify/js/dropify.min.js') }}"></script>
+
+            <script src="{{ asset('assets/libs/selectize/js/standalone/selectize.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/mohithg-switchery/switchery.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/multiselect/js/jquery.multi-select.js') }}"></script>
+            <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/devbridge-autocomplete/jquery.autocomplete.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
+
+            <!-- third party js -->
+            <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/pdfmake/build/pdfmake.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/pdfmake/build/vfs_fonts.js') }}"></script>
+            <!-- third party js ends -->
+
+            <!-- Table Editable plugin-->
+            <script src="{{ asset('assets/libs/jquery-tabledit/jquery.tabledit.min.js') }}"></script>
+
+            <!-- Footable js -->
+            <script src="{{ asset('assets/libs/footable/footable.all.min.js') }}"></script>
+
+            {# <!-- Bootstrap Tables js --> #}
+            {# <script src="{{ asset('assets/libs/bootstrap-table/bootstrap-table.min.js') }}"></script> #}
+            <script src="{{ asset('assets/libs/bootstrap-table/extensions/auto-refresh/bootstrap-table-auto-refresh.min.js') }}"></script>
+
+            <!-- Dashboard 1 init js-->
+            <script src="{{ asset('assets/js/pages/dashboard-1.init.js') }}"></script>
+
+            <!-- Datatables init -->
+            <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
+
+            <!-- Table editable init-->
+            <script src="{{ asset('assets/js/pages/tabledit.init.js') }}"></script>
+
+            <!-- Init js -->
+            <script src="{{ asset('assets/js/pages/form-advanced.init.js') }}"></script>
+            <script src="{{ asset('assets/js/pages/form-pickers.init.js') }}"></script>
+            <script src="{{ asset('assets/js/pages/form-fileuploads.init.js') }}"></script>
+
+            <script src="{{ asset('assets/js/pages/foo-tables.init.js') }}"></script>
+            <script src="{{ asset('assets/js/pages/bootstrap-tables.init.js') }}"></script>
+
+            <!-- FileUploader -->
+            <script src="{{ asset('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/dropify/js/dropify.min.js') }}"></script>
+            <script src="{{ asset('assets/js/pages/form-fileuploads.init.js') }}"></script>
+
+
+            <!-- App js -->
+            <script src="{{ asset('assets/js/app.min.js') }}"></script>
+
+
+        {% endblock %}
+
+    </div>
+</div>
+<!-- END wrapper -->
+</body>
+</html>

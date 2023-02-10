@@ -1,0 +1,46 @@
+### webpack
+composer require symfony/webpack-encore-bundle
+npm install
+
+
+### FOR Authentication & Registration ###
+composer require symfony/security-bundle
+composer require symfonycasts/verify-email-bundle
+
+
+### FOR Doctrine extensions ###
+# Translatable - gives you a very handy solution for translating records into different languages. Easy to setup, easier to use.
+# Timestampable - updates date fields on create, update and even property change.
+# Loggable - helps tracking changes and history of objects, also supports version management.
+# Softdeleteable - allows to implicitly remove records
+
+composer require stof/doctrine-extensions-bundle
+
+composer require sherlockode/configuration-bundle
+
+
+# install ckedit
+composer require friendsofsymfony/ckeditor-bundle
+php bin/console ckeditor:install
+php bin/console assets:install public
+
+
+#install dom pdf
+composer require dompdf/dompdf
+
+    #in case there is an error in php gd
+    composer require "ext-gd:*" --ignore-platform-reqs
+
+#install flash message
+composer require mercuryseries/flashy-bundle
+
+
+
+#install configurations
+https://github.com/sherlockode/configuration-bundle (composer require sherlockode/configuration-bundle)
+
+#refresh translations
+php bin/console translation:extract --domain=messages  --format=yaml --force --as-tree=5 fr
+
+#mapbox
+npm install --save mapbox-gl

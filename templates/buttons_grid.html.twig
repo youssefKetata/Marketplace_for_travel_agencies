@@ -1,0 +1,40 @@
+<div class="button-list">
+
+    {% if show is defined and show == "true" %}
+        <button class="btn btn-soft-info waves-effect waves-light" data-action="modal-form#openModal" title="{{ 'Buttons.General.Afficher'|trans }}">
+            <i class="fa fa-eye"></i>
+        </button>
+    {% endif %}
+
+    {% if edit is defined and edit == "true" %}
+        <button class="btn btn-success waves-effect waves-light" data-action="modal-form#openModal" title="{{ 'Buttons.General.Modifier'|trans }}">
+            <i class="fe-edit"></i>
+        </button>
+    {% endif %}
+
+    {% if delete is defined and delete == "true" %}
+        <button class="btn btn-soft-danger waves-effect waves-light" data-action="modal-form#openModal" title="{{ 'Buttons.General.Supprimer'|trans }}">
+            <i class="fe-delete"></i>
+        </button>
+    {% endif %}
+
+    {% if add is defined and  add == "true" %}
+        <button class="btn btn-soft-success waves-effect waves-light" data-action="modal-form#openModal" title="{{ 'Buttons.General.Nouveau'|trans }}">
+            <i class="fe-plus-circle"></i>
+        </button>
+    {% endif %}
+
+    {% if facilities is defined and  facilities == "true" %}
+        <button class="btn btn-soft-success waves-effect waves-light" data-action="modal-form#openModal" title="{{ 'Buttons.General.Nouveau'|trans }}">
+            <i class="fe-file-plus"></i>
+        </button>
+    {% endif %}
+
+
+    {% if account is defined and account == "true" %}
+        <button class="btn btn-success waves-effect waves-light" data-action="modal-form#openModal" title="{{ 'Buttons.General.Account' }}">
+            <i class="fe-edit"></i>
+        </button>
+    {% endif %}
+
+</div>

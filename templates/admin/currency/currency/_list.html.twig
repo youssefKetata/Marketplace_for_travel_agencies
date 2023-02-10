@@ -1,0 +1,31 @@
+
+    {% for currency in currencies %}
+        <tr>
+            <td>{{ currency.code }}</td>
+            <td>{{ currency.name }}</td>
+            <td>{{ currency.symbol }}</td>
+            <td>
+                <button
+
+                        class="btn btn-success waves-effect waves-light"
+                        data-action="modal-form#openModal"
+                        data-form-url-value="{{ path('app_admin_currency_currency_edit', {'code': currency.code}) }}"
+                        data-url-value="{{ path('app_admin_currency_currency_index', { ajax: 1 } ) }}"
+                        data-node-dest-id-value="myThreeCustomContent"
+                        data-modal-title-value="{{ 'Buttons.General.Modifier.Devise'|trans }}"
+                        data-refresh-key-value="refresh-html"
+                >
+                    <i class="fe-edit"></i>
+                </button>
+
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">no records found</td>
+        </tr>
+    {% endfor %}
+
+
+
+

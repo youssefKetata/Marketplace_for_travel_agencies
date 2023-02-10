@@ -1,0 +1,30 @@
+<div class="modal fade" tabindex="-1" aria-hidden="true" data-modal-form-target="{{ is_second_modal is defined ? 'modalTwo' : 'modal'}}" id="{{ is_second_modal is defined ? 'exampleModalTwo' : 'exampleModal'}}" >
+    <div class="modal-dialog {{ is_second_modal is defined ? 'modal-dialog-centered' : ''}} ">
+        <div class="modal-content">
+            <div class="modal-header {{ is_second_modal is defined ? ' modal-filled bg-light' : ''}} ">
+                <h5 class="modal-title" data-modal-form-target="{{ is_second_modal is defined ? 'modalTitleTwo' : 'modalTitle'}}" id="my_modal_title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="my_modal_body" class="modal-body"
+                    data-modal-form-target="{{ is_second_modal is defined ? 'modalBodyTwo' : 'modalBody'}}"
+                    data-action="submit->modal-form#submitForm"
+            >
+                {{ modalContent | default('Loading...') }}
+            </div>
+            <div class="modal-footer"
+                 data-modal-form-target="{{ is_second_modal is defined ? 'modalFooterTwo' : 'modalFooter'}}"
+            >
+                <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    {{ 'Buttons.General.Annuler'|trans }}
+                </a>
+                <a type="button" class="btn btn-primary" data-action="modal-form#submitForm"
+                        {% if is_second_modal is defined  %}
+                        data-bs-target="#exampleModal"
+                        {% endif %}
+                >
+                    {{ 'Buttons.General.Enregistrer'|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

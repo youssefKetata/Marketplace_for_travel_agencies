@@ -1,0 +1,40 @@
+<div>
+    <button
+            class="btn btn-primary btn-sm"
+            data-action="modal-form#openModal"
+            data-form-url-value="{{ path('app_admin_location_continent_new' ) }}"
+            data-url-value="{{ path('app_admin_location_continent_index', { ajax: 1 } ) }}"
+            data-node-dest-id-value="myOneCustomContent"
+            data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Continent'|trans }}"
+            data-refresh-key-value="refresh-html"
+    >
+        {{ 'Buttons.General.Nouveau'|trans }}
+    </button>
+    <div>
+        <table data-toggle="table" data-search="true" data-show-columns="true" data-page-size="10"
+               data-buttons-class="md btn-soft-primary" data-pagination="true"
+               data-show-pagination-switch="true" class="table-bordered">
+            <thead class="table-primary">
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Active</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody data-reload-content-target="myOneCustomContent">
+        {{ include('admin/location/continent/_list.html.twig') }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

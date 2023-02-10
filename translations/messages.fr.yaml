@@ -1,0 +1,167 @@
+SuccessSave: __SuccessSave
+'Liste des chaines hôtels': '__Liste des chaines hôtels'
+MenuItem:
+    Paramètres:
+        Comptabilité: Comptabilité
+        ParamètresSociété: 'Paramètres Société'
+        Configurations: Configurations
+        Hotels: Hôtels
+Buttons:
+    General:
+        Modifier: Modifier
+        Nouveau: Nouveau
+        Supprimer: Supprimer
+        Enregistrer: Enregistrer
+        Annuler: Annuler
+        Afficher: Afficher
+        Association: Associer
+        New: Nouveau
+        Delete: Supprimer
+        Modifier.Compte: 'Modifier Compte'
+        Modifier.Devise: 'Modifier Devise'
+        Modifier.TauxChange: 'Modifier taux de change'
+        Modifier.Customer: 'Modifier client'
+    Custom:
+        ModifierPersonnel: 'Modifier Personnel'
+        Nouveau:
+            Banque: 'Nouveau Banque'
+            Compte: 'Nouveau Compte'
+            Devise: 'Nouveau Devise'
+            TauxChange: 'Nouveau Taux de Change'
+            Personnel: 'Nouveau Personnel'
+            Customer: 'Nouveau client'
+            Customer.Moral: 'Nouveau Client Morale'
+            Customer.Physical: 'Nouveau client physique'
+            Employe: 'Nouveau employé'
+            Profil: 'Nouveau profil'
+            City: 'Nouvelle ville'
+            Continent: 'Nouveau Continent'
+            Country: 'Nouvelle Pays'
+            AssocierChambre: 'Associer une chambre'
+        Modifier:
+            Banque: 'Modifier Banque'
+            Compte: 'Modifier Compte'
+            Devise: 'Modifier Devise'
+            TauxChange: 'Modifier Taux de Change'
+            Filiale: 'Modifier Filiale'
+            Personnel: 'Modifier Personnel'
+            Groupe: 'Modifier Groupe'
+            Customer: 'Modifier client'
+            EditRoomFacility: 'Modifier aménagement chambre'
+            EditOccupations: 'Modifier occupations chambre'
+        Detacher: 'Détâcher une chambre'
+    RoomType:
+        Room: Chambre
+    Facility:
+        Ammenagement: Aménagement
+        Associate: 'Associer un aménagement'
+    Contract:
+        New: 'Ajouter un contrat'
+        Details: 'Détail des contrats'
+    Hotel:
+        State: "Etâts de l'hôtel"
+        Edit: "Modifier l'hôtel"
+    HotelRoomType:
+        Edit: "Modifier l'occupation"
+        Dissociate: 'Dissocier la chambre'
+    HotelOption:
+        Edit: "Editer l'option"
+        Delete: "Supprimer l'option"
+    HotelCondition:
+        Edit: 'Editer la condition'
+        Delete: 'Supprimer la condition'
+Message:
+    Standard:
+        SuccessSave: 'Enregistrement effectué avec succès'
+    New:
+        Hotel: 'Nouveau hôtel'
+    List:
+        ListCustomers: 'Liste des clients'
+    Hotel:
+        activate: "Activer l'hotel"
+    HotelCondition:
+        New: 'Nouvelle Condition'
+        Edit: 'Modifier une condition'
+        Delete: 'Supprimer la condition'
+    Facility:
+        New: 'Nouveau Aménagement'
+        Delete: 'Modifier un Aménagement'
+        Associate: 'Associer un aménagement'
+    HotelOption:
+        New: 'Nouvelle option'
+        Edit: 'Editer une nouvelle option'
+        Delete: 'Supprimer option'
+    RoomType:
+        New: 'Nouveau type de chambre'
+        Edit: 'Modifier type de chambre'
+    General:
+        NoData: 'Tableau vide '
+    HotelType:
+        New: 'Ajouter un new type'
+        Delete: 'Supprimer un type'
+    Room:
+        New: 'Nouvelle chambre'
+        AssocierChambre: 'Associer une chambre'
+    HotelContract:
+        New: 'Nouveau contrat'
+Menu:
+    Comptabilite:
+        ComptesSociété: 'Comptes Société'
+        TauxChange: 'Taux de change'
+        Devise: Devise
+        TvaParModule: 'Tva par module'
+        ClotureExercice: 'Cloture Exercice'
+        Cloture: Clôture
+    Societe:
+        Filiales: Filiales
+        Profils: Profils
+        Personnels: Personnels
+    Customer:
+        ModesPaiement: 'Modes paiement'
+        MargesParGDS: 'Marge / GDS'
+        MargesParHotel: 'Marge / Hôtel'
+        ContactsSupplémentaires: 'Contacts suppléméntaires'
+        ComptesAccès: "Comptes d'accès"
+        RéductionsSpécifiques: 'Réductions spécifiques'
+        PièceJointes: 'Pièces joints'
+    Hotel:
+        Info: 'Informations Générales'
+        Room: 'Type de chambres'
+        Facilities: Aménagements
+        Options: Options
+        Conditions: 'Conditions générales'
+        Gallery: Galerie
+'Agences autorisées': '__Agences autorisées'
+Table:
+    General:
+        Designation: Designation
+        Name: Désgnation
+        Email: Email
+        Phone: Téléphone
+        Address: Adresse
+        State: Etat
+        Action: '#'
+    RoomType:
+        MaxOccupancy: ' Occupation maximale'
+        MaxOccupancyAdult: ' Occupation maximale par adult'
+        MinOccupancy: ' Occupation minimale'
+        MinOccupancyAdult: ' Occupation minimale par adult'
+        RoomOccupancy: 'Occupation de chambre (Min - Max)'
+        AdultOccupancy: 'Occupation Adulte (Min - Max)'
+    Shared:
+        Designation: Désignation
+        Action: Action
+        Name: Désignation
+        Email: Email
+        State: Etat
+Dropify:
+    File:
+        Upload: 'Ajouter vos Images'
+Title:
+    Hotel:
+        Name: Hôtels
+    HotelType:
+        Name: 'Types hôtels'
+    HotelChain:
+        Name: 'Chaines hôtels'
+Configurations: Configurations

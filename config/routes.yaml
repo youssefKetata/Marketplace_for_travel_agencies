@@ -1,0 +1,5 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+sherlockode_configuration:
+    resource: "@SherlockodeConfigurationBundle/Resources/config/routing.xml"

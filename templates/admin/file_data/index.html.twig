@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FileData index{% endblock %}
+
+{% block body %}
+    <h1>FileData index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>DirectoryPath</th>
+                <th>Extension</th>
+                <th>Alt</th>
+                <th>Ordre</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for file_datum in file_datas %}
+            <tr>
+                <td>{{ file_datum.id }}</td>
+                <td>{{ file_datum.name }}</td>
+                <td>{{ file_datum.directoryPath }}</td>
+                <td>{{ file_datum.extension }}</td>
+                <td>{{ file_datum.alt }}</td>
+                <td>{{ file_datum.ordre }}</td>
+                <td>{{ file_datum.createdAt ? file_datum.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ file_datum.updatedAt ? file_datum.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_admin_file_data_show', {'id': file_datum.id}) }}">show</a>
+                    <a href="{{ path('app_admin_file_data_edit', {'id': file_datum.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_file_data_new') }}">Create new</a>
+{% endblock %}

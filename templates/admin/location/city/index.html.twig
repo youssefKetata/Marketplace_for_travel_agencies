@@ -1,0 +1,32 @@
+<div>
+    <button
+            class="btn btn-primary btn-sm"
+            data-action="modal-form#openModal"
+            data-form-url-value="{{ path('app_admin_location_city_new' ) }}"
+            data-url-value="{{ path('app_admin_location_city_index', { ajax: 1 } ) }}"
+            data-node-dest-id-value="myTwoCustomContent"
+            data-modal-title-value="{{ 'Buttons.Custom.Nouveau.City'|trans }}"
+            data-refresh-key-value="refresh-html"
+    >
+        {{ 'Buttons.General.Nouveau'|trans }}
+    </button>
+    <div>
+        <table data-toggle="table" data-search="true" data-show-columns="true" data-page-size="10"
+               data-buttons-class="md btn-soft-primary" data-pagination="true"
+               data-show-pagination-switch="true" class="table-bordered">
+            <thead class="table-primary">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Active</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody data-reload-content-target="myTwoCustomContent">
+            {{ include('admin/location/city/_list.html.twig') }}
+            </tbody>
+        </table>
+    </div>
+</div>

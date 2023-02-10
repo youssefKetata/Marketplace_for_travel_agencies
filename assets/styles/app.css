@@ -1,0 +1,7 @@
+body {
+    background-color: lightskyblue;
+}
+
+.modal-body button {
+    display: none;
+}

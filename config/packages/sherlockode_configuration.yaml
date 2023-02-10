@@ -1,0 +1,229 @@
+sherlockode_configuration:
+  entity_class:
+    parameter: App\Entity\Parameter
+  translation_domain: configurations
+    # default domain is false (no translation) #messages
+  parameters:
+    # *****************************************************
+    # ************************ Societe ***********************
+    # *****************************************************
+    Societe_raison:
+      label: Configuration.Societe.raison
+      type: simple
+      translation_domain: configurations
+    Societe_MF:
+      label: Configuration.Societe.MF
+      type: simple
+    Societe_RC:
+      label: Configuration.Societe.RC
+      type: simple
+    Societe_Adresse:
+      label: Configuration.Societe.Adresse
+      type: simple
+    Societe_Phone:
+      label: Configuration.Societe.Phone
+      type: simple
+    Societe_Fax:
+      label: Configuration.Societe.Fax
+      type: simple
+    Societe_EmailContact:
+      label: Configuration.Societe.EmailContact
+      type: simple
+    Societe_Hotline:
+      label: Configuration.Societe.Hotline
+      type: simple
+    Societe_Description:
+      label: Configuration.Societe.Description
+      type: simple
+      # *****************************************************
+      # ************************ Documents et impression ***********************
+      # *****************************************************
+    DocsPrint_Couleur_Fond:
+      label: Configuration.DocsPrint.Couleur.Fond
+      type: simple
+    DocsPrint_Hauteur_Logo:
+      label: Configuration.DocsPrint.Hauteur.Logo
+      type: simple
+      options:
+        subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
+
+    DocsPrint_Hauteur_Cachet:
+      label: Configuration.DocsPrint.Hauteur.Cachet
+      type: simple
+      options:
+         subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
+    DocsPrint_Hauteur_PiedPageCm:
+      label: Configuration.DocsPrint.Hauteur.PiedPageCm
+      type: simple
+      options:
+       subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
+    DocsPrint_Largeur_Logo:
+      label: Configuration.DocsPrint.Largeur.Logo
+      type: simple
+      options:
+        subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
+    DocsPrint_Largeur_Cachet:
+      label: Configuration.DocsPrint.Largeur.Cachet
+      type: simple
+      options:
+        subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
+    DocsPrint_Notes_BasPage:
+      label: Configuration.DocsPrint.Notes.BasPage
+      type: simple
+    # *****************************************************
+    # ************************ Mail ***********************
+    # *****************************************************
+    Email_Address_Send:
+      label: Configuration.Email.Address.SendMail
+      type: simple
+    Email_Address_Password:
+      label: Configuration.Email.Address.Password
+      type: simple
+    Email_Address_SMTP:
+      label: Configuration.Email.Address.SMTP
+      type: simple
+    Email_Address_SendMailUsername:
+      label: Configuration.Email.Address.SendMailUsername
+      type: simple
+    Email_Address_ServiceCommercial:
+      label: Configuration.Email.Address.ServiceCommercial
+      type: simple
+    Email_Address_ServiceComptabilite:
+      label: Configuration.Email.Address.ServiceComptabilite
+      type: simple
+    Email_Address_Copie:
+      label: Configuration.Email.Address.AdressCC
+      type: simple
+    Email_Address_Copie_Invisible:
+      label: Configuration.Email.Address.AdressCCInvisible
+      type: simple
+    Email_Config_StateEnvoiMail:
+      label: Configuration.Email.Config.StateEnvoiMail
+      type: choice
+      options:
+        required: true
+        choices:
+          yes: 1
+          no: 0
+    Email_Config_StateEnvoiMailClientAdminVente:
+      label: Configuration.Email.Config.StateEnvoiMailClientAdminVente
+      type: choice
+      options:
+        required: true
+        choices:
+          yes: 1
+          no: 0
+    Email_Config_StateAffichageConditionsAnnulation:
+      label: Configuration.Email.Config.StateAffichageConditionsAnnulation
+      type: choice
+      options:
+        required: true
+        choices:
+          yes: 1
+          no: 0
+    Email_Texte_DdeConfirmation:
+      label: Configuration.Email.Texte.DdeConfirmation
+      type: simple
+    Email_Texte_DdeAnnulation:
+      label: Configuration.Email.Texte.DdeAnnulation
+      type: simple
+    Email_Texte_ConfirmationVente:
+      label: Configuration.Email.Texte.ConfirmationVente
+      type: simple
+    Email_Texte_AnnulationVente:
+      label: Configuration.Email.Texte.AnnulationVente
+      type: simple
+    Email_Note:
+      label: Configuration.Email.Note.AnnulationVente
+      type: simple
+        # *****************************************************
+    # ************************ Api Code ***********************
+    # *****************************************************
+
+
+    # *****************************************************
+    # ************************ Référencement ***********************
+    # *****************************************************
+
+
+    # *****************************************************
+    # ************************ Système ***********************
+    # *****************************************************
+    System_Config_ApiKeyHub:
+      label: Configuration.System.Config.ApiKeyHub
+      type: simple
+    System_Config_UrlHub:
+      label: Configuration.System.Config.UrlHub
+      type: simple
+    System_Config_CodeClientWalkin:
+      label: Configuration.System.Config.UrlHub
+      type: simple
+    System_Config_StateAutoCancelVente:
+      label: Configuration.System.Config.StateAutoCancelVente
+      type: choice
+      options:
+        required: true
+        choices:
+          no: 0
+          yes: 1
+    System_Config_StateAutoLettrageVente:
+      label: Configuration.System.Config.StateAutoLettrageVente
+      type: choice
+      options:
+        required: true
+        choices:
+          no: 0
+          yes: 1
+
+    # *****************************************************
+    # ************************ FrontEnd ***********************
+    # *****************************************************
+    FrontEnd_Config_MaxChambreFront:
+      label: Configuration.FrontEnd.Config.MaxChambreFront
+      type: simple
+      options:
+        subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
+      # *****************************************************
+    # ************************ BackEnd ***********************
+    # *****************************************************
+    BackEnd_Config_NombreJoursFiltreParDefaut:
+      label: Configuration.FrontEnd.Config.NombreJoursFiltreParDefaut
+      type: simple
+      options:
+        subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
+
+
+
+
+
+
+
+
+
+
+
+
+#      contact_email:
+#        label:  Configuration.group1.contact_email
+#        type: simple # the "simple" type renders by default as a TextType form element #    translation_domain: my_param_domain # overrides the global domain
+#      sales_date:
+#        label: Configuration.group2.sales_date
+#        type: datetime
+#        options:
+#          required: false
+
+#       max_user_login_attempts:
+#        label: Max login attemps before account blocking
+#        type: simple
+#        options:
+#          # it is possible to customize the form type to use for a "simple" parameter type
+#          subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
+#      guess_access:
+#        label: Configuration.group3.guess_access
+#        type: choice
+#        options:
+#          required: true
+##          multiple: true
+#          choices:
+#            yes: 1
+#            no: 0

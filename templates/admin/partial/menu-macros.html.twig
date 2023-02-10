@@ -1,0 +1,46 @@
+{% macro menu_links(links , i) %}
+  {% for link in links %}
+
+    {% if link.children  is defined and link.children is not null  %}
+        {# CASE I - a node with children (no route path) #}
+        {# We have two sub-cases :
+            (I-1) i==0 # meaning : Top Node "FIRT LEVEL" - showed without dropdows";
+            (I-2) i>0  # meaning : Intermediate Node
+        #}
+        {% if i == 0  %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-{{ link.id }}" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fe-grid me-1"></i> {{ link.title  }} <div class="arrow-down"></div>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="topnav-apps">
+              {{ _self.menu_links(link.children , i+1 ) }}
+            </div>
+          </li>
+        {% else %}
+          <div class="dropdown">
+            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-{{ link.id }}" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fe-shopping-cart me-1"></i> {{ link.title  }} <div class="arrow-down"></div>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="topnav-ecommerce">
+              {{ _self.menu_links(link.children , i+1 ) }}
+            </div>
+          </div>
+        {% endif %}
+
+    {% else %}
+      {# CASE II - a leaf-node (without children) -> With route path #}
+        {% if i == 0  %}
+            <li class="nav-item">
+                <a href="{{ link.route }}" class="nav-link arrow-none"  id="topnav-{{ link.id }}" role="button"
+                   aria-haspopup="true" aria-expanded="false"><i class="fe-home me-1"></i>
+                    {{ link.title }}
+                </a>
+            </li>
+        {% else %}
+      <a href="{{ link.route }}" class="dropdown-item"><i class="fe-calendar me-1"></i> {{ link.title }}</a>
+        {% endif %}
+    {% endif %}
+
+
+  {% endfor %}
+{% endmacro %}

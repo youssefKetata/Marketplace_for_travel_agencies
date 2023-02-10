@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FileData{% endblock %}
+
+{% block body %}
+    <h1>FileData</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ file_datum.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ file_datum.name }}</td>
+            </tr>
+            <tr>
+                <th>DirectoryPath</th>
+                <td>{{ file_datum.directoryPath }}</td>
+            </tr>
+            <tr>
+                <th>Extension</th>
+                <td>{{ file_datum.extension }}</td>
+            </tr>
+            <tr>
+                <th>Alt</th>
+                <td>{{ file_datum.alt }}</td>
+            </tr>
+            <tr>
+                <th>Ordre</th>
+                <td>{{ file_datum.ordre }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ file_datum.createdAt ? file_datum.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ file_datum.updatedAt ? file_datum.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_file_data_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_file_data_edit', {'id': file_datum.id}) }}">edit</a>
+
+    {{ include('admin/file_data/_delete_form.html.twig') }}
+{% endblock %}

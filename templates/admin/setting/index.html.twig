@@ -1,0 +1,85 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %} {{ 'Configurations'|trans }} {% endblock %}
+
+{% block container %}
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <a type="button" href="{{ path('app_admin_edit_setting') }}"
+                   class="btn btn-primary btn-sm pull-right"
+                >{{ 'Buttons.General.Modifier'|trans }}</a>
+
+                <h4 class="header-title mb-2"><h4>Menu</h4></h4>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="nav flex-column nav-pills nav-pills-tab" id="v-pills-tab" role="tablist"
+                             aria-orientation="vertical">
+                            {% for keyGroup, valueGroup in dataStructure %}
+                                {% set key = keyGroup|replace({'.': "-"}) %}
+                                <a class="nav-link {% if (keyGroup == defaultTab) %}  active  {% endif %} mb-1"
+                                   id="v-{{ key }}-tab" data-bs-toggle="pill"
+                                   href="#v-{{ key }}" role="tab" aria-controls="v-{{ key }}"
+                                   aria-selected="false">
+                                    {{ keyGroup|trans({},'configurations') }}</a>
+
+                            {% endfor %}
+                        </div>
+                    </div> <!-- end col-->
+                    <div class="col-sm-10">
+                        <div class="tab-content pt-0">
+
+                            {% for keyGroup, valueGroup in dataStructure %}
+                                {% set key = keyGroup|replace({'.': "-"}) %}
+                                <div class="tab-pane fade  {% if (keyGroup == defaultTab) %}  active show  {% endif %}"
+                                     id="v-{{ key }}" role="tabpanel"
+                                     aria-labelledby="v-{{ key }}-tab">
+
+
+                                    <div class="col-md-12">
+                                        <a type="button" href="{{ path('app_admin_editGroup_setting', {group_id : keyGroup}) }}"
+                                           class="btn btn-primary btn-sm pull-right"
+                                           >
+                                           {{ 'Buttons.Custom.Modifier.Groupe'|trans }}
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <table data-toggle="table" data-search="true" data-show-columns="true"
+                                               data-page-size="10"
+                                               data-buttons-class="md btn-soft-primary" data-pagination="true"
+                                               data-show-pagination-switch="true" class="table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Rubrique</th>
+                                                <th>Valeur</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for keyItem, ValueItem in valueGroup %}
+                                                <tr>
+                                                    <td>{{ ValueItem.label|trans({},'configurations') }}</td>
+                                                    <td>{{ ValueItem.value }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div> <!-- end col-->
+                </div> <!-- end row-->
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,53 @@
+form:
+    personal:
+        profile: 'Profil'
+        authAgencies: 'Agences autorisées'
+        name: 'Nom et prénom'
+        firstName: 'Nom'
+        lastName: 'Prénom'
+        job: 'Poste'
+        salary: 'Salaire'
+        affectedAgency: 'Agence origine'
+        email: 'Email'
+        password: 'Mot de passe'
+
+    customer:
+        Designation: Désignation
+        Devise: Devise
+        Adresse: Adresse
+        Phone: Phone
+        Email: Email
+        taxIdentifier: 'Code TVA'
+        fiscalIdentifier: 'Matricule fiscale'
+        Ville: Ville
+        Marche: Marché
+        CreditAuthorisee: 'Crédit authorisé'
+        CodeAuxiliaire: 'Code auxiliaire'
+        Note: Note
+    hotelDetail:
+        provider: 'Fournisseur'
+        StarRating: 'Etoiles'
+    facility:
+        facilities: 'Aménagements'
+    general:
+        save: 'Enregistrer'
+        description: 'Description'
+        name: 'Libelle'
+        email: 'Email'
+        phone: 'Téléphone'
+        fax: 'Fax'
+        city: 'Ville'
+    roomType:
+        MinOccupancy: 'minimum occupation'
+        MaxOccupancy: 'Maximum occupation'
+        minOccupancyAdult: 'Minimum occupation par adult'
+        maxOccupancyAdult: 'Maximum occupation par adult'
+    provider:
+        adress: 'Adresse'
+        longitude: 'Longitude'
+        latitude: 'Laltitude'
+        webSite: 'Site web'
+        logo: 'Logo'
+Message:
+    Hotel:
+        activate: 'activer hôtel'

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MarketSubscriptionRequest index{% endblock %}
+
+{% block body %}
+    <h1>MarketSubscriptionRequest index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Website</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for market_subscription_request in market_subscription_requests %}
+            <tr>
+                <td>{{ market_subscription_request.id }}</td>
+                <td>{{ market_subscription_request.name }}</td>
+                <td>{{ market_subscription_request.email }}</td>
+                <td>{{ market_subscription_request.website }}</td>
+                <td>{{ market_subscription_request.address }}</td>
+                <td>{{ market_subscription_request.city }}</td>
+                <td>
+                    <a href="{{ path('app_market_subscription_request_show', {'id': market_subscription_request.id}) }}">show</a>
+                    <a href="{{ path('app_market_subscription_request_edit', {'id': market_subscription_request.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_market_subscription_request_new') }}">Create new</a>
+{% endblock %}

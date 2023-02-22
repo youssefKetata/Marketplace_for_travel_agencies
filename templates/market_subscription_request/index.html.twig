@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base_admin.html.twig' %}
 
 {% block title %}MarketSubscriptionRequest index{% endblock %}
 
-{% block body %}
+{% block container %}
     <h1>MarketSubscriptionRequest index</h1>
 
     <table class="table">
@@ -14,6 +14,7 @@
                 <th>Website</th>
                 <th>Address</th>
                 <th>City</th>
+                <th>Status</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -26,9 +27,35 @@
                 <td>{{ market_subscription_request.website }}</td>
                 <td>{{ market_subscription_request.address }}</td>
                 <td>{{ market_subscription_request.city }}</td>
+                <td>{{ market_subscription_request.status }}</td>
                 <td>
-                    <a href="{{ path('app_market_subscription_request_show', {'id': market_subscription_request.id}) }}">show</a>
-                    <a href="{{ path('app_market_subscription_request_edit', {'id': market_subscription_request.id}) }}">edit</a>
+{#                    <a href="{{ path('app_market_subscription_request_show', {'id': market_subscription_request.id}) }}">show</a>#}
+                    <button
+                            class="btn btn-primary btn-sm"
+                            data-action="modal-form#openModal"
+                            data-form-url-value="{{ path('app_market_subscription_request_show', {'id': market_subscription_request.id}) }}"
+                            data-node-dest-id-value="myThreeCustomContent"
+                            data-refresh-key-value="refresh-html">
+                        {{ 'show' }}
+                    </button>
+                    {% if market_subscription_request.status == 'pending'%}
+{#                        <a href="{{ path('app_seller_new', {'idM':market_subscription_request.id}) }}">#}
+
+                                <button
+                                        class="btn btn-success btn-sm"
+                                        data-action="modal-form#openModal"
+                                        data-form-url-value="{{ path('app_seller_new', {'idM':market_subscription_request.id}) }}"
+                                        data-url-value="{{ path('app_seller_index', { ajax: 1 } ) }}"
+                                        data-node-dest-id-value="myThreeCustomContent"
+                                        data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Seller'|trans }}"
+                                        data-refresh-key-value="refresh-html">
+                                    {{ 'Buttons.General.Valider'|trans }}
+                                </button>
+
+
+
+{#                        </a>#}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

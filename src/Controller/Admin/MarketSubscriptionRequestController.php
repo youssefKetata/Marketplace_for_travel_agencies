@@ -14,8 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class MarketSubscriptionRequestController extends AbstractController
 {
     #[Route('/', name: 'app_market_subscription_request_index', methods: ['GET'])]
-    public function index(MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository): Response
+    public function index(MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository, Request $request): Response
     {
+
         return $this->render('market_subscription_request/index.html.twig', [
             'market_subscription_requests' => $marketSubscriptionRequestRepository->findAll(),
         ]);
@@ -34,7 +35,9 @@ class MarketSubscriptionRequestController extends AbstractController
             return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('market_subscription_request/new.html.twig', [
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
+
+        return $this->renderForm('market_subscription_request/new.html.twig'.$template, [
             'market_subscription_request' => $marketSubscriptionRequest,
             'form' => $form,
         ]);

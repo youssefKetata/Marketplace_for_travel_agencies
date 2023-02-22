@@ -39,6 +39,9 @@ class MarketSubscriptionRequest
     #[Assert\NotBlank(message: 'This value should not be blank')]
     private ?City $city = null;
 
+    #[ORM\Column(length: 45, nullable: true)]
+    private ?string $status = 'pending';
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,6 +103,18 @@ class MarketSubscriptionRequest
     public function setCity(?City $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

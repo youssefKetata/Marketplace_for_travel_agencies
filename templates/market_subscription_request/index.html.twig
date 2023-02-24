@@ -20,6 +20,7 @@
                 <th>City</th>
                 <th>Status</th>
                 <th>actions</th>
+                <th>API</th>
             </tr>
             </thead>
             <tbody data-reload-content-target="myOneCustomContent">
@@ -58,6 +59,32 @@
                             {#                        </a>#}
                         {% endif %}
                     </td>
+                    <td>
+                        {% if market_subscription_request.status === 'validated'%}
+                            {% for user in users %}
+                                {{ dump(user) }}
+                                {% if user.email == market_subscription_request.email %}
+                                    {{ user.email }}
+                                {% endif %}
+                            {% endfor %}
+
+                            <button
+                                    class="btn btn-success btn-sm"
+                                    data-action="modal-form#openModal"
+                                    data-form-url-value="{{ path('app_seller_new', {'idM':market_subscription_request.id}) }}"
+                                    data-url-value="{{ path('app_seller_index', { ajax: 1 } ) }}"
+                                    data-node-dest-id-value="myThreeCustomContent"
+                                    data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Seller'|trans }}"
+                                    data-refresh-key-value="refresh-html">
+                                {{ 'Buttons.General.Valider'|trans }}
+                            </button>
+
+
+
+                        {% endif %}
+
+
+                    </td>
                 </tr>
             {% else %}
                 <tr>
@@ -66,6 +93,7 @@
             {% endfor %}
             </tbody>
         </table>
+
     </div>
 
 

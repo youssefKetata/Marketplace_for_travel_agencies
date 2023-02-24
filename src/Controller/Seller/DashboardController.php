@@ -30,7 +30,7 @@ class DashboardController extends AbstractController
 
         //if(!$session->has('menu')){ // Uncomment to get menu from session if exists.
             if($this->isGranted('ROLE_SELLER')) {
-                $menu_object = $this->men->findBy([], ['displayOrder' => 'ASC']);
+                $menu_object = $this->menuItemSellerRepository->findBy([], ['displayOrder' => 'ASC']);
                 $menu = $this->helpers->convert_ObjectArray_to_2DArray($menu_object);
             }else{ // ROLE_ADMIN
                 $menu = $this->menuItemSellerRepository->find_innerJoin();

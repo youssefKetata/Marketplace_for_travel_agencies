@@ -5,14 +5,18 @@ namespace App\Controller;
 use App\Entity\MarketSubscriptionRequest;
 use App\Entity\Seller;
 use App\Entity\User;
+use App\Events\SellerCreatedEvent;
 use App\Form\SellerType;
 use App\Repository\SellerRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Service\Helpers;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 #[Route('/seller')]
 class SellerController extends AbstractController
 {
@@ -25,32 +29,43 @@ class SellerController extends AbstractController
     }
 
     #[Route('/new/{idM?null}', name: 'app_seller_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, SellerRepository $sellerRepository,UserRepository $userRepository, MarketSubscriptionRequest $idM = null): Response
+    public function new(Request $request,
+                        SellerRepository $sellerRepository,
+                        UserRepository $userRepository,
+                        Helpers $helpers,
+                        EventDispatcherInterface $dispatcher,
+                        UserPasswordHasherInterface $passwordHasher,
+                        MarketSubscriptionRequest $msr = null,
+    ): Response
     {
-        $marketSubscriptionRequest=$idM;
-        if(strcmp($marketSubscriptionRequest->getStatus(),"validated")==0){
+        if(strcmp($msr->getStatus(),"validated")==0){
             return $this->redirectToRoute('app_market_subscription_request_index');
         }
         $user = new User();
         $seller = new Seller();
         $seller->setUser($user);
-//        if($marketSubscriptionRequest !=null){
-//            //defaults values for user doesn't work
-//            $user->setEmail($marketSubscriptionRequest->getEmail());
-//            $user->setPassword('random');
-//            $user->setDisplayName($marketSubscriptionRequest->getName());
-//            $name = str_replace(' ', '_', $marketSubscriptionRequest->getName());
-//            $user->setUsername($name);
-//
-//            $seller->setUser($user);
-//            $seller->setName($marketSubscriptionRequest->getName());
-//            $seller->setWebsite($marketSubscriptionRequest->getWebsite());
-//            $seller->setAddress($marketSubscriptionRequest->getAddress());
-//            $seller->setCity($marketSubscriptionRequest->getCity());
-//            //$seller->setApi();
-//            //--generate password for user and hash it and add an option for forget password
-//        }
+        if($msr !=null){
+            $marketSubscriptionRequest=$msr;
+            $password = $helpers->generateRandomPassword();
+            $user->setEmail($marketSubscriptionRequest->getEmail());
+            $user->setPassword(
+                $passwordHasher->hashPassword(
+                    $user,
+                    $password
+                )
+            );
+            $user->setDisplayName($marketSubscriptionRequest->getName());
+            $name = str_replace(' ', '_', $marketSubscriptionRequest->getName());
+            $user->setUsername($name);
+            $user->setRoles((array)'ROLE_SELLER');
 
+            $seller->setUser($user);
+            $seller->setName($marketSubscriptionRequest->getName());
+            $seller->setWebsite($marketSubscriptionRequest->getWebsite());
+            $seller->setAddress($marketSubscriptionRequest->getAddress());
+            $seller->setCity($marketSubscriptionRequest->getCity());
+            //$seller->setApi();
+        }
         $form = $this->createForm(SellerType::class, $seller);
         $form->handleRequest($request);
 
@@ -59,7 +74,10 @@ class SellerController extends AbstractController
             $userRepository->add($user, true);
             $sellerRepository->save($seller, true);
 
-            return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
+            $onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
+            $dispatcher->dispatch($onCreateSellerEvent);
+
+            return $this->redirectToRoute('app_seller_index');
         }
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';

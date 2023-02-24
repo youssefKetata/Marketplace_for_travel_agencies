@@ -37,7 +37,7 @@ class MarketSubscriptionRequestController extends AbstractController
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
 
-        return $this->renderForm('market_subscription_request/new.html.twig'.$template, [
+        return $this->renderForm('market_subscription_request/'.$template, [
             'market_subscription_request' => $marketSubscriptionRequest,
             'form' => $form,
         ]);

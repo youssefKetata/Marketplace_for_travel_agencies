@@ -4,7 +4,7 @@
     "@hotwired/stimulus": "^3.0.0",
     "@hotwired/turbo": "^7.0.0-beta.5",
     "@symfony/stimulus-bridge": "^3.2.1",
-    "@symfony/ux-turbo": "^3.0",
+    "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
     "@symfony/webpack-encore": "^2.0.0",
     "axios": "^0.27.2",
     "core-js": "^3.0.0",

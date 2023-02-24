@@ -20,8 +20,9 @@ class SellerType extends AbstractType
             ->add('user', UserType::class,[
                 'data_class' => User::class,
                 //'required' => true,
-                'label' => 'seller as user'
+                'label' => 'seller as user',
             ])
+            ->remove('email')
             ->add('name')
             ->add('website')
             ->add('address')
@@ -34,6 +35,9 @@ class SellerType extends AbstractType
                 'class'=> Api::class
             ])
         ;
+
+        $builder->get('user')
+            ->remove('password');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

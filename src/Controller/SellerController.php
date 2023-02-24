@@ -35,17 +35,17 @@ class SellerController extends AbstractController
                         Helpers $helpers,
                         EventDispatcherInterface $dispatcher,
                         UserPasswordHasherInterface $passwordHasher,
-                        MarketSubscriptionRequest $msr = null,
+                        MarketSubscriptionRequest $idM
     ): Response
     {
-        if(strcmp($msr->getStatus(),"validated")==0){
+        if(!is_null($idM) && strcmp($idM->getStatus(),"validated")==0){
             return $this->redirectToRoute('app_market_subscription_request_index');
         }
         $user = new User();
         $seller = new Seller();
         $seller->setUser($user);
-        if($msr !=null){
-            $marketSubscriptionRequest=$msr;
+        if($idM !=null){
+            $marketSubscriptionRequest=$idM;
             $password = $helpers->generateRandomPassword();
             $user->setEmail($marketSubscriptionRequest->getEmail());
             $user->setPassword(
@@ -77,7 +77,7 @@ class SellerController extends AbstractController
             $onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
             $dispatcher->dispatch($onCreateSellerEvent);
 
-            return $this->redirectToRoute('app_seller_index');
+            return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';

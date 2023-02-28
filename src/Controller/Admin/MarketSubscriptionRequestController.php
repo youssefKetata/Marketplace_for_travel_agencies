@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\MarketSubscriptionRequest;
 use App\Form\MarketSubscriptionRequestType;
 use App\Repository\MarketSubscriptionRequestRepository;
+use App\Repository\SellerRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,14 +18,16 @@ class MarketSubscriptionRequestController extends AbstractController
     #[Route('/', name: 'app_market_subscription_request_index', methods: ['GET'])]
     public function index(MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository,
                           Request $request,
-                          UserRepository $userRepository
+                          UserRepository $userRepository,
+                            SellerRepository $sellerRepository
     ): Response
 
     {
 
         return $this->render('market_subscription_request/index.html.twig', [
             'market_subscription_requests' => $marketSubscriptionRequestRepository->findAll(),
-            'users' => $userRepository->findByExampleField("ROLE_SELLER")
+            'users' => $userRepository->findByRole("ROLE_SELLER"),
+            'sellers' => $sellerRepository->findAll(),
 
         ]);
     }

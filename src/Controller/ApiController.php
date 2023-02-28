@@ -61,9 +61,11 @@ class ApiController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_api_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Api $api, ApiRepository $apiRepository): Response
+    public function edit(Request $request,
+                         Api $api,
+                         ApiRepository $apiRepository,
+    ): Response
     {
-        dd($api);
         $form = $this->createForm(ApiType::class, $api);
         $form->handleRequest($request);
 
@@ -73,9 +75,9 @@ class ApiController extends AbstractController
             return $this->redirectToRoute('app_api_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';
 
-        return $this->renderForm('api/edit.html.twig', [
+        return $this->renderForm('api/'.$template, [
             'api' => $api,
             'form' => $form,
         ],

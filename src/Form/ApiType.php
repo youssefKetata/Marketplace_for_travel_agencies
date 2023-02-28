@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Api;
+use App\Entity\Seller;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +18,9 @@ class ApiType extends AbstractType
             ->add('apiKeyValue')
             ->add('login')
             ->add('password')
-            ->add('seller', SellerType::class)
+//            ->add('seller', SellerType::class,[
+//                'data_class' => Seller::class
+//            ])
         ;
     }
 

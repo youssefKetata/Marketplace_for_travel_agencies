@@ -27,7 +27,7 @@ class Api
     #[ORM\Column(length: 45)]
     private ?string $password = null;
 
-    #[ORM\OneToOne(mappedBy: 'api_idApi', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'api', cascade: ['persist', 'remove'])]
     private ?Seller $seller = null;
 
     #[ORM\OneToMany(mappedBy: 'api_idApi', targetEntity: ApiProduct::class)]

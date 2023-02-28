@@ -74,10 +74,10 @@ class SellerController extends AbstractController
             $userRepository->add($user, true);
             $sellerRepository->save($seller, true);
 
-            $onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
-            $dispatcher->dispatch($onCreateSellerEvent);
+            //$onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
+            //$dispatcher->dispatch($onCreateSellerEvent);
 
-            return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';

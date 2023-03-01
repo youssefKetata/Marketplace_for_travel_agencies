@@ -136,12 +136,13 @@
                                     }) }}
                                 </div>
 {#                                {% elseif modalType=='show' %}#}
-                                    <div id="myDivExampleModal2">
-                                        {{ include('_modalShow.html.twig', {
-                                            modalTitle: 'Title...',
-                                            modalContent : 'Loading ...',
-                                        }) }}
-                                    </div>
+                                <div id="myDivExampleModal2" >
+                                    {{ include('_modalShow.html.twig', {
+                                        modalTitle: 'Title...',
+                                        modalContent : 'Loading ...',
+                                        is_second_modal: true
+                                    }) }}
+                                </div>
 {#                                {% endif %}#}
 
 

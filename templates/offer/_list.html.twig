@@ -1,0 +1,16 @@
+{% for offer in offers %}
+    <tr>
+        <td>{{ offer.id }}</td>
+        <td>{{ offer.name }}</td>
+        <td>{{ offer.nbProductTypes }}</td>
+        <td>{{ offer.nbDays }}</td>
+        <td>
+            <a href="{{ path('app_offer_show', {'id': offer.id}) }}">show</a>
+            <a href="{{ path('app_offer_edit', {'id': offer.id}) }}">edit</a>
+        </td>
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="5">no records found</td>
+    </tr>
+{% endfor %}

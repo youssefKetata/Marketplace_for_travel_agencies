@@ -5,18 +5,30 @@ namespace App\Controller\Shared;
 use App\Entity\Offer;
 use App\Form\OfferType;
 use App\Repository\OfferRepository;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/offer')]
 class OfferController extends AbstractController
 {
-    #[Route('/', name: 'app_offer_index', methods: ['GET'])]
-    public function index(OfferRepository $offerRepository): Response
+    protected $flashy;
+    protected $translator;
+
+    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
     {
-        return $this->render('offer/index.html.twig', [
+        $this->flashy = $flashy;
+        $this->translator = $translator;
+    }
+
+    #[Route('/', name: 'app_offer_index', methods: ['GET'])]
+    public function index(OfferRepository $offerRepository, Request $request): Response
+    {
+        $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
+        return $this->render('offer/'.$template, [
             'offers' => $offerRepository->findAll(),
         ]);
     }
@@ -30,14 +42,25 @@ class OfferController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $offerRepository->save($offer, true);
+            //$this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
+            if ($request->isXmlHttpRequest()) {
+                //$html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response(null, 204);
+            }
 
             return $this->redirectToRoute('app_offer_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('offer/new.html.twig', [
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
+
+        return $this->renderForm('offer/'.$template, [
             'offer' => $offer,
             'form' => $form,
-        ]);
+        ],
+            new Response(
+                null,
+                $form->isSubmitted() && !$form->isValid() ? 422 : 200,
+            ));
     }
 
     #[Route('/{id}', name: 'app_offer_show', methods: ['GET'])]

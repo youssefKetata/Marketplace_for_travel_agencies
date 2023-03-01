@@ -26,8 +26,9 @@ class MarketSubscriptionRequestController extends AbstractController
     ): Response
 
     {
+        $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
 
-        return $this->render('market_subscription_request/index.html.twig', [
+        return $this->render('market_subscription_request/'.$template, [
             'market_subscription_requests' => $marketSubscriptionRequestRepository->findAll(),
             'users' => $userRepository->findByRole("ROLE_SELLER"),
             'sellers' => $sellerRepository->findAll(),
@@ -44,6 +45,9 @@ class MarketSubscriptionRequestController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
+            if ($request->isXmlHttpRequest()) {
+                return new Response(null, 204);
+            }
 
             return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -53,14 +57,18 @@ class MarketSubscriptionRequestController extends AbstractController
         return $this->renderForm('market_subscription_request/'.$template, [
             'market_subscription_request' => $marketSubscriptionRequest,
             'form' => $form,
-        ]);
+        ],
+            new Response(
+                null,
+                $form->isSubmitted() && !$form->isValid() ? 422 : 200,
+            ));
     }
 
     #[Route('/{id}', name: 'app_market_subscription_request_show', methods: ['GET'])]
     public function show(MarketSubscriptionRequest $marketSubscriptionRequest): Response
     {
         return $this->render('market_subscription_request/show.html.twig', [
-            'market_subscription_request' => $marketSubscriptionRequest,
+            'market_subscription_request' => $marketSubscriptionRequest
         ]);
     }
 

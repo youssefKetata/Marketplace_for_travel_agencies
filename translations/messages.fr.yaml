@@ -18,6 +18,7 @@ Buttons:
         Association: Associer
         New: Nouveau
         Delete: Supprimer
+
         Modifier.Compte: 'Modifier Compte'
         Modifier.Devise: 'Modifier Devise'
         Modifier.TauxChange: 'Modifier taux de change'

@@ -125,22 +125,24 @@
 
                         >
                             <div data-controller="modal-form"
-                                 data-action="hidden.bs.modal->modal-form#modalHidden"
-                            >
+                                 data-action="hidden.bs.modal->modal-form#modalHidden">
 
+
+{#                                {% if modalType=='' or modalType is null %}#}
                                 <div id="myDivExampleModal">
                                     {{ include('_modal.html.twig', {
                                         modalTitle: 'Title...',
                                         modalContent : 'Loading ...',
                                     }) }}
                                 </div>
-                                <div id="myDivExampleModal2" >
-                                    {{ include('_modal.html.twig', {
-                                        modalTitle: 'Title...',
-                                        modalContent : 'Loading ...',
-                                        is_second_modal: true
-                                    }) }}
-                                </div>
+{#                                {% elseif modalType=='show' %}#}
+                                    <div id="myDivExampleModal2">
+                                        {{ include('_modalShow.html.twig', {
+                                            modalTitle: 'Title...',
+                                            modalContent : 'Loading ...',
+                                        }) }}
+                                    </div>
+{#                                {% endif %}#}
 
 
                                 <div>

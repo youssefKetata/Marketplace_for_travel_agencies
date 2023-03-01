@@ -128,14 +128,13 @@
                                  data-action="hidden.bs.modal->modal-form#modalHidden">
 
 
-{#                                {% if modalType=='' or modalType is null %}#}
                                 <div id="myDivExampleModal">
                                     {{ include('_modal.html.twig', {
                                         modalTitle: 'Title...',
                                         modalContent : 'Loading ...',
                                     }) }}
                                 </div>
-{#                                {% elseif modalType=='show' %}#}
+
                                 <div id="myDivExampleModal2" >
                                     {{ include('_modalShow.html.twig', {
                                         modalTitle: 'Title...',
@@ -143,7 +142,7 @@
                                         is_second_modal: true
                                     }) }}
                                 </div>
-{#                                {% endif %}#}
+
 
 
                                 <div>

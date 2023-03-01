@@ -4,6 +4,7 @@ namespace App\Controller\Shared;
 
 use App\Entity\Offer;
 use App\Form\OfferType;
+use App\Repository\OfferProductTypeRepository;
 use App\Repository\OfferRepository;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +26,10 @@ class OfferController extends AbstractController
     }
 
     #[Route('/', name: 'app_offer_index', methods: ['GET'])]
-    public function index(OfferRepository $offerRepository, Request $request): Response
+    public function index(OfferRepository $offerRepository,
+                          Request $request,
+                          OfferProductTypeRepository $offerProductTypeRepository
+    ): Response
     {
         $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
         return $this->render('offer/'.$template, [

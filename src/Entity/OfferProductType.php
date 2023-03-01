@@ -44,12 +44,12 @@ class OfferProductType
         return $this;
     }
 
-    public function getProductTypeidProductType(): ?ProductType
+    public function getProductType(): ?ProductType
     {
         return $this->productType;
     }
 
-    public function setProductTypeidProductType(?ProductType $productType): self
+    public function setProductType(?ProductType $productType): self
     {
         $this->productType = $productType;
 
@@ -78,5 +78,15 @@ class OfferProductType
         $this->price = $price;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        $m = "*".'product type: '. $this->getProductType()->getName()."\n".
+        'max items: '.$this->getMaxItems()."\r\n".
+        'price'.$this->getPrice()."\r\n";
+
+        return $m;
+        // TODO: Implement __toString() method.
     }
 }

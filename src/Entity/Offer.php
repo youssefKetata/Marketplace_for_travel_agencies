@@ -95,6 +95,7 @@ class Offer
         return $this;
     }
 
+
     public function removeOfferProductType(OfferProductType $offerProductType): self
     {
         if ($this->offerProductTypes->removeElement($offerProductType)) {

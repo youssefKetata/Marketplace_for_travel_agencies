@@ -11,6 +11,15 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-symfony}
     volumes:
       - db-data:/var/lib/postgresql/data:rw
+  mailhog:
+    container_name: mail-container
+    image: mailhog/mailhog
+    restart: always
+    logging:
+      driver: 'none'
+    ports:
+      - "8025:8025"
+      - "1025:1025"
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###

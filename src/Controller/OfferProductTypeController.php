@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Offer;
 use App\Entity\OfferProductType;
 use App\Form\OfferProductTypeType;
 use App\Repository\OfferProductTypeRepository;
+use Doctrine\ORM\Mapping\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,10 +27,14 @@ class OfferProductTypeController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_offer_product_type_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, OfferProductTypeRepository $offerProductTypeRepository): Response
+    #[Route('/new/{id?null}', name: 'app_offer_product_type_new', methods: ['GET', 'POST'])]
+
+    public function new(Request $request,Offer $offer = null, OfferProductTypeRepository $offerProductTypeRepository,
+
+    ): Response
     {
         $offerProductType = new OfferProductType();
+        if(!is_null($offer) && $offer){$offerProductType->setOffer($offer);}
         $form = $this->createForm(OfferProductTypeType::class, $offerProductType);
         $form->handleRequest($request);
 
@@ -86,4 +93,5 @@ class OfferProductTypeController extends AbstractController
 
         return $this->redirectToRoute('app_offer_product_type_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

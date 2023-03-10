@@ -75,6 +75,7 @@ class MarketSubscriptionRequestController extends AbstractController
     #[Route('/{id}/edit', name: 'app_market_subscription_request_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, MarketSubscriptionRequest $marketSubscriptionRequest, MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository): Response
     {
+        //we never edit market request
         $form = $this->createForm(MarketSubscriptionRequestType::class, $marketSubscriptionRequest);
         $form->handleRequest($request);
 

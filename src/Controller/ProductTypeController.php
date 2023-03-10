@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ProductType;
 use App\Form\ProductTypeType;
 use App\Repository\ProductTypeRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,10 +70,17 @@ class ProductTypeController extends AbstractController
             return $this->redirectToRoute('app_product_type_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('product_type/edit.html.twig', [
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';
+
+        return $this->renderForm('product_type/'.$template, [
             'product_type' => $productType,
             'form' => $form,
-        ]);
+        ],
+            new Response(
+                null,
+                $form->isSubmitted() && !$form->isValid() ? 422 : 200,
+            )
+        );
     }
 
     #[Route('/{id}', name: 'app_product_type_delete', methods: ['POST'])]
@@ -84,4 +92,30 @@ class ProductTypeController extends AbstractController
 
         return $this->redirectToRoute('app_product_type_index', [], Response::HTTP_SEE_OTHER);
     }
-}
+
+    #[Route('/{id}/OfferProductsTypes', name: 'offerProductTypes_ProductType', methods: ['GET'])]
+    public function showOfferProductTypes(ProductType $productType, Request $request, ): Response
+    {
+        //$template = $request->query->get('ajax') ? 'listOffer.html.twig' : 'index.html.twig';
+        return $this->render('product_type/offersList.html.twig', [
+            'product_type' => $productType,
+        ]);
+
+//        $productType =  $doctrine
+//            ->getRepository(ProductType::class)
+//            ->find($id);
+//
+//        if (!$productType) {
+//            throw $this->createNotFoundException(
+//                'No productType found for id '.$id
+//            );
+//        }
+//
+//        return $this->render('product_type/show_OffreProductType.html.twig', [
+//            'productType' => $productType,
+//            //  'offerProductTypes' => $offerProductTypes
+//
+//        ]);
+//    }
+
+}}

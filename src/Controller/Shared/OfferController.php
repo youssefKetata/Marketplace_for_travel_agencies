@@ -16,13 +16,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/offer')]
 class OfferController extends AbstractController
 {
-    protected $flashy;
-    protected $translator;
+    //protected $flashy;
+    //protected $translator;
 
     public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
     {
-        $this->flashy = $flashy;
-        $this->translator = $translator;
+        //$this->flashy = $flashy;
+        //$this->translator = $translator;
     }
 
     #[Route('/', name: 'app_offer_index', methods: ['GET'])]
@@ -46,9 +46,7 @@ class OfferController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $offerRepository->save($offer, true);
-            //$this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
             if ($request->isXmlHttpRequest()) {
-                //$html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response(null, 204);
             }
 
@@ -101,5 +99,14 @@ class OfferController extends AbstractController
         }
 
         return $this->redirectToRoute('app_offer_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/OfferProductsTypes', name: 'app_offer_showProductsTypes', methods: ['GET'])]
+    public function showOfferProductTypes(Offer $offer, Request $request, ): Response
+    {
+        //$template = $request->query->get('ajax') ? 'listOffer.html.twig' : 'index.html.twig';
+        return $this->render('offer/showOfferProductTypes.html.twig', [
+            'offer' => $offer,
+        ]);
     }
 }

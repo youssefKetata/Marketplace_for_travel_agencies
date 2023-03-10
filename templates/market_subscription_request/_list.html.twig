@@ -48,9 +48,9 @@
                                     data-node-dest-id-value="myThreeCustomContent"
                                     data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Seller'|trans }}"
                                     data-refresh-key-value="refresh-html">
-                                create api
+                                Create api
                             </button>
-                        {% else %}
+                        {% elseif market_subscription_request.status == 'validated' and seller.api != null %}
                             {#                                        modify api#}
                             <button
                                     class="btn btn-success btn-sm"
@@ -60,8 +60,9 @@
                                     data-node-dest-id-value="myThreeCustomContent"
                                     data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Seller'|trans }}"
                                     data-refresh-key-value="refresh-html">
-                                edit api
+                                Edit api
                             </button>
+                        {% else %}
 
                         {% endif %}
                     {% endif %}

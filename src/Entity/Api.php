@@ -6,6 +6,7 @@ use App\Repository\ApiRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ApiRepository::class)]
 class Api
@@ -15,16 +16,31 @@ class Api
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 45)]
+    #[ORM\Column(length: 100)]
+    #[Assert\NotNull(message: 'This value should not be blank.')]
+    #[Assert\Url(message: '{{value}} is not a valid Url')]
     private ?string $baseUrl = null;
 
     #[ORM\Column(length: 45)]
+    #[Assert\NotNull(message: 'This value should not be blank.')]
     private ?string $apiKeyValue = null;
 
     #[ORM\Column(length: 45)]
+    #[Assert\NotNull(message: 'This value should not be blank.')]
+    #[Assert\Length(
+        min: 2,
+        minMessage: 'login must be at least {{ limit }} characters long',
+    )]
     private ?string $login = null;
 
     #[ORM\Column(length: 45)]
+    #[Assert\NotBlank(message: 'This value should not be blank.')]
+    #[Assert\Length(
+        min: 5,
+        max: 50,
+        minMessage: 'Password must be at least {{ limit }} characters long',
+        maxMessage: 'Password cannot be longer than {{ limit }} characters',
+    )]
     private ?string $password = null;
 
     #[ORM\OneToOne(mappedBy: 'api', cascade: ['persist', 'remove'])]
@@ -49,7 +65,7 @@ class Api
         return $this->baseUrl;
     }
 
-    public function setBaseUrl(string $baseUrl): self
+    public function setBaseUrl(?string $baseUrl): self
     {
         $this->baseUrl = $baseUrl;
 
@@ -61,7 +77,7 @@ class Api
         return $this->apiKeyValue;
     }
 
-    public function setApiKeyValue(string $apiKeyValue): self
+    public function setApiKeyValue(?string $apiKeyValue): self
     {
         $this->apiKeyValue = $apiKeyValue;
 
@@ -73,7 +89,7 @@ class Api
         return $this->login;
     }
 
-    public function setLogin(string $login): self
+    public function setLogin(?string $login): self
     {
         $this->login = $login;
 
@@ -85,7 +101,7 @@ class Api
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
@@ -147,6 +163,6 @@ class Api
     public function __toString(): string
     {
         // TODO: Implement __toString() method.
-        return $this->getId();
+        return $this->getLogin();
     }
 }

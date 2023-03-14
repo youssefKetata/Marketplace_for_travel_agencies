@@ -21,8 +21,8 @@ class Continent //implements Translatable
 
     //#[Gedmo\Translatable]
     #[ORM\Column(name: 'name', type: 'string', length: 50)]
-    //#[Assert\NotBlank(message: 'This value should not be blank')]
-    //#[Assert\Unique]
+    #[Assert\NotBlank(message: 'This value should not be blank')]
+    #[Assert\Unique]
     private $name;
 
     #[ORM\OneToMany(mappedBy: 'continent', targetEntity: Country::class)]

@@ -41,15 +41,15 @@
         <td>total price: {{ price }}</td>
         <td>
             <button
-                    class="btn btn-info waves-effect waves-light"
+                    class="btn btn-link btn-rounded btn-sm fw-bold btn-info btn-sm"
                     data-action="modal-form#openModal"
                     data-form-url-value="{{ path('app_offer_show', {'id': offer.id}) }}"
                     data-node-dest-id-value="myThreeCustomContent"
                     data-refresh-key-value="refresh-html">
-                <i class="fas fa-info"></i>
+                <i class="fas fa-eye"></i>
             </button>
                 <button
-                        class="btn btn-success waves-effect waves-light"
+                        class="btn btn-link btn-rounded btn-sm fw-bold btn-success btn-sm"
                         data-action="modal-form#openModal"
                         data-form-url-value="{{ path('app_offer_edit', {'id': offer.id}) }}"
                         data-url-value="{{ path('app_offer_index', { ajax: 1 } ) }}"
@@ -59,14 +59,14 @@
                     <i class="fas fa-edit"></i>
                 </button>
             <button
-                    class="btn btn-danger waves-effect waves-light"
+                    class="btn btn-link btn-rounded btn-sm fw-bold btn-danger btn-sm"
                     data-action="modal-form#openModal"
                     data-form-url-value="{{ path('app_offer_delete', {'id': offer.id}) }}"
                     data-url-value="{{ path('app_offer_index', { ajax: 1 } ) }}"
                     data-node-dest-id-value="myOneCustomContent"
                     data-modal-title-value="{{ 'Buttons.General.Modifier'|trans }}"
                     data-refresh-key-value="refresh-html">
-                <i class="fas fa-trash"></i>
+                <i class="fas fa-trash-alt"></i>
             </button>
         </td>
     </tr>

@@ -12,18 +12,28 @@
                 <span class="badge badge-outline-warning">Pending</span>
             {% endif %}
         </td>
+{#        actions#}
         <td>
             <button
-                    class="btn btn-info btn-sm"
+                    class="btn btn-link btn-rounded btn-sm fw-bold btn-info btn-sm"
                     data-action="modal-form#openModal"
                     data-form-url-value="{{ path('app_market_subscription_request_show', {'id': market_subscription_request.id}) }}"
                     data-node-dest-id-value="myThreeCustomContent"
                     data-refresh-key-value="refresh-html">
                 <i class="fas fa-eye"></i>
             </button>
+            <button
+                    class="btn btn-link btn-rounded btn-sm fw-bold btn-danger btn-sm"
+                    data-action="modal-form#openModal"
+                    data-form-url-value="{{ path('app_market_subscription_request_delete', {'id': market_subscription_request.id}) }}"
+                    data-node-dest-id-value="myThreeCustomContent"
+                    data-refresh-key-value="refresh-html">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+
             {% if market_subscription_request.status == 'pending'%}
                 <button
-                        class="btn btn-success btn-sm"
+                        class="btn btn-link btn-rounded btn-sm fw-bold btn-success btn-sm"
                         data-action="modal-form#openModal"
                         data-form-url-value="{{ path('app_seller_new', {'idM':market_subscription_request.id}) }}"
                         data-url-value="{{ path('app_seller_index', { ajax: 1 } ) }}"
@@ -34,6 +44,7 @@
                 </button>
             {% endif %}
         </td>
+{#        api#}
         <td>
             {% for user in users %}
                 {% for seller in sellers %}

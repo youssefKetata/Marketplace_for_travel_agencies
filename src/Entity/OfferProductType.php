@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\OfferProductTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OfferProductTypeRepository::class)]
+
 class OfferProductType
 {
     #[ORM\Id]
@@ -17,8 +19,9 @@ class OfferProductType
     #[ORM\JoinColumn(nullable: false)]
     private ?Offer $offer = null;
 
-    #[ORM\ManyToOne(inversedBy: 'offerProductTypes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne( inversedBy: 'offerProductTypes')]
+    #[ORM\JoinColumn( nullable: true)]
+    #[Assert\NotBlank(message: 'This value should not be blank')]
     private ?ProductType $productType = null;
 
     #[ORM\Column(length: 45)]
@@ -44,17 +47,31 @@ class OfferProductType
         return $this;
     }
 
+    /*  public function getProductTypeidProductType(): ?ProductType
+      {
+          return $this->productType;
+      }
+
+      public function setProductTypeidProductType(?ProductType $productType): self
+      {
+          $this->productType = $productType;
+
+          return $this;
+      }*/
+
+
     public function getProductType(): ?ProductType
     {
         return $this->productType;
     }
 
-    public function setProductType(?ProductType $productType): self
+    public function setProductType( ?ProductType $productType): self
     {
         $this->productType = $productType;
 
         return $this;
     }
+
 
     public function getMaxItems(): ?string
     {
@@ -79,12 +96,11 @@ class OfferProductType
 
         return $this;
     }
-
     public function __toString(): string
     {
         $m = "*".'product type: '. $this->getProductType()->getName()."\n".
-        'max items: '.$this->getMaxItems()."\r\n".
-        'price'.$this->getPrice()."\r\n";
+            'max items: '.$this->getMaxItems()."\r\n".
+            'price'.$this->getPrice()."\r\n";
 
         return $m;
         // TODO: Implement __toString() method.

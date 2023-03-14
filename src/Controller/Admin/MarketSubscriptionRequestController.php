@@ -10,10 +10,8 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mailer\Transport;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\Mailjet;
 
 #[Route('/admin/market/subscription/request')]
 class MarketSubscriptionRequestController extends AbstractController
@@ -45,6 +43,8 @@ class MarketSubscriptionRequestController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
+//            $mail = new Mailjet();
+//            $mail->sendEmail('73f8755d86bd6aba7cddb3846a4fa4b6', '2460e3d1ae138a4a798ddcd8b77a562d');
             if ($request->isXmlHttpRequest()) {
                 return new Response(null, 204);
             }

@@ -6,16 +6,17 @@
 
 {% block container %}
 <div>
-    <button
-            class="btn btn-primary btn-sm"
-            data-action="modal-form#openModal"
-            data-form-url-value="{{ path('app_offer_new' ) }}"
-            data-url-value="{{ path('app_offer_index', { ajax: 1 } ) }}"
-            data-node-dest-id-value="myOneCustomContent"
-            data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Continent'|trans }}"
-            data-refresh-key-value="refresh-html">
-        {{ 'Buttons.General.Nouveau'|trans }}
-    </button>
+{#    <button#}
+{#            class="btn btn-primary btn-sm"#}
+{#            data-action="modal-form#openModal"#}
+{#            data-form-url-value="{{ path('app_offer_new' ) }}"#}
+{#            data-url-value="{{ path('app_offer_index', { ajax: 1 } ) }}"#}
+{#            data-node-dest-id-value="myOneCustomContent"#}
+{#            data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Continent'|trans }}"#}
+{#            data-refresh-key-value="refresh-html">#}
+{#        {{ 'Buttons.General.Nouveau'|trans }}#}
+{#    </button>#}
+    <a class="btn btn-primary btn-sm" href="{{path('app_offer_new')}}">{{ 'Buttons.General.Nouveau'|trans }}</a>
     <div>
         <table data-toggle="table" data-search="true" data-show-columns="true" data-page-size="10"
             data-buttons-class="md btn-soft-primary" data-pagination="true"
@@ -31,7 +32,7 @@
                     <th>actions</th>
                 </tr>
             </thead>
-                <tbody>
+                <tbody data-reload-content-target="myOneCustomContent">
                 {{ include('offer/_list.html.twig') }}
             </tbody>
         </table>

@@ -24,10 +24,10 @@ class Offer
     #[ORM\Column]
     private ?int $nbDays = null;
 
-    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: OfferProductType::class)]
+    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: OfferProductType::class, cascade: ['persist','remove'])]
     private Collection $offerProductTypes;
 
-    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: SellerOffer::class)]
+    #[ORM\OneToMany( mappedBy: 'offer', targetEntity: SellerOffer::class, cascade: ['persist','remove'])]
     private Collection $sellerOffers;
 
     public function __construct()
@@ -88,13 +88,15 @@ class Offer
     public function addOfferProductType(OfferProductType $offerProductType): self
     {
         if (!$this->offerProductTypes->contains($offerProductType)) {
+            //added in 3/03/2023
+            /* $offerProductType->setOffer($this);
+             $this->offerProductTypes[] = $offerProductType;*/
             $this->offerProductTypes->add($offerProductType);
             $offerProductType->setOffer($this);
         }
 
         return $this;
     }
-
 
     public function removeOfferProductType(OfferProductType $offerProductType): self
     {
@@ -137,10 +139,9 @@ class Offer
 
         return $this;
     }
-
     public function __toString(): string
     {
         // TODO: Implement __toString() method.
-        return $this->getName();
+        return $this->name;
     }
 }

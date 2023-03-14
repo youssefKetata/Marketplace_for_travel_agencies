@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Offer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,6 +16,17 @@ class OfferType extends AbstractType
             ->add('name')
             ->add('nbProductTypes')
             ->add('nbDays')
+            ->add('offerProductTypes', CollectionType::class, [
+                'entry_type' => \App\Form\OfferProductTypeType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'prototype_name' => '__name__',
+                'label' => false,
+                'by_reference' => false,
+
+            ]);
+
         ;
     }
 

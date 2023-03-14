@@ -1,39 +1,29 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Seller index{% endblock %}
+{% block title %}List of sellers{% endblock %}
 
-{% block body %}
-    <h1>Seller index</h1>
+{% block pagetitle %}List of sellers{% endblock %}
 
-    <table class="table">
-        <thead>
+{% block container %}
+
+    <table data-toggle="table" data-search="true" data-show-columns="true" data-page-size="10"
+           data-buttons-class="md btn-soft-primary" data-pagination="true"
+           data-show-pagination-switch="true" class="table-bordered">
+        <thead class="table-primary">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>email</th>
                 <th>Website</th>
                 <th>Address</th>
                 <th>actions</th>
+                <th>API</th>
             </tr>
         </thead>
-        <tbody>
-        {% for seller in sellers %}
-            <tr>
-                <td>{{ seller.id }}</td>
-                <td>{{ seller.name }}</td>
-                <td>{{ seller.website }}</td>
-                <td>{{ seller.address }}</td>
-                <td>
-                    <a href="{{ path('app_seller_show', {'id': seller.id}) }}">show</a>
-                    <a href="{{ path('app_seller_edit', {'id': seller.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
+        <tbody data-reload-content-target="myOneCustomContent">
+        {{ include('seller/_list.html.twig') }}
         </tbody>
     </table>
 
-    <a href="{{ path('app_seller_new') }}">Create new</a>
+{#    <a href="{{ path('app_seller_new') }}">Create new</a>#}
 {% endblock %}

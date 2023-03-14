@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Offer;
+use App\Entity\OfferProductType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -32,6 +34,22 @@ class OfferRepository extends ServiceEntityRepository
 
     public function remove(Offer $entity, bool $flush = false): void
     {
+        //remove all offerProductTypes associated with this offer
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        try {
+            $qb->delete(OfferProductType::class, 'opt')
+                ->where('opt.offer = :offer')
+                ->setParameter('offer', $entity)
+                ->getQuery()
+                ->execute();
+
+            $em->remove($entity);
+            $em->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            // Handle the exception
+        }
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {

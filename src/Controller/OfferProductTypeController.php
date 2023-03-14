@@ -16,25 +16,36 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/offer/product/type')]
 class OfferProductTypeController extends AbstractController
 {
-    #[Route('/', name: 'app_offer_product_type_index', methods: ['GET'])]
+    #[Route('//{offer}', name: 'app_offer_product_type_index', methods: ['GET'])]
     public function index(OfferProductTypeRepository $offerProductTypeRepository,
                           Request $request,
+                          Offer $offer
     ): Response
     {
+        //return offerProductTypes of one offer
         $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
         return $this->render('offer_product_type/'.$template, [
-            'offer_product_types' => $offerProductTypeRepository->findAll(),
+            'offer_product_types' => $offer->getOfferProductTypes()
+
         ]);
+
+//        return $this->render('offer_product_type/'.$template, [
+//            'offer_product_types' => $offerProductTypeRepository->findAll(),
+//        ]);
+
     }
 
     #[Route('/new/{id?null}', name: 'app_offer_product_type_new', methods: ['GET', 'POST'])]
 
-    public function new(Request $request,Offer $offer = null, OfferProductTypeRepository $offerProductTypeRepository,
+    public function new(Request $request,Offer $offer,
+                        OfferProductTypeRepository $offerProductTypeRepository,
 
     ): Response
     {
         $offerProductType = new OfferProductType();
-        if(!is_null($offer) && $offer){$offerProductType->setOffer($offer);}
+        if($offer){
+            $offerProductType->setOffer($offer);
+        }
         $form = $this->createForm(OfferProductTypeType::class, $offerProductType);
         $form->handleRequest($request);
 

@@ -1,0 +1,40 @@
+{% for offerProductType in offer.offerProductTypes %}
+    <tr>
+        <td>{{ offerProductType.id }}</td>
+        <td>{{ offerProductType.productType.name }}</td>
+        <td>{{ offerProductType.price }}</td>
+        <td>{{ offerProductType.maxItems }}</td>
+        <td>
+            <button
+                    class="btn btn-link btn-rounded btn-sm fw-bold btn-info btn-sm"
+                    data-action="modal-form#openModal"
+                    data-form-url-value="{{ path('app_offer_product_type_show', {'id': offerProductType.id}) }}"
+                    data-url-value="{{ path('app_offer_product_type_index', { 'offer':offer.id,ajax: 1 } ) }}"
+                    data-node-dest-id-value="offerType"
+                    data-refresh-key-value="refresh-html">
+                <i class="fas fa-eye"></i> View
+            </button>
+            <button
+                    class=" btn btn-link btn-rounded btn-sm fw-bold btn-success btn-sm"
+                    data-action="modal-form#openModal"
+                    data-form-url-value="{{ path('app_offer_product_type_edit', {'id': offerProductType.id}) }}"
+                    data-url-value="{{ path('app_offer_product_type_index', {'offer':offer.id, ajax: 1 } ) }}"
+                    data-node-dest-id-value="myOneCustomContent"
+                    data-refresh-key-value="refresh-html">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+            <button
+                    class=" btn btn-link btn-rounded btn-sm fw-bold btn-danger btn-sm"
+                    data-action="modal-form#openModal"
+                    data-form-url-value="{{ path('app_offer_product_type_delete', {'id': offerProductType.id}) }}"
+                    data-url-value="{{ path('app_offer_product_type_index', {'offer':offer.id, ajax: 1 } ) }}"
+                    data-node-dest-id-value="offerType"
+                    data-refresh-key-value="refresh-html">
+                <i class="bi bi-trash"></i> Delete
+            </button>
+
+
+
+        </td>
+    </tr>
+{% endfor %}

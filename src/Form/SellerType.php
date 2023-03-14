@@ -22,18 +22,19 @@ class SellerType extends AbstractType
                 //'required' => true,
                 'label' => 'seller as user',
             ])
-            ->remove('email')
+
             ->add('name')
             ->add('website')
             ->add('address')
             ->add('city', EntityType::class, [
                 'required' => true,
                 'class' => City::class,
-    ])
+            ])
             ->add('api', EntityType::class, [
                 'required' => false,
                 'class'=> Api::class
             ])
+
         ;
 
         $builder->get('user')
@@ -44,6 +45,7 @@ class SellerType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Seller::class,
+            'cascade_validation' => true,
         ]);
     }
 }

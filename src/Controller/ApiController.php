@@ -15,9 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController extends AbstractController
 {
     #[Route('/', name: 'app_api_index', methods: ['GET'])]
-    public function index(ApiRepository $apiRepository): Response
+    public function index(ApiRepository $apiRepository, Request $request): Response
     {
-        return $this->render('api/index.html.twig', [
+        $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
+        return $this->render('api/'.$template, [
             'apis' => $apiRepository->findAll(),
         ]);
     }
@@ -33,7 +34,7 @@ class ApiController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $seller?->setApi($api);
+            $seller->setApi($api);
             $apiRepository->save($api, true);
 
             return $this->redirectToRoute('app_api_index', [], Response::HTTP_SEE_OTHER);

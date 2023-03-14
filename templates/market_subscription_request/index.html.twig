@@ -2,6 +2,8 @@
 
 {% block title %}Market Subscription Requests{% endblock %}
 
+{% block pagetitle %}Market Subscription Requests{% endblock %}
+
 {% block container %}
     {% set modalType='show' %}
     <div>
@@ -24,7 +26,6 @@
                 </thead>
                 <tbody data-reload-content-target="myOneCustomContent">
                 {{ include('market_subscription_request/_list.html.twig') }}
-
                 </tbody>
             </table>
 

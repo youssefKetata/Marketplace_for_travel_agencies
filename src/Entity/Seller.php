@@ -6,6 +6,7 @@ use App\Repository\SellerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SellerRepository::class)]
 class Seller
@@ -17,12 +18,15 @@ class Seller
     private ?int $id = null;
 
     #[ORM\Column(length: 45)]
+    #[Assert\NotNull(message: 'This value should not be blank.')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: 'This value should not be blank.')]
     private ?string $website = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: 'This value should not be blank.')]
     private ?string $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'sellers')]
@@ -56,7 +60,7 @@ class Seller
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -68,7 +72,7 @@ class Seller
         return $this->website;
     }
 
-    public function setWebsite(string $website): self
+    public function setWebsite(?string $website): self
     {
         $this->website = $website;
 
@@ -80,7 +84,7 @@ class Seller
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
@@ -104,7 +108,7 @@ class Seller
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
@@ -151,5 +155,10 @@ class Seller
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

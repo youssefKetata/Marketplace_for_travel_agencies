@@ -7,8 +7,10 @@ use App\Entity\Seller;
 use App\Entity\User;
 use App\Events\SellerCreatedEvent;
 use App\Form\SellerType;
+use App\Form\UserType;
 use App\Repository\SellerRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,13 +19,15 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Helpers;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 #[Route('/seller')]
 class SellerController extends AbstractController
 {
     #[Route('/', name: 'app_seller_index', methods: ['GET'])]
-    public function index(SellerRepository $sellerRepository): Response
+    public function index(SellerRepository $sellerRepository, Request $request): Response
     {
-        return $this->render('seller/index.html.twig', [
+        $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
+        return $this->render('seller/'.$template, [
             'sellers' => $sellerRepository->findAll(),
         ]);
     }
@@ -35,7 +39,8 @@ class SellerController extends AbstractController
                         Helpers $helpers,
                         EventDispatcherInterface $dispatcher,
                         UserPasswordHasherInterface $passwordHasher,
-                        MarketSubscriptionRequest $idM
+                        MarketSubscriptionRequest $idM,
+                        EntityManagerInterface $entityManager
     ): Response
     {
         if(!is_null($idM) && strcmp($idM->getStatus(),"validated")==0){
@@ -66,19 +71,34 @@ class SellerController extends AbstractController
             $seller->setCity($marketSubscriptionRequest->getCity());
             //$seller->setApi();
         }
+
         $form = $this->createForm(SellerType::class, $seller);
+        //$userForm = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        //$userForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $marketSubscriptionRequest->setStatus('validated');
-            $userRepository->add($user, true);
-            $sellerRepository->save($seller, true);
+        //if ($userForm->isSubmitted() && $form->isValid()){
+            if ($form->isSubmitted() && $form->isValid()) {
+                //user must be valid first
+                try {
+                    //$user = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+                    $marketSubscriptionRequest->setStatus('validated');
+                    $userRepository->add($user, true);
+                    $sellerRepository->save($seller, true);
+                } catch (UniqueConstraintViolationException $exception) {
+                    dd('mail already exist');
+                }
 
-            //$onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
-            //$dispatcher->dispatch($onCreateSellerEvent);
 
-            return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
-        }
+
+                //send email to thes user with email and password
+                //$onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
+                //$dispatcher->dispatch($onCreateSellerEvent);
+
+                return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
+            }
+        //}
+
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
 

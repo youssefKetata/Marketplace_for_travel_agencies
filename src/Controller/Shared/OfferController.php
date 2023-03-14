@@ -53,9 +53,9 @@ class OfferController extends AbstractController
             return $this->redirectToRoute('app_offer_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
+        //$template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
 
-        return $this->renderForm('offer/'.$template, [
+        return $this->renderForm('offer/new.html.twig', [
             'offer' => $offer,
             'form' => $form,
         ],
@@ -94,6 +94,7 @@ class OfferController extends AbstractController
     #[Route('/{id}', name: 'app_offer_delete', methods: ['POST'])]
     public function delete(Request $request, Offer $offer, OfferRepository $offerRepository): Response
     {
+
         if ($this->isCsrfTokenValid('delete'.$offer->getId(), $request->request->get('_token'))) {
             $offerRepository->remove($offer, true);
         }

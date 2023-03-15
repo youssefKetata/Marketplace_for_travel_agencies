@@ -6,6 +6,7 @@ use App\Entity\Api;
 use App\Entity\City;
 use App\Entity\Seller;
 use App\Entity\User;
+use phpDocumentor\Reflection\Types\String_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,17 +22,24 @@ class SellerType extends AbstractType
                 "disabled" => true,
                 "empty_data"=>$options['data']->getUser(),
                 //'required' => true,
-                'label' => 'seller as user',
+
             ])
 
             ->add('name',null,[
-                'disabled'=>true
+                "disabled" => true,
+
             ])
-            ->add('website')
-            ->add('address')
+            ->add('website',null,[
+                "disabled" => true,
+            ])
+            ->add('address',null,[
+                "disabled" => true,
+            ])
             ->add('city', EntityType::class, [
                 'required' => true,
                 'class' => City::class,
+                "disabled" => true,
+
             ])
             ->add('api', EntityType::class, [
                 'required' => false,
@@ -48,7 +56,6 @@ class SellerType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Seller::class,
-            'cascade_validation' => true,
         ]);
     }
 }

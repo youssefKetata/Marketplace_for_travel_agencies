@@ -24,7 +24,7 @@ class ApiController extends AbstractController
     }
 
     #[Route('/new/{seller?null}', name: 'app_api_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,
+    public function     new(Request $request,
                         ApiRepository $apiRepository,
                         Seller $seller,
     ): Response
@@ -37,7 +37,7 @@ class ApiController extends AbstractController
             $seller->setApi($api);
             $apiRepository->save($api, true);
 
-            return $this->redirectToRoute('app_api_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
@@ -73,7 +73,7 @@ class ApiController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $apiRepository->save($api, true);
 
-            return $this->redirectToRoute('app_api_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';

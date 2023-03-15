@@ -7,61 +7,60 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<OfferProductType>
- *
- * @method OfferProductType|null find($id, $lockMode = null, $lockVersion = null)
- * @method OfferProductType|null findOneBy(array $criteria, array $orderBy = null)
- * @method OfferProductType[]    findAll()
- * @method OfferProductType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class OfferProductTypeRepository extends ServiceEntityRepository
-{
+* @extends ServiceEntityRepository<OfferProductType>
+    *
+    * @method OfferProductType|null find($id, $lockMode = null, $lockVersion = null)
+    * @method OfferProductType|null findOneBy(array $criteria, array $orderBy = null)
+    * @method OfferProductType[]    findAll()
+    * @method OfferProductType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    */
+    class OfferProductTypeRepository extends ServiceEntityRepository
+    {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, OfferProductType::class);
+    parent::__construct($registry, OfferProductType::class);
     }
 
     public function save(OfferProductType $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+    $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+    if ($flush) {
+    $this->getEntityManager()->flush();
+    }
     }
 
     public function remove(OfferProductType $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+    $this->getEntityManager()->remove($entity);
 
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+    if ($flush) {
+    $this->getEntityManager()->flush();
+    }
     }
 
-//    /**
-//     * @return OfferProductType[] Returns an array of OfferProductType objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return OfferProductType[] Returns an array of OfferProductType objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('o.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?OfferProductType
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
-}
+    //    public function findOneBySomeField($value): ?OfferProductType
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+    }

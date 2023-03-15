@@ -3,52 +3,67 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Trait\TimeStampTrait2;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use App\Trait\TimeStampTrait;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Trait\TimeStampTrait;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    use TimeStampTrait;
+    use TimeStampTrait2;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Assert\NotBlank(message: 'This value should not be blank.')]
-    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
-    private ?string $email;
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',)]
+    #[Assert\Length(
+        min: 5,
+        minMessage: 'Not a valid Email')]
+    private $email;
 
     #[ORM\Column(type: 'json')]
-    #[Assert\NotBlank(message: 'This value should not be blank.')]
-    private array $roles = [];
+    private $roles = [];
 
     #[ORM\Column(type: 'string')]
-
-    private string $password;
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Your name must be at least {{ limit }} characters long',
+        maxMessage: 'Your name cannot be longer than {{ limit }} characters',
+    )]
+    private $password;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank(message: 'This value should not be blank.')]
-    private ?string $display_name;
+    #[Assert\Type(
+        type: 'string',
+        message: 'Not a valid name.',
+    )]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Your name must be at least {{ limit }} characters long',
+        maxMessage: 'Your name cannot be longer than {{ limit }} characters',
+    )]
+    private $display_name;
 
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isVerified = false;
+    private $isVerified = false;
 
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotNull(message: 'This value should not be blank.')]
-    #[Assert\Type(
-        type: 'string',
-        message: 'Not a valid username.',
-    )]
     private ?string $username = null;
 
     #[ORM\Column(nullable: true)]
@@ -68,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(?string $email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -111,7 +126,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(?string $password): self
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -133,7 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->display_name;
     }
 
-    public function setDisplayName(?string $display_name): self
+    public function setDisplayName(string $display_name): self
     {
         $this->display_name = $display_name;
 
@@ -156,7 +171,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername(?string $username): self
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
@@ -177,7 +192,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string
     {
-        return $this->username;
+        // TODO: Implement __toString() method.
+        return $this->email;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
 }

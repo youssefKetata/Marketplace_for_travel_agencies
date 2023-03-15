@@ -29,7 +29,7 @@ class ContinentController extends AbstractController
         $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
 
         return $this->render('admin/location/continent/'.$template, [
-                'continents' => $continentRepository->findBy(['active' => true])
+            'continents' => $continentRepository->findBy(['active' => true])
         ]);
     }
 

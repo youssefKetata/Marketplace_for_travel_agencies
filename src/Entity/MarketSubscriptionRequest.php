@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\MarketSubscriptionRequestRepository;
-use App\Trait\TimeStampTrait;
-use App\Trait\TimeStampTrait2;
+use App\Trait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: MarketSubscriptionRequestRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -15,10 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @UniqueEntity(fields={"email"}, message="This email address is already in use.")
  */
+
 class MarketSubscriptionRequest
 {
-    use TimeStampTrait2;
-
+    use Trait\TimeStampTrait2;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -26,17 +26,36 @@ class MarketSubscriptionRequest
 
     #[ORM\Column(length: 45)]
     #[Assert\NotBlank(message: 'This value should not be blank')]
+    #[Assert\Type(
+        type: 'string',
+        message: 'Not a valid name.',
+    )]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Your name must be at least {{ limit }} characters long',
+        maxMessage: 'Your name cannot be longer than {{ limit }} characters',
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 45)]
     #[Assert\NotBlank(message: 'This value should not be blank')]
     #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',
-    )]
+        message: 'The email {{ value }} is not a valid email.',)]
+    #[Assert\Length(
+        min: 5,
+        minMessage: 'Not a valid Email')]
     private ?string $email = null;
 
     #[ORM\Column(length: 45)]
     #[Assert\NotBlank(message: 'This value should not be blank')]
+    #[Assert\Type(
+        type: 'string',
+        message: 'Not a valid website.',
+    )]
+    #[Assert\Length(
+        min: 5,
+        minMessage: 'Your first name must be at least {{ limit }} characters long')]
     #[Assert\Url]
     private ?string $website = null;
 
@@ -47,6 +66,7 @@ class MarketSubscriptionRequest
     #[ORM\ManyToOne(inversedBy: 'marketSubscriptionRequests')]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotBlank(message: 'This value should not be blank')]
+
     private ?City $city = null;
 
     #[ORM\Column(length: 45, nullable: true)]
@@ -128,5 +148,6 @@ class MarketSubscriptionRequest
 
         return $this;
     }
+
 
 }

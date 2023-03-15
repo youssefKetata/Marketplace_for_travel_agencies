@@ -31,7 +31,7 @@ class City
 
     #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'cities')]
     #[ORM\JoinColumn(name: "country_code", referencedColumnName: 'code')]
-    private $country;
+    private $country_code;
 
     #[ORM\OneToMany(mappedBy: 'city_idCity', targetEntity: Seller::class)]
     private Collection $sellers;
@@ -104,14 +104,14 @@ class City
         return $this;
     }
 
-    public function getCountry(): ?Country
+    public function getCountryCode(): ?Country
     {
-        return $this->country;
+        return $this->country_code;
     }
 
-    public function setCountry(?Country $country): self
+    public function setCountryCode(?Country $country_code): self
     {
-        $this->country = $country;
+        $this->country_code = $country_code;
 
         return $this;
     }

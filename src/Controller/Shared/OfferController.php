@@ -4,35 +4,23 @@ namespace App\Controller\Shared;
 
 use App\Entity\Offer;
 use App\Form\OfferType;
-use App\Repository\OfferProductTypeRepository;
 use App\Repository\OfferRepository;
-use MercurySeries\FlashyBundle\FlashyNotifier;
+use Proxies\__CG__\App\Entity\OfferProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\Persistence\ManagerRegistry;
+
 
 #[Route('/offer')]
 class OfferController extends AbstractController
 {
-    //protected $flashy;
-    //protected $translator;
-
-    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
-    {
-        //$this->flashy = $flashy;
-        //$this->translator = $translator;
-    }
-
+    private $em;
     #[Route('/', name: 'app_offer_index', methods: ['GET'])]
-    public function index(OfferRepository $offerRepository,
-                          Request $request,
-                          OfferProductTypeRepository $offerProductTypeRepository
-    ): Response
+    public function index(OfferRepository $offerRepository): Response
     {
-        $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
-        return $this->render('offer/'.$template, [
+        return $this->render('offer/index.html.twig', [
             'offers' => $offerRepository->findAll(),
         ]);
     }
@@ -41,28 +29,24 @@ class OfferController extends AbstractController
     public function new(Request $request, OfferRepository $offerRepository): Response
     {
         $offer = new Offer();
+       /* $offerproduct=new OfferProductType();
+        $offerproduct->setMaxItems(25);
+        $offerproduct->setPrice(255);
+
+        $offer->addOfferProductType($offerproduct);*/
         $form = $this->createForm(OfferType::class, $offer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $offerRepository->save($offer, true);
-            if ($request->isXmlHttpRequest()) {
-                return new Response(null, 204);
-            }
 
             return $this->redirectToRoute('app_offer_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        //$template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
-
         return $this->renderForm('offer/new.html.twig', [
             'offer' => $offer,
             'form' => $form,
-        ],
-            new Response(
-                null,
-                $form->isSubmitted() && !$form->isValid() ? 422 : 200,
-            ));
+        ]);
     }
 
     #[Route('/{id}', name: 'app_offer_show', methods: ['GET'])]
@@ -94,20 +78,34 @@ class OfferController extends AbstractController
     #[Route('/{id}', name: 'app_offer_delete', methods: ['POST'])]
     public function delete(Request $request, Offer $offer, OfferRepository $offerRepository): Response
     {
-
         if ($this->isCsrfTokenValid('delete'.$offer->getId(), $request->request->get('_token'))) {
             $offerRepository->remove($offer, true);
         }
 
         return $this->redirectToRoute('app_offer_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    #[Route('/{id}/OfferProductsTypes', name: 'app_offer_showProductsTypes', methods: ['GET'])]
-    public function showOfferProductTypes(Offer $offer, Request $request, ): Response
+    #[Route('/{id}/OfferProductsTypes', name: 'app_offerProductTypes', methods: ['GET'])]
+    public function showOfferProductTypes(int $id): Response
     {
-        //$template = $request->query->get('ajax') ? 'listOffer.html.twig' : 'index.html.twig';
-        return $this->render('offer/showOfferProductTypes.html.twig', [
+
+        $offer =  $this->doctrine
+            ->getRepository(Offer::class)
+            ->find($id);
+       // $offerProductTypes = $offer->getOfferProductTypes();
+
+        if (!$offer) {
+            throw $this->createNotFoundException(
+                'No offer found for id '.$id
+            );
+        }
+
+        return $this->render('offer/show_Offer_Product.html.twig', [
             'offer' => $offer,
+           // 'offerProductTypes' => $offerProductTypes
+
         ]);
     }
+
+    public function __construct(private ManagerRegistry $doctrine) {}
+
 }

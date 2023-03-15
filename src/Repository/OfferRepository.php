@@ -34,7 +34,7 @@ class OfferRepository extends ServiceEntityRepository
 
     public function remove(Offer $entity, bool $flush = false): void
     {
-        //remove all offerProductTypes associated with this offer
+
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
 

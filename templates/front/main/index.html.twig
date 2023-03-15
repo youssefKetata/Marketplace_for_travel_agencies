@@ -3,45 +3,91 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
     {% block header %}
-        <div style="" >
+        <div class="d-flex justify-content-between align-items-center">
             {% if app.user %}
-                {# TODO Optimize the main page, is it fully the same for roles B2C, B2B, B2B_SUB, ...  ?? #}
-                {% if  "ROLE_B2C" in app.user.roles %}
-                    <a href="" style="padding-right: 15px">
-                        {{ app.user.email}}
-                    </a>
+                {% if "ROLE_B2C" in app.user.roles %}
+                    <a href="" class="btn btn-outline-secondary">{{ app.user.email }}</a>
                 {% endif %}
 
-                {% if  "ROLE_B2B_SUB" in app.user.roles or "ROLE_B2B_SUB" in app.user.roles or "ROLE_B2CORP" in app.user.roles or "ROLE_B2CORP_ADH" in app.user.roles   %}
-                    <a href="" target="_blank" style="padding-right: 15px">
-                        {{ app.user.email}}
-                    </a>
+                {% if "ROLE_B2B_SUB" in app.user.roles or "ROLE_B2B_SUB" in app.user.roles or "ROLE_B2CORP" in app.user.roles or "ROLE_B2CORP_ADH" in app.user.roles %}
+                    <a href="" target="_blank" class="btn btn-outline-secondary">{{ app.user.email }}</a>
                 {% endif %}
 
-                <a  class="btn btn-outline-success" href="{{ path('app_logout') }}">Logout</a>
-
+                <a href="{{ path('app_logout') }}" class="btn btn-outline-success">Logout</a>
             {% else %}
-                <a href="{{ path('app_login') }}" style="padding-right: 15px">
-                    Se connecter
-                </a>
-                <a href="{{ path('app_register') }}" style="padding-right: 15px">
-                    S'inscrire
-                </a>
-                <a href="/login/btob" style="padding-right: 15px">
-                    Espace pro
-                </a>
+
+                    <!-- Jumbotron -->
+                    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+                        <div class="container">
+                            <div class="row gx-lg-5 align-items-center">
+                                <div class="col-lg-6 mb-2 mb-lg-0">
+                                    <h1 class="my-5 text-danger display-3 fw-bold ls-tight">
+                                       3t <br />
+                                        <br>
+                                        <span class="text-dark"> technology travel tourism</span>
+                                    </h1>
+
+                                </div>
+
+                                <div class="col-lg-6 mb-5 mt-5 mb-lg-0   rounded-2">
+                                    <div class="card rounded-3 ">
+                                        <div class="card-body py-5 px-md-5">
+                                            <form>
+                                                <div class="d-grid gap-2">
+                                                    <!-- Submit button -->
+                                                    <a href="{{ path('app_login') }}" class="btn btn-primary btn-lg btn-block mb-2 shadow-sm" style="background-color: #007bff; border-color: #007bff;"
+                                                       role="button" tabindex="0"
+                                                       onmouseover="this.style.backgroundColor='#0056b3'; this.style.borderColor='#0056b3'"
+                                                       onmouseout="this.style.backgroundColor='#007bff'; this.style.borderColor='#007bff'"
+                                                       onfocus="this.style.backgroundColor='#0056b3'; this.style.borderColor='#0056b3';"
+                                                       onblur="this.style.backgroundColor='#007bff'; this.style.borderColor='#007bff';">
+                                                        Se connecter
+                                                    </a>
+                                                    <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg btn-block mb-2 shadow-sm" style="background-color: #6c757d; border-color: #6c757d;"
+                                                       role="button" tabindex="0"
+                                                       onmouseover="this.style.backgroundColor='#4e555b'; this.style.borderColor='#4e555b'"
+                                                       onmouseout="this.style.backgroundColor='#6c757d'; this.style.borderColor='#6c757d'"
+                                                       onfocus="this.style.backgroundColor='#4e555b'; this.style.borderColor='#4e555b';"
+                                                       onblur="this.style.backgroundColor='#6c757d'; this.style.borderColor='#6c757d';">
+                                                        S'inscrire
+                                                    </a>
+                                                    <a href="/login/btob" class="btn btn-primary btn-lg btn-block mb-2 shadow-sm" style="background-color: #28a745; border-color: #28a745;"
+                                                       role="button" tabindex="0"
+                                                       onmouseover="this.style.backgroundColor='#1e7e34'; this.style.borderColor='#1e7e34'"
+                                                       onmouseout="this.style.backgroundColor='#28a745'; this.style.borderColor='#28a745'"
+                                                       onfocus="this.style.backgroundColor='#1e7e34'; this.style.borderColor='#1e7e34';"
+                                                       onblur="this.style.backgroundColor='#28a745'; this.style.borderColor='#28a745';">
+                                                        Espace pro
+                                                    </a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Jumbotron -->
+
             {% endif %}
-
         </div>
-<div class="example-wrapper">
-    <h1>Front youssef Page ✅</h1>
-
-</div>
-
     {% endblock %}
+
+{#    <div class="example-wrapper">#}
+{#        <h1>Front wassim Page ✅</h1>#}
+{#    </div>#}
 {% endblock %}
+
+
+

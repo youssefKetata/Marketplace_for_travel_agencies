@@ -18,7 +18,7 @@ class ProductType
     #[ORM\Column(length: 45)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'productType', targetEntity: OfferProductType::class)]
+    #[ORM\OneToMany(mappedBy: 'productType', targetEntity: OfferProductType::class ,  cascade: ['remove'])]
     private Collection $offerProductTypes;
 
     #[ORM\OneToMany(mappedBy: 'productType_idProductType', targetEntity: ApiProduct::class)]
@@ -106,10 +106,11 @@ class ProductType
 
         return $this;
     }
-
     public function __toString(): string
     {
         // TODO: Implement __toString() method.
         return $this->getName();
     }
+
+
 }

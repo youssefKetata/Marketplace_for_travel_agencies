@@ -1,24 +1,27 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
+
 
 use App\Entity\ProductType;
 use App\Form\ProductTypeType;
 use App\Repository\ProductTypeRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
+
 
 #[Route('/product/type')]
 class ProductTypeController extends AbstractController
 {
+    private $em;
     #[Route('/', name: 'app_product_type_index', methods: ['GET'])]
-    public function index(ProductTypeRepository $productTypeRepository, Request $request): Response
+    public function index(ProductTypeRepository $productTypeRepository): Response
     {
-        $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
-        return $this->render('product_type/'.$template, [
+
+        return $this->render('product_type/index.html.twig', [
             'product_types' => $productTypeRepository->findAll(),
         ]);
     }
@@ -32,22 +35,14 @@ class ProductTypeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $productTypeRepository->save($productType, true);
-            if ($request->isXmlHttpRequest()) {
-                return new Response(null, 204);
-            }
 
             return $this->redirectToRoute('app_product_type_index', [], Response::HTTP_SEE_OTHER);
         }
-        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
 
-        return $this->renderForm('product_type/'.$template, [
+        return $this->renderForm('product_type/new.html.twig', [
             'product_type' => $productType,
             'form' => $form,
-        ],
-            new Response(
-                null,
-                $form->isSubmitted() && !$form->isValid() ? 422 : 200,
-            ));
+        ]);
     }
 
     #[Route('/{id}', name: 'app_product_type_show', methods: ['GET'])]
@@ -70,17 +65,10 @@ class ProductTypeController extends AbstractController
             return $this->redirectToRoute('app_product_type_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';
-
-        return $this->renderForm('product_type/'.$template, [
+        return $this->renderForm('product_type/edit.html.twig', [
             'product_type' => $productType,
             'form' => $form,
-        ],
-            new Response(
-                null,
-                $form->isSubmitted() && !$form->isValid() ? 422 : 200,
-            )
-        );
+        ]);
     }
 
     #[Route('/{id}', name: 'app_product_type_delete', methods: ['POST'])]
@@ -92,30 +80,26 @@ class ProductTypeController extends AbstractController
 
         return $this->redirectToRoute('app_product_type_index', [], Response::HTTP_SEE_OTHER);
     }
-
     #[Route('/{id}/OfferProductsTypes', name: 'offerProductTypes_ProductType', methods: ['GET'])]
-    public function showOfferProductTypes(ProductType $productType, Request $request, ): Response
+    public function showOfferProductTypes(int $id): Response
     {
-        //$template = $request->query->get('ajax') ? 'listOffer.html.twig' : 'index.html.twig';
-        return $this->render('product_type/offersList.html.twig', [
-            'product_type' => $productType,
+
+        $productType =  $this->doctrine
+            ->getRepository(ProductType::class)
+            ->find($id);
+         //$offerProductTypes = $productType->getProductTypeidProductType();
+
+        if (!$productType) {
+            throw $this->createNotFoundException(
+                'No productType found for id '.$id
+            );
+        }
+
+        return $this->render('product_type/show_OffreProductType.html.twig', [
+            'productType' => $productType,
+          //  'offerProductTypes' => $offerProductTypes
+
         ]);
-
-//        $productType =  $doctrine
-//            ->getRepository(ProductType::class)
-//            ->find($id);
-//
-//        if (!$productType) {
-//            throw $this->createNotFoundException(
-//                'No productType found for id '.$id
-//            );
-//        }
-//
-//        return $this->render('product_type/show_OffreProductType.html.twig', [
-//            'productType' => $productType,
-//            //  'offerProductTypes' => $offerProductTypes
-//
-//        ]);
-//    }
-
-}}
+    }
+    public function __construct(private readonly ManagerRegistry $doctrine) {}
+}

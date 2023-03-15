@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -64,16 +65,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findByRole($value): array
     {
         return $this->createQueryBuilder('u')
-            ->where('u.roles LIKE :roles')
-            //searching for $value in roles surrounded by any number of characters  before and after
-            ->setParameter('roles', '%'.$value.'%')
+            ->andWhere('u.roles = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            //->setMaxResults(10)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
+   /* public function findNonSellers(EntityManagerInterface $entityManager): array
+    {
+        $queryBuilder = $entityManager->createQueryBuilder();
+        $queryBuilder->select('u')
+            ->from(User::class, 'u')
+            ->where($queryBuilder->expr()->not($queryBuilder->expr()->isMemberOf(':sellerRole', 'u.roles')));
 
+        $queryBuilder->setParameter('sellerRole', 'ROLE_SELLER');
 
-
+        return $queryBuilder->getQuery()->getResult();
+    }*/
 
 //    public function findOneBySomeField($value): ?User
 //    {

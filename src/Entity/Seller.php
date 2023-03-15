@@ -18,15 +18,34 @@ class Seller
     private ?int $id = null;
 
     #[ORM\Column(length: 45)]
-    #[Assert\NotNull(message: 'This value should not be blank.')]
+    #[Assert\NotBlank(message: 'This value should not be blank')]
+    #[Assert\Type(
+        type: 'string',
+        message: 'Not a valid name.',
+    )]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Your name must be at least {{ limit }} characters long',
+        maxMessage: 'Your name cannot be longer than {{ limit }} characters',
+    )]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotNull(message: 'This value should not be blank.')]
+    #[ORM\Column(length: 45)]
+    #[Assert\NotBlank(message: 'This value should not be blank')]
+    #[Assert\Type(
+        type: 'string',
+        message: 'Not a valid website.',
+    )]
+    #[Assert\Length(
+        min: 5,
+        minMessage: 'Your first name must be at least {{ limit }} characters long')]
+    #[Assert\Url]
     private ?string $website = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotNull(message: 'This value should not be blank.')]
+
+    #[ORM\Column(length: 45)]
+    #[Assert\NotBlank(message: 'This value should not be blank')]
     private ?string $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'sellers')]
@@ -60,7 +79,7 @@ class Seller
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -72,7 +91,7 @@ class Seller
         return $this->website;
     }
 
-    public function setWebsite(?string $website): self
+    public function setWebsite(string $website): self
     {
         $this->website = $website;
 
@@ -84,7 +103,7 @@ class Seller
         return $this->address;
     }
 
-    public function setAddress(?string $address): self
+    public function setAddress(string $address): self
     {
         $this->address = $address;
 
@@ -108,7 +127,7 @@ class Seller
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
@@ -156,9 +175,9 @@ class Seller
 
         return $this;
     }
-
     public function __toString(): string
     {
-        return $this->name;
+        // TODO: Implement __toString() method.
+         return $this->name;
     }
 }

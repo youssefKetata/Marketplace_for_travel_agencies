@@ -1,36 +1,30 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}types of products{% endblock %}
-
-{% block pagetitle %}Offers{% endblock %}
+{% block title %}{% endblock %}
 
 {% block container %}
-    <div>
-        <button
-                class="btn btn-primary btn-sm"
-                data-action="modal-form#openModal"
-                data-form-url-value="{{ path('app_product_type_new' ) }}"
-                data-url-value="{{ path('app_product_type_index', { ajax: 1 } ) }}"
-                data-node-dest-id-value="myOneCustomContent"
-                data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Continent'|trans }}"
-                data-refresh-key-value="refresh-html">
-            {{ 'Buttons.General.Nouveau'|trans }}
-        </button>
-        <div>
-            <table data-toggle="table" data-search="true" data-show-columns="true" data-page-size="10"
-                data-buttons-class="md btn-soft-primary" data-pagination="true"
-                data-show-pagination-switch="true" class="table-bordered">
-                <thead class="table-primary">
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {{ include('product_type/_list.html.twig') }}
-                </tbody>
-            </table>
-        </div>
+    <h1 class="text-start fs-2 bold my-2 mb-3">List of product types</h1>
+    <br>
+    <div class="text-start m-lg-4">
+        <a class="btn btn-success" href="{{path('app_product_type_new')}}">Créer nouveau</a>
     </div>
+    <div>
+
+        <table class="table align-middle mb-0 bg-white shadow-lg " data-search= "true"
+               data-toggle="table"  data-pagination="true" data-page-size="10"
+               data-show-pagination-switch="true" data-show-columns="true" >
+            <thead class="bg-secondary text-white">
+            <tr>
+                <th class="th-sm">ID</th>
+                <th class="th-sm">Nom</th>
+                <th class="th-sm">Actions</th>
+            </tr>
+            </thead>
+            <tbody data-reload-content-target="myOneCustomContent">
+            {{ include('product_type/_liste.html.twig') }}
+            </tbody>
+        </table>
+    </div>
+
+
 {% endblock %}

@@ -27,15 +27,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email;
 
     #[ORM\Column(type: 'json')]
-    #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'This value should not be blank.')]
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    #[Assert\NotNull(message: 'This value should not be blank.')]
+
     private string $password;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'This value should not be blank.')]
     private ?string $display_name;
 
 

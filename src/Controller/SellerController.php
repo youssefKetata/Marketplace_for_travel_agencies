@@ -14,12 +14,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Helpers;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/seller')]
 class SellerController extends AbstractController
 {
@@ -40,17 +40,18 @@ class SellerController extends AbstractController
                         EventDispatcherInterface $dispatcher,
                         UserPasswordHasherInterface $passwordHasher,
                         MarketSubscriptionRequest $idM,
-                        EntityManagerInterface $entityManager
+                        EntityManagerInterface $entityManager,
+                        ValidatorInterface $validator
     ): Response
     {
-        if(!is_null($idM) && strcmp($idM->getStatus(),"validated")==0){
+        if (!is_null($idM) && strcmp($idM->getStatus(), "validated") == 0) {
             return $this->redirectToRoute('app_market_subscription_request_index');
         }
         $user = new User();
         $seller = new Seller();
         $seller->setUser($user);
-        if($idM !=null){
-            $marketSubscriptionRequest=$idM;
+        if ($idM != null) {
+            $marketSubscriptionRequest = $idM;
             $password = $helpers->generateRandomPassword();
             $user->setEmail($marketSubscriptionRequest->getEmail());
             $user->setPassword(
@@ -72,32 +73,49 @@ class SellerController extends AbstractController
             //$seller->setApi();
         }
 
+
         $form = $this->createForm(SellerType::class, $seller);
-        //$userForm = $this->createForm(UserType::class, $user);
+       // $userForm = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         //$userForm->handleRequest($request);
 
-        //if ($userForm->isSubmitted() && $form->isValid()){
-            if ($form->isSubmitted() && $form->isValid()) {
-                //user must be valid first
-                try {
-                    //$user = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
-                    $marketSubscriptionRequest->setStatus('validated');
-                    $userRepository->add($user, true);
-                    $sellerRepository->save($seller, true);
-                } catch (UniqueConstraintViolationException $exception) {
-                    dd('mail already exist');
-                }
+
+        if ($form->isSubmitted() && $form->isValid()) {
 
 
-
-                //send email to thes user with email and password
-                //$onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
-                //$dispatcher->dispatch($onCreateSellerEvent);
-
-                return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
+            //user must be valid first
+            $conn = $entityManager->getConnection();
+            try {
+                //$user = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+                $marketSubscriptionRequest->setStatus('validated');
+                $userRepository->add($user, true);
+                $sellerRepository->save($seller, true);
+                $conn->commit();
+            } catch (UniqueConstraintViolationException $exception) {
+                $conn->rollBack();
+                dd('mail already exist');
             }
-        //}
+
+
+            //send email to thes user with email and password
+            //$onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
+            //$dispatcher->dispatch($onCreateSellerEvent);
+
+            return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+//            elseif ($form->isSubmitted() && $userForm->isSubmitted() && !$userForm->isValid()){
+//                $errors = $validator->validate($user);
+//                    /*
+//                     * Uses a __toString method on the $errors variable which is a
+//                     * ConstraintViolationList object. This gives us a nice string
+//                     * for debugging.
+//                     */
+//                    $errorsString = (string) $errors;
+//
+//                    return new Response($errorsString);
+//            }
+
 
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';

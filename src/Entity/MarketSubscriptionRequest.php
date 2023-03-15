@@ -4,12 +4,21 @@ namespace App\Entity;
 
 use App\Repository\MarketSubscriptionRequestRepository;
 use App\Trait\TimeStampTrait;
+use App\Trait\TimeStampTrait2;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MarketSubscriptionRequestRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+/**
+ * @ORM\Entity
+ * @UniqueEntity(fields={"email"}, message="This email address is already in use.")
+ */
 class MarketSubscriptionRequest
 {
+    use TimeStampTrait2;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

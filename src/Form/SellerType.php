@@ -18,12 +18,15 @@ class SellerType extends AbstractType
     {
         $builder
             ->add('user', UserType::class,[
-                'data_class' => User::class,
+                "disabled" => true,
+                "empty_data"=>$options['data']->getUser(),
                 //'required' => true,
                 'label' => 'seller as user',
             ])
 
-            ->add('name')
+            ->add('name',null,[
+                'disabled'=>true
+            ])
             ->add('website')
             ->add('address')
             ->add('city', EntityType::class, [

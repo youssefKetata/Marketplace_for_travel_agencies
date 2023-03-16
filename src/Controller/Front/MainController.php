@@ -35,7 +35,7 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_admin_dashboard');
         }
 
-        if($this->isGranted('ROLE_SELLER')){
+        elseif($this->isGranted('ROLE_SELLER')){
             return $this->redirectToRoute('app_seller_dashboard');
         }
 

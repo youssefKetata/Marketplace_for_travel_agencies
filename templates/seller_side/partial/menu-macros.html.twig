@@ -1,0 +1,51 @@
+{% macro menu_links(links , i) %}
+    {% for link in links %}
+
+        {% if link.children  is defined and link.children is not null  %}
+            {# CASE I - a node with children (no route path) #}
+            {# We have two sub-cases :
+            (I-1) i==0 # meaning : Top Node "FIRT LEVEL" - showed without dropdows";
+            (I-2) i>0  # meaning : Intermediate Node
+            #}
+            {% if i == 0  %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link  " href="#" >
+                        {{ link.title  }}
+                        <i class="fas fa-angle-down"></i>
+
+                    </a>
+                    <ul class="dropdown-menu" >
+                        {{ _self.menu_links(link.children , i+1 ) }}
+                    </ul>
+                </li>
+            {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" >
+                        {{ link.title  }}
+
+                    </a>
+                    <ul class="dropdown-menu" >
+                        {{ _self.menu_links(link.children , i+1 ) }}
+                    </ul>
+                </li>
+            {% endif %}
+
+        {% else %}
+            {# CASE II - a leaf-node (without children) -> With route path #}
+            {% if i == 0  %}
+                <li class="nav-item">
+                    <a href="{{ link.route }}" class="nav-link arrow-none"  id="topnav-{{ link.id }}" role="button"
+                       aria-haspopup="true" aria-expanded="false"><i class="fe-home me-1"></i>
+                        {{ link.title }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{ link.route }}" class="nav-link ">{{ link.title }}</a>
+                </li>
+            {% endif %}
+        {% endif %}
+
+
+    {% endfor %}
+{% endmacro %}

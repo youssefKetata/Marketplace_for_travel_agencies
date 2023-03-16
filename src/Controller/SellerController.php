@@ -14,6 +14,7 @@ use App\Service\Mailer;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ use App\Service\Helpers;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 
-#[Route('/seller')]
+#[Route('/seller') , IsGranted('ROLE_SUPER_ADMIN')]
 class SellerController extends AbstractController
 {
     #[Route('/', name: 'app_seller_index', methods: ['GET'])]

@@ -27,8 +27,8 @@ class DashboardController extends AbstractController
     ){}
 
 
-    #[Route('', name: 'seller_side' )]
-    public function welcome(): Response
+    #[Route('', name: 'login' )]
+    public function login(): Response
     {
         return $this->render('seller_side/login.html.twig');
 
@@ -44,8 +44,17 @@ class DashboardController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
-            return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
+            try {
+                $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
+                return $this->render('seller_side/requestSubmitted.html.twig',[
+                    'marketSubscriptionRequest'=>$marketSubscriptionRequest,
+                    ]);
+
+            }catch (\Exception $e){
+                $this->addFlash('error', 'An error occurred: ' . $e->getMessage());
+                return $this->RedirectToRoute('app_seller_side_subscription');
+
+            }
         }
         return $this->renderForm('seller_side/subscription.html.twig', [
             'market_subscription_request' => $marketSubscriptionRequest,
@@ -70,7 +79,7 @@ class DashboardController extends AbstractController
             if(array_key_exists('ADMIN', $menu_as_tree))
                 $session->set('menu' , $menu_as_tree['ADMIN']['children']);
         //}
-        return $this->render('seller_side/base_seller.html.twig', [
+        return $this->render('seller_side/dashboard.html.twig', [
             'controller_name' => 'DashboardController',
             'menu' => $menu
         ]);

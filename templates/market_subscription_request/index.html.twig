@@ -21,7 +21,6 @@
                 <th>City</th>
                 <th>Status</th>
                 <th>actions</th>
-                <th>API</th>
             </tr>
             </thead>
             <tbody data-reload-content-target="myOneCustomContent">
@@ -48,12 +47,8 @@
 
                         <td>
                             {% if market_subscription_request.status == 'pending'%}
-                                <a class="btn btn-link btn-rounded btn-sm fw-bold btn-danger btn-sm"
-                                        href= {{ path('app_market_subscription_request_rejected' , {'id':market_subscription_request.id }) }}>
-                                        <i class="bi bi-x"></i>
-                                </a>
                                 <button
-                                        class="btn btn-link btn-rounded btn-sm fw-bold btn-success btn-sm"
+                                        class="btn btn-theme btn-outline-primary btn-sm"
                                         data-action="modal-form#openModal"
                                         data-form-url-value="{{ path('app_seller_new', {'idM':market_subscription_request.id}) }}"
                                         data-url-value="{{ path('app_seller_index', { ajax: 1 } ) }}"
@@ -62,55 +57,23 @@
                                         data-refresh-key-value="refresh-html">
                                     <i class="fe-check"></i>
                                 </button>
+
+                                <a class="btn btn-theme btn-outline-danger btn-sm"
+                                        href= {{ path('app_market_subscription_request_rejected' , {'id':market_subscription_request.id }) }}>
+                                        <i class="bi bi-x"></i>
+                                </a>
+
                             {% endif %}
                             <button
 
                                     {#                                    data-bs-toggle="tooltip" data-bs-placement="left" title="Tooltip on left"#}
-                                    class="btn btn-link btn-rounded btn-sm fw-bold btn-info btn-sm "
+                                    class="btn btn-theme btn-outline-info btn-sm"
                                     data-action="modal-form#openModal"
                                     data-form-url-value="{{ path('app_market_subscription_request_show', {'id': market_subscription_request.id}) }}"
                                     data-node-dest-id-value="myThreeCustomContent"
                                     data-refresh-key-value="refresh-html">
                                 <i class="fas fa-eye"></i>
                             </button>
-                        <td>
-                            {% for user in users %}
-                                {% for seller in sellers %}
-                                    {% if user.id == seller.user.id and user.email == market_subscription_request.email%}
-                                        {% if market_subscription_request.status == 'validated' and seller.api == null %}
-                                            {#                                        create api#}
-                                            <button
-                                                    class="btn btn-primary btn-sm"
-                                                    data-action="modal-form#openModal"
-                                                    data-form-url-value="{{ path('app_api_new',{'seller':seller.id}) }}"
-                                                    data-url-value="{{ path('app_api_index', { ajax: 1 } ) }}"
-                                                    data-node-dest-id-value="myThreeCustomContent"
-                                                    data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Seller'|trans }}"
-                                                    data-refresh-key-value="refresh-html">
-                                                create api
-                                            </button>
-
-                                        {% else %}
-                                            {#                                        modify api#}
-                                            <button
-                                                    class="btn btn-success btn-sm"
-                                                    data-action="modal-form#openModal"
-                                                    data-form-url-value="{{ path('app_api_edit', {'id':seller.api.id}) }}"
-                                                    data-url-value="{{ path('app_seller_index', { ajax: 1 } ) }}"
-                                                    data-node-dest-id-value="myThreeCustomContent"
-                                                    data-modal-title-value="{{ 'Buttons.Custom.Nouveau.Seller'|trans }}"
-                                                    data-refresh-key-value="refresh-html">
-                                                edit api
-                                            </button>
-
-
-
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-
-                        </td>
 
                         </td>
                     </div>

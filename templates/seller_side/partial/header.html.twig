@@ -8,10 +8,10 @@
                 <div class="col-lg-6 col-md-6">
                     <ul class="topbar-list">
                         <li>
-                            <a href="#!"><i class="fab fa-facebook"></i></a>
-                            <a href="#!"><i class="fab fa-twitter-square"></i></a>
-                            <a href="#!"><i class="fab fa-instagram"></i></a>
-                            <a href="#!"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="bi-facebook"></i></a>
+                            <a href="#"><i class="bi-twitter"></i></a>
+                            <a href="#"><i class="bi-instagram"></i></a>
+                            <a href="#"><i class="bi-linkedin"></i></a>
                         </li>
                         <li><a href="#!"><span>+011 234 567 89</span></a></li>
                         <li><a href="#!"><span>contact@domain.com</span></a></li>
@@ -22,7 +22,7 @@
                         {% if is_granted('ROLE_SELLER') %}
                             <li><a href={{ path('app_logout') }}>Logout</a></li>
                         {% else %}
-                            <li><a href={{ path('app_logout') }}>Login</a></li>
+                            <li><a href={{ path('app_seller_side_login') }}>Login</a></li>
                         {% endif %}
 {#                        <li><a href="register.html">Sign up</a></li>#}
                         <li>
@@ -62,8 +62,8 @@
             <div class="container">
                 <div class="main-responsive-menu">
                     <div class="logo">
-                        <a href="index.html">
-                            <img src="assets/img/logo.png" alt="logo">
+                        <a href="{{ path('app_seller_side_login') }}">
+                            <img alt="logo" src={{ asset("assets/images/logo3t.png") }}>
                         </a>
                     </div>
                 </div>
@@ -72,8 +72,8 @@
         <div class="main-navbar">
             <div class="container">
                 <nav class="navbar navbar-expand-md navbar-light">
-                    <a class="navbar-brand" href="index.html">
-                        <img src="assets/img/logo.png" alt="logo">
+                    <a class="navbar-brand" href=href="{{ path('app_seller_side_login') }}">
+                        <img alt="logo"src={{ asset("assets/images/logo3t.png") }} >
                     </a>
                     <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                         <ul class="navbar-nav">

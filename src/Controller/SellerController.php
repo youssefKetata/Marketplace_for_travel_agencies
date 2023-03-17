@@ -87,6 +87,10 @@ class SellerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+            if($user !=null){
+
+            }
+
             try {
                 $marketSubscriptionRequest->setStatus('validated');
                 $userRepository->add($user, true);

@@ -8,13 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 #[ORM\Entity(repositoryClass: MarketSubscriptionRequestRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-/**
- * @ORM\Entity
- * @UniqueEntity(fields={"email"}, message="This email address is already in use.")
- */
+#[UniqueEntity(['email'],message: "This email is already in use")]
+#[UniqueEntity(['website'],message: "This website is already in use")]
 
 class MarketSubscriptionRequest
 {
@@ -32,19 +29,15 @@ class MarketSubscriptionRequest
     )]
     #[Assert\Length(
         min: 3,
-        max: 50,
+        max: 45,
         minMessage: 'Your name must be at least {{ limit }} characters long',
         maxMessage: 'Your name cannot be longer than {{ limit }} characters',
     )]
     private ?string $name = null;
 
-    #[ORM\Column(length: 45)]
+    #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message: 'This value should not be blank')]
-    #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',)]
-    #[Assert\Length(
-        min: 5,
-        minMessage: 'Not a valid Email')]
+    #[Assert\Email(message: "This value is not a valid email address.")]
     private ?string $email = null;
 
     #[ORM\Column(length: 45)]

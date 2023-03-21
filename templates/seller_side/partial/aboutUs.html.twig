@@ -1,0 +1,70 @@
+{% extends 'seller_side/base_seller.html.twig' %}
+
+{% block banner %}
+    <section id="common_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="common_bannner_text">
+                        <h2>About us</h2>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><span><i class="fas fa-circle"></i></span> About</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+
+    <!-- About Us -->
+    <section id="about_us_top" class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="about_us_left">
+                        <h5>About us</h5>
+                        <br>
+                        <h2>Welcome to our Marketplace !</h2>
+                        <p>We are passionate about helping travel agencies like yours showcase their products and
+                            reach a wider audience. Our marketplace is designed to provide a user-friendly,
+                            efficient, and reliable platform where you can offer your clients a variety of travel
+                            products, from hotels to organized trips and much more.
+
+                        </p>
+                        <p>At [Marketplace Name], we understand that competition in the travel industry can be fierce,
+                            and that's why we strive to offer you a unique and competitive advantage. By joining our
+                            platform, you will be able to promote your products to a large and diverse audience,
+                            increasing your visibility and generating more business opportunities. </p>
+                        <p>
+                            Our platform features state-of-the-art tools and features that allow you to manage
+                            your products, monitor your sales and revenue, and track your performance through
+                            detailed statistics and reports. You will have access to a wide range of promotional
+                            tools to help you attract new clients and retain existing ones, including email
+                            marketing campaigns, social media integration, and more.
+                             </p>
+                        <p>
+                            Thank you for choosing [Marketplace Name], we look forward to working with you!
+
+                        </p>
+{#                        <a href="tour-search.html" class="btn btn_theme btn_md">Find tours</a>#}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about_us_right">
+                        <img alt="img" src={{ asset("assets/images/aboutUs.jpg") }} >
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+
+{% endblock %}

@@ -28,8 +28,8 @@ class OfferType extends AbstractType
                 'prototype_name' => '__name__',
                 'label' => false,
                 'by_reference' => false,
-
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

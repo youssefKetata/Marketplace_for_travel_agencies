@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
     // Get the div that holds the collection of offerProductTypes
     var offerProductTypesWrapper = $('.offer-product-types-wrapper');

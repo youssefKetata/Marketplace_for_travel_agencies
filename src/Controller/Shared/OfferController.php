@@ -29,11 +29,11 @@ class OfferController extends AbstractController
     public function new(Request $request, OfferRepository $offerRepository): Response
     {
         $offer = new Offer();
-       /* $offerproduct=new OfferProductType();
-        $offerproduct->setMaxItems(25);
-        $offerproduct->setPrice(255);
+        /* $offerproduct=new OfferProductType();
+         $offerproduct->setMaxItems(25);
+         $offerproduct->setPrice(255);
 
-        $offer->addOfferProductType($offerproduct);*/
+         $offer->addOfferProductType($offerproduct);*/
         $form = $this->createForm(OfferType::class, $offer);
         $form->handleRequest($request);
 
@@ -91,7 +91,7 @@ class OfferController extends AbstractController
         $offer =  $this->doctrine
             ->getRepository(Offer::class)
             ->find($id);
-       // $offerProductTypes = $offer->getOfferProductTypes();
+        // $offerProductTypes = $offer->getOfferProductTypes();
 
         if (!$offer) {
             throw $this->createNotFoundException(
@@ -101,7 +101,7 @@ class OfferController extends AbstractController
 
         return $this->render('offer/show_Offer_Product.html.twig', [
             'offer' => $offer,
-           // 'offerProductTypes' => $offerProductTypes
+            // 'offerProductTypes' => $offerProductTypes
 
         ]);
     }

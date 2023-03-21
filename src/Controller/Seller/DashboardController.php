@@ -8,7 +8,6 @@ use App\Repository\MarketSubscriptionRequestRepository;
 use App\Repository\MenuItemAdminRepository;
 use App\Repository\MenuItemSellerRepository;
 use App\Service\Helpers;
-use App\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,9 +35,11 @@ class DashboardController extends AbstractController
 
     #[Route('/subscription', name: 'subscription' )]
     public function subscription(Request $request,
-                                 MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository
+                                 MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository,
+
     ): Response
     {
+
         $marketSubscriptionRequest = new MarketSubscriptionRequest();
         $form = $this->createForm(MarketSubscriptionRequestType::class, $marketSubscriptionRequest);
         $form->handleRequest($request);
@@ -83,5 +84,17 @@ class DashboardController extends AbstractController
             'controller_name' => 'DashboardController',
             'menu' => $menu
         ]);
+    }
+    #[Route('/aboutUs', name: 'aboutUs' )]
+    public function aboutUs(): Response
+    {
+        return $this->render('seller_side/partial/aboutUs.html.twig');
+
+    }
+    #[Route('/contact', name: 'contact' )]
+    public function contact(): Response
+    {
+        return $this->render('seller_side/partial/contact.html.twig');
+
     }
 }

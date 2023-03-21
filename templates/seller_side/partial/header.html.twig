@@ -57,54 +57,62 @@
         </div>
     </div>
     <!-- Navbar Bar -->
-    <div class="navbar-area">
-        <div class="main-responsive-nav">
-            <div class="container">
-                <div class="main-responsive-menu">
-                    <div class="logo">
-                        <a href="{{ path('app_seller_side_login') }}">
-                            <img alt="logo" src={{ asset("assets/images/logo3t.png") }}>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="main-navbar">
-            <div class="container">
-                <nav class="navbar navbar-expand-md navbar-light">
-                    <a class="navbar-brand" href=href="{{ path('app_seller_side_login') }}">
-                        <img alt="logo"src={{ asset("assets/images/logo3t.png") }} >
-                    </a>
-                    <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
-                        <ul class="navbar-nav">
-                            {#                            if the session has a menu#}
-                            {% if(is_granted('ROLE_SELLER')) %}
-                            {{ macros.menu_links(app.session.get('menu'), 0) }}
-                                {% else %}
+{#    <div class="navbar-area">#}
+{#        <div class="main-responsive-nav">#}
+{#            <div class="container">#}
+{#                <div class="main-responsive-menu">#}
+{#                    <div class="logo">#}
+{#                        <a href="{{ path('app_seller_side_login') }}">#}
+{#                            <img alt="logo" src={{ asset("assets/images/logo3t.png") }}>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+        {% if(is_granted('ROLE_SELLER')) %}
 
-                            {% endif %}
-                            {#                            else we build the menu tree#}
+        {% else %}
+        {{ include('seller_side/partial/navbar.html.twig') }}
+        {% endif %}
+{#        <div class="main-navbar">#}
+{#            <div class="container">#}
+{#                <nav class="navbar navbar-expand-md navbar-light">#}
+{#                    <a class="navbar-brand" href=href="{{ path('app_seller_side_login') }}">#}
+{#                        <img alt="logo"src={{ asset("assets/images/logo3t.png") }} >#}
+{#                    </a>#}
+{#                    <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">#}
+{#                        <ul class="navbar-nav">#}
+{#                            #}{#                            if the session has a menu#}
+{#                            {% if(is_granted('ROLE_SELLER')) %}#}
+{#                            {{ macros.menu_links(app.session.get('menu'), 0) }}#}
+{#                                {% else %}#}
+{#                                {{ include('seller_side/partial/navbar.html.twig') }}#}
 
 
-                        </ul>
-                        <div class="others-options d-flex align-items-center">
-                            <div class="option-item">
-                                <a href="#" class="search-box">
-                                    <i class="bi bi-search"></i></a>
-                            </div>
-                            {% if is_granted('ROLE_SELLER') %}
-                                <!-- User is authenticated -->
-                            {% else %}
-                                <!-- User is not authenticated -->
-                                <div class="option-item">
-                                    <a href={{ path('app_seller_side_subscription') }} class="btn  btn_navber">Subscription request</a>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
+
+{#                            {% endif %}#}
+{#                            #}{#                            else we build the menu tree#}
+
+
+{#                        </ul>#}
+{#                        <div class="others-options d-flex align-items-center">#}
+{#                            <div class="option-item">#}
+{#                                <a href="#" class="search-box">#}
+{#                                    <i class="bi bi-search"></i></a>#}
+{#                            </div>#}
+{#                            {% if is_granted('ROLE_SELLER') %}#}
+{#                                <!-- User is authenticated -->#}
+{#                            {% else %}#}
+{#                                <!-- User is not authenticated -->#}
+{#                                <div class="option-item">#}
+{#                                    <a href={{ path('app_seller_side_subscription') }} class="btn  btn_navber">>Subscription request</a>#}
+{#                                </div>#}
+{#                            {% endif %}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </nav>#}
+{#            </div>#}
+{#        </div>#}
         <div class="others-option-for-responsive">
             <div class="container">
                 <div class="dot-menu">

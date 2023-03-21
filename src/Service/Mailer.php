@@ -7,18 +7,18 @@ use Symfony\Component\HttpFoundation\Response;
 class Mailer
 {
 
-    public function __construct(Private MailerInterface $mailer)
+    public function __construct(private MailerInterface $mailer)
     {
     }
 
     public function sendEmail(
-        $to = 'wassimzouch34@gmail.com',
+        $to = 'yusufketata5@gmail.com',
         $content= 'See Twig integration for better HTML integration!',
         $subject= 'Time for Symfony Mailer!'
     ): void
     {
         $email = (new Email())
-            ->from('hello@example.com')
+            ->from('yusufketata@gmail.com')
             ->to($to)
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')

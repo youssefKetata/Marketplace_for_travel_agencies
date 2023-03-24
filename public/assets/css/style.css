@@ -2306,7 +2306,7 @@ font-weight: 500;
 =========================*/
 /* --Common Banner-- */
 #common_banner {
-    background-image: url(../images/banner/common-banner.png);
+    background-image: url(../images/banner/background.jpg);
     padding: 200px 0 130px 0;
     background-repeat: no-repeat;
     background-size: cover;

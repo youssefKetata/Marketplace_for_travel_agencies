@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OfferProductTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
  #[ORM\Entity(repositoryClass: OfferProductTypeRepository::class)]
 
 class OfferProductType
@@ -46,7 +46,7 @@ class OfferProductType
         return $this;
     }
 
-  /*  public function getProductTypeidProductType(): ?ProductType
+    public function getProductTypeidProductType(): ?ProductType
     {
         return $this->productType;
     }
@@ -56,7 +56,7 @@ class OfferProductType
         $this->productType = $productType;
 
         return $this;
-    }*/
+    }
 
 
      public function getProductType(): ?ProductType
@@ -97,11 +97,7 @@ class OfferProductType
     }
      public function __toString(): string
      {
-         $m = "*".'product type: '. $this->getProductType()->getName()."\n".
-             'max items: '.$this->getMaxItems()."\r\n".
-             'price'.$this->getPrice()."\r\n";
-
-         return $m;
+         return $this->offer->getName();
          // TODO: Implement __toString() method.
      }
 }

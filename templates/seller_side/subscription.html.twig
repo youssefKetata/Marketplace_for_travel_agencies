@@ -18,8 +18,7 @@
         </div>
     </section>
 
-
-
+    <br><br><br><br>
 
 
     <section id="vendor_form_area" class="section_padding_bottom">
@@ -27,10 +26,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="vendor_form_heading">
-                        <h2>Become a vendor</h2>
-                        <p>Eu sint minim tempor anim aliqua officia voluptate incididunt deserunt.
-                            <br /> Velitgo quis Lorem culpa qui pariatur occaecat.
-                        </p>
+                        <h2>Subscription request</h2>
+{#                        <p>Eu sint minim tempor anim aliqua officia voluptate incididunt deserunt.#}
+{#                            <br /> Velitgo quis Lorem culpa qui pariatur occaecat.#}
+{#                        </p>#}
                     </div>
                 </div>
 
@@ -62,11 +61,10 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        {{ form_row(form.city) }}
+{#                                        <div class="form-control form-select bg_input">#}
+                                            {{ form_widget(form.city) }}
                                     </div>
                                 </div>
-                                {#                                <button type="submit" class="btn btn-primary">Submit</button>#}
-
                                 <div class="booking_tour_form_submit pt-4">
                                     <div class="form-check write_spical_check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf1">
@@ -75,7 +73,8 @@
                                                 conditions</a> and <a href="privacy-policy.html">Privacy policy</a>
                                         </label>
                                     </div>
-                                    <button type="submit"  class="btn btn_theme btn_md mt-4">Sign up</button>
+                                    {{ form_row(form.terms) }}
+                                    <button type="submit"  class="btn btn_theme btn_md mt-4">Send request</button>
                                 </div>
                                 {{ form_end(form) }}
                             </div>
@@ -94,59 +93,4 @@
         </div>
     </section>
 
-
-
-    <!--  Common Author Area -->
-{#    <section id="common_author_area" class="section_padding">#}
-{#        <div class="container">#}
-{#            <div class="row">#}
-{#                <div class="col-lg-8 offset-lg-2">#}
-{#                    <div class="common_author_boxed">#}
-{#                        <div class="common_author_heading">#}
-{#                            <h3>Register account</h3>#}
-{#                            <h2>Register your account</h2>#}
-{#                        </div>#}
-{#                        <div class="common_author_form">#}
-{#                            <form action="#" id="main_author_form">#}
-{#                                <div class="form-group">#}
-{#                                    <input type="text" class="form-control" placeholder="Enter first name*" />#}
-{#                                </div>#}
-{#                                <div class="form-group">#}
-{#                                    <input type="text" class="form-control" placeholder="Enter last name*" />#}
-{#                                </div>#}
-{#                                <div class="form-group">#}
-{#                                    <input type="text" class="form-control"#}
-{#                                           placeholder="your email address (Optional)" />#}
-{#                                </div>#}
-{#                                <div class="form-group">#}
-{#                                    <input type="text" class="form-control" placeholder="Mobile number*" />#}
-{#                                </div>#}
-{#                                <div class="form-group">#}
-{#                                    <input type="text" class="form-control" placeholder="User name*" />#}
-{#                                </div>#}
-{#                                <div class="form-group">#}
-{#                                    <input type="password" class="form-control" placeholder="Password" />#}
-{#                                </div>#}
-{#                                <div class="common_form_submit">#}
-{#                                    <button class="btn btn_theme btn_md">Register</button>#}
-{#                                </div>#}
-{#                                <div class="have_acount_area other_author_option">#}
-{#                                    <div class="line_or">#}
-{#                                        <span>or</span>#}
-{#                                    </div>#}
-{#                                    <ul>#}
-{#                                        <li><a href="#!"><img src="assets/img/icon/google.png" alt="icon"></a></li>#}
-{#                                        <li><a href="#!"><img src="assets/img/icon/facebook.png" alt="icon"></a></li>#}
-{#                                        <li><a href="#!"><img src="assets/img/icon/twitter.png" alt="icon"></a></li>#}
-{#                                    </ul>#}
-{#                                    <p>Already have an account? <a href="login.html">Log in now</a></p>#}
-{#                                </div>#}
-{#                            </form>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </section>#}
-    {{ include('seller_side/market_info.html.twig') }}
 {% endblock %}

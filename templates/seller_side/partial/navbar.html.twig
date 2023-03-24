@@ -1,11 +1,12 @@
+{% import 'seller_side/partial/menu-macros.html.twig' as macros %}
 <!-- Navbar Bar -->
 <div class="navbar-area">
     <div class="main-responsive-nav">
         <div class="container">
             <div class="main-responsive-menu">
                 <div class="logo">
-                    <a <a class="navbar-brand" href=href="{{ path('app_seller_side_login') }}">
-                        <img alt="logo"src={{ asset("assets/images/logo3t.png") }} >
+                     <a class="navbar-brand" href="{{ path('app_seller_side_home') }}">
+                        <img alt="logo" src={{ asset("assets/images/logo3t.png") }} >
                     </a>
                 </div>
             </div>
@@ -14,29 +15,17 @@
     <div class="main-navbar">
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-light">
-                <a class="navbar-brand" href="index.html">
-                    <img alt="logo" src={{ asset('assets/images/logo3t.png') }} alt="logo">
+                <a class="navbar-brand" href="{{ path('app_seller_side_home') }}">
+                    <img alt="logo" src={{ asset('assets/images/logo3t.png') }}>
                 </a>
                 <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                     <ul class="navbar-nav">
+                        {% if is_granted('ROLE_SELLER') %}
+                            {{ macros.menu_links(app.session.get('menu'), 0) }}
+                        {% else %}
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                Home
-                                <i class="fas fa-angle-down"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item">
-                                    <a href="index.html" class="nav-link">Home One</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="index-2.html" class="nav-link">Home Two</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="index-3.html" class="nav-link">Home Three</a>
-                                </li>
-                            </ul>
+                            <a href={{ path('app_seller_side_home') }} class="nav-link">Home</a>
                         </li>
-
 
                         <li class="nav-item">
                             <a href={{ path('app_seller_side_aboutUs') }} class="nav-link">About us</a>
@@ -44,41 +33,21 @@
                         <li class="nav-item">
                             <a href={{ path('app_seller_side_contact') }} class="nav-link">Contact</a>
                         </li>
+                        {% endif %}
                     </ul>
                     <div class="others-options d-flex align-items-center">
                         <div class="option-item">
                             <a href="#" class="search-box">
                                 <i class="bi bi-search"></i></a>
                         </div>
+                        {% if not is_granted('IS_AUTHENTICATED') %}
                         <div class="option-item">
                             <a href={{ path('app_seller_side_subscription') }} class="btn  btn_navber">Subscription request</a>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </nav>
-        </div>
-    </div>
-    <div class="others-option-for-responsive">
-        <div class="container">
-            <div class="dot-menu">
-                <div class="inner">
-                    <div class="circle circle-one"></div>
-                    <div class="circle circle-two"></div>
-                    <div class="circle circle-three"></div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="option-inner">
-                    <div class="others-options d-flex align-items-center">
-                        <div class="option-item">
-                            <a href="#" class="search-box"><i class="fas fa-search"></i></a>
-                        </div>
-                        <div class="option-item">
-                            <a href="contact.html" class="btn  btn_navber">Get free quote</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

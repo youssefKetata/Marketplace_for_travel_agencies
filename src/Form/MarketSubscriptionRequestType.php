@@ -6,8 +6,10 @@ use App\Entity\City;
 use App\Entity\MarketSubscriptionRequest;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class MarketSubscriptionRequestType extends AbstractType
 {
@@ -25,8 +27,17 @@ class MarketSubscriptionRequestType extends AbstractType
                     'class' => 'form-select'
                 ]
             ])
+            ->add('terms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'Please accept the terms and conditions.',
+                    ])
+                ]
+            ])
         ;
     }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

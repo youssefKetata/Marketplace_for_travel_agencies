@@ -1,0 +1,167 @@
+{% extends 'seller_side/base_seller.html.twig' %}
+
+{% block banner %}
+    <!-- Banner Area -->
+    <section id="home_two_banner">
+        <div class="home_two_banner_slider_wrapper owl-carousel owl-theme">
+            <div class="banner_two_slider_item fadeInUp" data-wow-duration="2s"
+                 style="background-image: url({{ asset('assets/images/home2.jpg') }});">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="banner_two_text">
+                                <h3 class="title">MARKETPLACE</h3>
+                                <h1 class="slider-sttle">GROW</h1>
+                                <h2 class="slider-pararp">your traffic and earnings!</h2>
+                                <h4 class="slider-pararp">boost your travel agency's visibility and reach</h4>
+                                <div class="home_two_button btn-animation">
+                                    <a href="top-destinations.html" class="btn btn_theme_white btn_md">Discover</a>
+                                    <a href="top-destinations.html" class="btn btn_theme_transparent btn_md">Know
+                                        more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="banner_two_slider_item fadeInUp" data-wow-duration="2s"
+                 style="background-image: url({{ asset('assets/images/home.jpg') }});">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="banner_two_text">
+                                <h3 class="title">BEST MARKETPLACE</h3>
+                                <h1 class="slider-sttle">EXPLORE</h1>
+                                <h2 class="slider-pararp">The world with us!</h2>
+                                <h4 class="slider-pararp">boost your travel agency's visibility and reach</h4>
+                                <div class="home_two_button btn-animation">
+                                    <a href="top-destinations.html" class="btn btn_theme_white btn_md">Discover</a>
+                                    <a href="top-destinations.html" class="btn btn_theme_transparent btn_md">Know
+                                        more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="banner_two_slider_item fadeInUp" data-wow-duration="2s"
+                 style="background-image: url({{ asset('assets/images/home.jpg') }});">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="banner_two_text">
+                                <h3 class="title">BEST TRAVEL AGENCY</h3>
+                                <h1 class="slider-sttle">EXPLORE</h1>
+                                <h2 class="slider-pararp">The world with us!</h2>
+                                <h4 class="slider-pararp">Find awesome flights, hotel, tour, car and packages</h4>
+                                <div class="home_two_button btn-animation">
+                                    <a href="top-destinations.html" class="btn btn_theme_white btn_md">Discover</a>
+                                    <a href="top-destinations.html" class="btn btn_theme_transparent btn_md">Know
+                                        more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+
+    <!-- How It Work -->
+    <section id="how_it_work_area" class="section_padding">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>How it works</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div class="how_it_boxed">
+                        <img alt="img" src={{ asset("assets/images/request.png") }}>
+                        <h3><a href={{ path('app_seller_side_subscription') }}>Send a request</a></h3>
+                        <p>Send a subscription request containing your information
+                            and a logo of your agency</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div class="how_it_boxed">
+                        <img alt="img" src={{ asset("assets/images/validation.jpg") }}>
+                        <h3>Get validated</h3>
+                        <p>We will review your request and send you a confirmation email.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div class="how_it_boxed">
+                        <img alt="img" src={{ asset("assets/images/grow.png") }}>
+                        <h3>Grow your traffic</h3>
+                        <p>Choose your offer and products, watch your traffic grow.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    {{ include('seller_side/ourProudcts.html.twig') }}
+
+    <!-- Our partners Area -->
+    <section id="our_partners" class="section_padding">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>Our partners</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="partner_slider_area owl-theme owl-carousel">
+                        <div class="partner_logo">
+                            <a href="#"><img alt="logo" src={{ asset('assets/images/partners/ClicToPay.jpg') }}></a>
+                        </div>
+                        <div class="partner_logo">
+                            <a href="#"><img alt="logo" src={{ asset('assets/images/partners/1651062274-adonis (1).jpg') }}></a>
+                        </div>
+                        <div class="partner_logo">
+                            <a href="#"><img alt="logo" src={{ asset("assets/images/partners/amadeus.jpg") }}></a>
+                        </div>
+                        <div class="partner_logo">
+                            <a href="#"><img alt="logo" src={{ asset("assets/images/partners/illusions.png") }}></a>
+                        </div>
+                        <div class="partner_logo">
+                            <a href="#"><img alt="logo" src={{ asset("assets/images/partners/netstorming.jpg") }}></a>
+                        </div>
+                        <div class="partner_logo">
+                            <a href="#"><img alt="logo" src={{ asset("assets/images/partners/adonis.jpg") }}></a>
+{#                        </div>#}
+{#                        <div class="partner_logo">#}
+{#                            <a href="#"><img alt="logo" src={{ asset("assets/images/partner/7.png") }}></a>#}
+{#                        </div>#}
+{#                        <div class="partner_logo">#}
+{#                            <a href="#"><img alt="logo" src={{ asset("assets/images/partner/8.png") }}></a>#}
+{#                        </div>#}
+{#                        <div class="partner_logo">#}
+{#                            <a href="#"><img alt="logo" src={{ asset("assets/images/partner/5.png") }}></a>#}
+{#                        </div>#}
+{#                        <div class="partner_logo">#}
+{#                            <a href="#"><img alt="logo" src={{ asset("assets/images/partner/3.png") }}></a>#}
+{#                        </div>#}
+{#                        <div class="partner_logo">#}
+{#                            <a href="#"><img alt="logo" src={{ asset("assets/images/partner/2.png") }}></a>#}
+{#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

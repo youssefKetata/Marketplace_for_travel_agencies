@@ -1,4 +1,4 @@
-{% import 'seller_side/partial/menu-macros.html.twig' as macros %}
+
 <!-- Header Area -->
 <header class="main_header_arae">
     <!-- Top Bar -->
@@ -8,13 +8,13 @@
                 <div class="col-lg-6 col-md-6">
                     <ul class="topbar-list">
                         <li>
-                            <a href="#"><i class="bi-facebook"></i></a>
-                            <a href="#"><i class="bi-twitter"></i></a>
-                            <a href="#"><i class="bi-instagram"></i></a>
-                            <a href="#"><i class="bi-linkedin"></i></a>
+                            <a href="https://www.facebook.com/TechnologyTravelTourism3t" target="_blank"><i class="bi-facebook"></i></a>
+{#                            <a href="#"><i class="bi-twitter"></i></a>#}
+{#                            <a href="#"><i class="bi-instagram"></i></a>#}
+                            <a href="https://www.linkedin.com/company/technology-travel-tourism/" target="_blank"><i class="bi-linkedin"></i></a>
                         </li>
-                        <li><a href="#!"><span>+011 234 567 89</span></a></li>
-                        <li><a href="#!"><span>contact@domain.com</span></a></li>
+                        <li><a href="#"><span> (+216) 74 400 514 </span></a></li>
+                        <li><a href="#"><span>contact@3t.tn</span></a></li>
                     </ul>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -38,6 +38,7 @@
                                 </div>
                             </div>
                         </li>
+                        {% if is_granted('ROLE_SELLER') %}
                         <li>
                             <div class="dropdown language-option">
                                 <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -51,91 +52,15 @@
                                 </div>
                             </div>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
         </div>
     </div>
+    <div>
     <!-- Navbar Bar -->
-{#    <div class="navbar-area">#}
-{#        <div class="main-responsive-nav">#}
-{#            <div class="container">#}
-{#                <div class="main-responsive-menu">#}
-{#                    <div class="logo">#}
-{#                        <a href="{{ path('app_seller_side_login') }}">#}
-{#                            <img alt="logo" src={{ asset("assets/images/logo3t.png") }}>#}
-{#                        </a>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-        {% if(is_granted('ROLE_SELLER')) %}
-
-        {% else %}
         {{ include('seller_side/partial/navbar.html.twig') }}
-        {% endif %}
-{#        <div class="main-navbar">#}
-{#            <div class="container">#}
-{#                <nav class="navbar navbar-expand-md navbar-light">#}
-{#                    <a class="navbar-brand" href=href="{{ path('app_seller_side_login') }}">#}
-{#                        <img alt="logo"src={{ asset("assets/images/logo3t.png") }} >#}
-{#                    </a>#}
-{#                    <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">#}
-{#                        <ul class="navbar-nav">#}
-{#                            #}{#                            if the session has a menu#}
-{#                            {% if(is_granted('ROLE_SELLER')) %}#}
-{#                            {{ macros.menu_links(app.session.get('menu'), 0) }}#}
-{#                                {% else %}#}
-{#                                {{ include('seller_side/partial/navbar.html.twig') }}#}
-
-
-
-{#                            {% endif %}#}
-{#                            #}{#                            else we build the menu tree#}
-
-
-{#                        </ul>#}
-{#                        <div class="others-options d-flex align-items-center">#}
-{#                            <div class="option-item">#}
-{#                                <a href="#" class="search-box">#}
-{#                                    <i class="bi bi-search"></i></a>#}
-{#                            </div>#}
-{#                            {% if is_granted('ROLE_SELLER') %}#}
-{#                                <!-- User is authenticated -->#}
-{#                            {% else %}#}
-{#                                <!-- User is not authenticated -->#}
-{#                                <div class="option-item">#}
-{#                                    <a href={{ path('app_seller_side_subscription') }} class="btn  btn_navber">>Subscription request</a>#}
-{#                                </div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </nav>#}
-{#            </div>#}
-{#        </div>#}
-        <div class="others-option-for-responsive">
-            <div class="container">
-                <div class="dot-menu">
-                    <div class="inner">
-                        <div class="circle circle-one"></div>
-                        <div class="circle circle-two"></div>
-                        <div class="circle circle-three"></div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="option-inner">
-                        <div class="others-options d-flex align-items-center">
-                            <div class="option-item">
-                                <a href="#" class="search-box"><i class="fas fa-search"></i></a>
-                            </div>
-                            <div class="option-item">
-                                <a href="contact.html" class="btn  btn_navber">Get free quote</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </header>
 <!-- search -->

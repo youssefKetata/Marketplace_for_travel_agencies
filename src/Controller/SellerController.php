@@ -56,54 +56,46 @@ class SellerController extends AbstractController
         $user = new User();
         $seller = new Seller();
         $seller->setUser($user);
-        if($idM !=null){
-            $marketSubscriptionRequest=$idM;
-            $password = $helpers->generateRandomPassword();
-            $user->setEmail($marketSubscriptionRequest->getEmail());
-            dump($password);
-            $user->setPassword(
-                $passwordHasher->hashPassword(
-                    $user,
-                    $password
-                )
-            );
-            dump($user->getPassword());
-            $user->setDisplayName($marketSubscriptionRequest->getName());
-            $name = str_replace(' ', '_', $marketSubscriptionRequest->getName());
-            $user->setUsername($name);
-            $user->setRoles((array)'ROLE_SELLER');
-            $user->setActive(true);
-            $user->setIsVerified(true);
-
-            $seller->setName($marketSubscriptionRequest->getName());
-            $seller->setWebsite($marketSubscriptionRequest->getWebsite());
-            $seller->setAddress($marketSubscriptionRequest->getAddress());
-            $seller->setCity($marketSubscriptionRequest->getCity());
-//            if seller has an api set it to the seller
+        //set default values
+        $marketSubscriptionRequest=$idM;
+        $password = $helpers->generateRandomPassword();
+        dump($password);
+        $user->setEmail($marketSubscriptionRequest->getEmail());
+        $user->setPassword(
+            $passwordHasher->hashPassword(
+                $user,
+                $password
+            )
+        );
+        $user->setDisplayName($marketSubscriptionRequest->getName());
+        $name = str_replace(' ', '_', $marketSubscriptionRequest->getName());
+        $user->setUsername($name);
+        $user->setRoles((array)'ROLE_SELLER');
+        $user->setActive(true);
+        $user->setIsVerified(true);
+        $seller->setName($marketSubscriptionRequest->getName());
+        $seller->setWebsite($marketSubscriptionRequest->getWebsite());
+        $seller->setAddress($marketSubscriptionRequest->getAddress());
+        $seller->setCity($marketSubscriptionRequest->getCity());
+//            if seller has an api
             //$seller->setApi();
-        }
+
         $form = $this->createForm(SellerType::class, $seller);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
-            if($user !=null){
-
-            }
-
+//            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+//            if($user !=null){
+//
+//            }
             try {
                 $marketSubscriptionRequest->setStatus('validated');
                 $userRepository->add($user, true);
                 $sellerRepository->save($seller, true);
+                dd($password);
             }catch (UniqueConstraintViolationException $e){
 
             }
-
-
-
-          //  $onCreateSellerEvent = new SellerCreatedEvent($seller, $password);
-          //  $dispatcher->dispatch($onCreateSellerEvent);
-
             return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
         }
 

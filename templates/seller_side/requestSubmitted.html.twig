@@ -30,7 +30,7 @@
                                     <img alt="img" src={{ asset("assets/images/icon/right.png") }} >
                                 </div>
                                 <div class="booking_success_text">
-                                    <h3>{{ market_subscription_request.name }}, your subscription request was submitted successfully!</h3>
+                                    <h3>{{ marketSubscriptionRequest.name }}, your subscription request was submitted successfully!</h3>
                                     <h6>You will receive an email after our team validate your request</h6>
                                 </div>
                             </div>
@@ -41,15 +41,16 @@
                                 <div class="your_info_arae">
                                     <ul>
                                         <li><span class="name_first">Name:</span> <span
-                                                    class="last_name">{{ market_subscription_request.name }}</span></li>
+                                                    class="last_name">{{ marketSubscriptionRequest.name }}</span></li>
                                         <li><span class="name_first">Email address:</span> <span
-                                                    class="last_name">{{market_subscription_request.email}}</span></li>
+                                                    class="last_name">{{marketSubscriptionRequest.email}}</span></li>
+                                        <li><span class="name_first">Website:</span> <span
+                                                    class="last_name">{{ marketSubscriptionRequest.website }}</span></li>
                                         <li><span class="name_first">Address:</span> <span class="last_name">
-                                                {{ market_subscription_request.address }}
+                                                {{ marketSubscriptionRequest.address }}
                                             </span></li>
                                         <li><span class="name_first">City:</span> <span
-                                                    class="last_name">{{ market_subscription_request.city }}</span></li>
-                                        <li><span class="name_first">State:</span> <span class="last_name">Hawaii</span>
+                                                    class="last_name">{{ marketSubscriptionRequest.city }}</span></li>
                                         </li>
 
                                     </ul>

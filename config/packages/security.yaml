@@ -13,15 +13,22 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+
+
         main:
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\UsersAuthenticator
 
+
+
             logout:
                 path: app_logout
                 # where to redirect after logout
-                target: app_main
+                target: app_seller_side_login
+
+
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

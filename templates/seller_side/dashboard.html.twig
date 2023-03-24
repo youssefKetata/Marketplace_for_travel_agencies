@@ -25,10 +25,10 @@
                 <div class="col-lg-4">
                     <div class="dashboard_sidebar">
                         <div class="dashboard_sidebar_user">
-                            <img src="assets/img/common/dashboard-user.png" alt="img">
-                            <h3>Sherlyn Chopra</h3>
+                            <img alt="img" src={{ asset("assets/images/common/dashboard-user.png") }}>
+                            <h3>{{ seller.name }}</h3>
                             <p><a href="tel:+00-123-456-789">+00 123 456 789</a></p>
-                            <p><a href="mailto:sherlyn@domain.com">sherlyn@domain.com</a></p>
+                            <p><a href="mailto:sherlyn@domain.com">{{seller.user.email}}</a></p>
                         </div>
                         <div class="dashboard_menu_area">
                             <ul>
@@ -59,7 +59,7 @@
                                 <li><a href="wallet.html"><i class="fas fa-wallet"></i>Wallet</a></li>
                                 <li><a href="notification.html"><i class="fas fa-bell"></i>Notifications</a></li>
                                 <li>
-                                    <a href="#!" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <a href="{{ path('app_logout') }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         <i class="fas fa-sign-out-alt"></i>Logout
                                     </a>
                                 </li>

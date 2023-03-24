@@ -7,7 +7,10 @@ use App\Form\MarketSubscriptionRequestType;
 use App\Repository\MarketSubscriptionRequestRepository;
 use App\Repository\MenuItemAdminRepository;
 use App\Repository\MenuItemSellerRepository;
+use App\Repository\SellerRepository;
+use App\Repository\UserRepository;
 use App\Service\Helpers;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/seller_side', name: 'app_seller_side_')]
 class DashboardController extends AbstractController
@@ -27,10 +31,25 @@ class DashboardController extends AbstractController
 
 
     #[Route('', name: 'login' )]
-    public function login(): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('seller_side/login.html.twig');
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+        // $view = "shared/login/login_".$type.".html.twig";
+        return $this->render('seller_side/login.html.twig', [
+            'controller_name' => 'LoginController',
+            'last_username' => $lastUsername,
+            'error' => $error
+        ]);
 
+    }
+
+    #[Route('/home', name: 'home' )]
+    public function home(AuthenticationUtils $authenticationUtils): Response
+    {
+        return $this->render('seller_side/home.html.twig');
     }
 
     #[Route('/subscription', name: 'subscription' )]
@@ -48,10 +67,9 @@ class DashboardController extends AbstractController
             try {
                 $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
                 return $this->render('seller_side/requestSubmitted.html.twig',[
-                    'marketSubscriptionRequest'=>$marketSubscriptionRequest,
-                    ]);
+                    'marketSubscriptionRequest'=>$marketSubscriptionRequest]);
 
-            }catch (\Exception $e){
+            }catch (UniqueConstraintViolationException $e){
                 $this->addFlash('error', 'An error occurred: ' . $e->getMessage());
                 return $this->RedirectToRoute('app_seller_side_subscription');
 
@@ -64,12 +82,16 @@ class DashboardController extends AbstractController
 
     }
     #[Route('/dashboard', name: 'dashboard' ) , IsGranted('ROLE_SELLER')]
-    public function index(): Response
+    public function index(SellerRepository $sellerRepository): Response
     {
         $user = $this->security->getUser();
+        $email = $user->getUserIdentifier();
+        $seller = $sellerRepository->findOneBy([
+            'user' => $user
+        ]);
         $session = $this->requestStack->getSession();
 
-        //if(!$session->has('menu')){ // Uncomment to get menu from session if exists.
+        if(!$session->has('menu')){ // Uncomment to get menu from session if exists.
             if($this->isGranted('ROLE_SELLER')) {
                 $menu_object = $this->menuItemSellerRepository->findBy([], ['displayOrder' => 'ASC']);
                 $menu = $this->helpers->convert_ObjectArray_to_2DArray($menu_object);
@@ -79,10 +101,14 @@ class DashboardController extends AbstractController
             $menu_as_tree = $this->helpers->buildTree($menu);
             if(array_key_exists('ADMIN', $menu_as_tree))
                 $session->set('menu' , $menu_as_tree['ADMIN']['children']);
-        //}
+        }
+        else{
+            $menu = $session->get('menu');
+        }
         return $this->render('seller_side/dashboard.html.twig', [
             'controller_name' => 'DashboardController',
-            'menu' => $menu
+            'menu' => $menu,
+            'seller' => $seller
         ]);
     }
     #[Route('/aboutUs', name: 'aboutUs' )]
@@ -97,4 +123,6 @@ class DashboardController extends AbstractController
         return $this->render('seller_side/partial/contact.html.twig');
 
     }
+
+
 }

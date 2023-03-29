@@ -15,8 +15,8 @@ $(document).ready(function() {
         //   console.log(offerProductTypePrototype);
         var offerProductTypeHtml = offerProductTypePrototype.replace(/__name__/g, newIndex);
 
-// Create a new offerProductType form and add it to the
-// end of the offerProductTypesWrapper
+        // Create a new offerProductType form and add it to the
+        // end of the offerProductTypesWrapper
         offerProductTypesWrapper.append(offerProductTypeHtml);
     });
     // Remove offerProductType form when the "Remove" button is clicked

@@ -45,7 +45,6 @@ doctrine:
                         enabled: true
 
 
-
 when@test:
     doctrine:
         dbal:

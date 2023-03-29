@@ -14,11 +14,11 @@ class OfferProductType
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'offerProductTypes')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'offerProductTypes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Offer $offer = null;
 
-    #[ORM\ManyToOne( inversedBy: 'offerProductTypes')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'offerProductTypes')]
     #[ORM\JoinColumn( nullable: true)]
     #[Assert\NotBlank(message: 'This value should not be blank')]
     private ?ProductType $productType = null;
@@ -97,7 +97,6 @@ class OfferProductType
     }
      public function __toString(): string
      {
-         return $this->offer->getName();
-         // TODO: Implement __toString() method.
+         return $this->maxItems;
      }
 }

@@ -19,12 +19,9 @@ class Offer
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?int $nbProductTypes = null;
-
-    #[ORM\Column]
     private ?int $nbDays = null;
 
-    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: OfferProductType::class, cascade: ['persist','remove'])]
+    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: OfferProductType::class, cascade: ['persist','remove'], fetch: 'EAGER')]
     private Collection $offerProductTypes;
 
     #[ORM\OneToMany( mappedBy: 'offer', targetEntity: SellerOffer::class, cascade: ['persist','remove'])]
@@ -49,18 +46,6 @@ class Offer
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getNbProductTypes(): ?int
-    {
-        return $this->nbProductTypes;
-    }
-
-    public function setNbProductTypes(int $nbProductTypes): self
-    {
-        $this->nbProductTypes = $nbProductTypes;
 
         return $this;
     }

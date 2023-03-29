@@ -59,7 +59,7 @@ class Seller
     #[ORM\OneToOne(inversedBy: 'seller', cascade: ['persist', 'remove'])]
     private ?Api $api = null;
 
-    #[ORM\OneToMany(mappedBy: 'seller', targetEntity: SellerOffer::class)]
+    #[ORM\OneToMany(mappedBy: 'seller', targetEntity: SellerOffer::class, cascade: ['persist'],fetch: 'EAGER')]
     private Collection $sellerOffers;
 
     public function __construct()
@@ -146,12 +146,12 @@ class Seller
         return $this;
     }
 
-    /**
-     * @return Collection<int, SellerOffer>
-     */
+//    /**
+//     * @return Collection<int, SellerOffer>
+//     */
     public function getSellerOffers(): Collection
     {
-        return $this->sellerOffers;
+            return $this->sellerOffers;
     }
 
     public function addSellerOffer(SellerOffer $sellerOffer): self

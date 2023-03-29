@@ -7,6 +7,7 @@ use App\Entity\Offer;
 use App\Entity\Seller;
 use App\Entity\User;
 use App\Events\SellerCreatedEvent;
+use App\Form\SellerProfileType;
 use App\Form\SellerType;
 use App\Repository\SellerRepository;
 use App\Repository\UserRepository;
@@ -119,23 +120,23 @@ class SellerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_seller_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Seller $seller, SellerRepository $sellerRepository): Response
-    {
-        $form = $this->createForm(SellerType::class, $seller);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $sellerRepository->save($seller, true);
-
-            return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('seller/edit.html.twig', [
-            'seller' => $seller,
-            'form' => $form,
-        ]);
-    }
+//    #[Route('/{id}/edit', name: 'app_seller_edit', methods: ['GET', 'POST']), IsGranted('ROLE_SELLER')]
+//    public function edit(Request $request, Seller $seller, SellerRepository $sellerRepository): Response
+//    {
+//        $form = $this->createForm(SellerType::class, $seller);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $sellerRepository->save($seller, true);
+//
+//            return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->renderForm('seller/edit.html.twig', [
+//            'seller' => $seller,
+//            'form' => $form,
+//        ]);
+//    }
 
     #[Route('/{id}', name: 'app_seller_delete', methods: ['POST'])]
     public function delete(Request $request, Seller $seller, SellerRepository $sellerRepository): Response

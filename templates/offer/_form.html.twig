@@ -1,57 +1,113 @@
+
 {% block body %}
     {% block javascripts %}
         <script src="{{ asset('js/offer.js') }}"></script>
     {% endblock %}
 
 
-        <h1 class="my-2  text-start">Offer</h1>
-
-        <div class="row">
-            <div class="col-md-6">
-                {{ form_start(form) }}
-
-                <div class="form-group">
-                    {{ form_row(form.name, {'label': 'Name' ,'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <div class="form-group">
-                    {{ form_row(form.nbDays, {'label': 'Number of days', 'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <div class="form-group">
-                    {{ form_row(form.nbProductTypes, {'label': 'Number of product types', 'attr': {'class': 'form-control' }}) }}
-                </div>
-
-                <h2>Offer Product Types</h2>
-
-                <ul class="offer-product-types-wrapper list-group"
-                    data-prototype="{{ form_widget(form.offerProductTypes.vars.prototype)|e('html_attr') }}"
-                    data-index="{{ form.offerProductTypes|length > 0 ? form.offerProductTypes|last.vars.name + 1 : 0 }}">
-                    {% for offerProductTypeForm in form.offerProductTypes %}
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    {{ form_row(offerProductTypeForm.maxItems, {'label': 'Max items', 'attr': {'class': 'form-control'}}) }}
-                                </div>
-                                <div class="col-md-10">
-                                    {{ form_row(offerProductTypeForm.price, {'label': 'price', 'attr': {'class': 'form-control'}}) }}
-                                </div>
-
-                                <div class="col-md-6">
-                                    <button type="button" class="btn btn-danger remove-offer-product-type">Remove</button>
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-
-                </ul>
-
-                <button type="button" class="btn btn-primary add-offer-product-typeForm">Add New OfferProductType</button>
-
-                <button type="submit" class="btn btn-success">Save</button>
-
-                {{ form_end(form) }}
-            </div>
+    <div class="px-md-2">
+        {{ form_start(form) }}
+        <div class="form-outline mb-4">
+            {{ form_row(form.name, {'label': 'Name' ,'attr': {'class': 'form-control'}}) }}
         </div>
+        <div class="form-outline mb-4">
+            {{ form_row(form.nbDays, {'label': 'Number of days', 'attr': {'class': 'form-control'}}) }}
+        </div>
+{#        <div class="form-outline mb-4">#}
+{#            {{ form_row(form.nbProductTypes, {'label': 'Number of product types', 'attr': {'class': 'form-control' }}) }}#}
+{#        </div>#}
+
+        <h4 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Offer Product Types</h4>
+
+        <div class="offer-product-types-wrapper list-group"
+             data-prototype="{{ form_widget(form.offerProductTypes.vars.prototype)|e('html_attr') }}"
+             data-index="{{ form.offerProductTypes|length > 0 ? form.offerProductTypes|last.vars.name + 1 : 0 }}">
+            {% for offerProductTypeForm in form.offerProductTypes %}
+                <div class="row mb-4 pb-2 pb-md-0 mb-md-5">
+                    <div class="col-md-6">
+
+                        <div class="form-outline">
+                            {{ form_row(offerProductTypeForm.maxItems, {'label': 'Max items', 'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-outline">
+                            {{ form_row(offerProductTypeForm.price, {'label': 'price', 'attr': {'class': ' form-control'}}) }}
+                        </div>
+
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <a type="button" class="add-offer-product-typeForm">  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus text-dark" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg></a>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-secondary">Save</button>
+        {{ form_end(form) }}
+    </div>
+
+    <style>
+        .btn-secondary {
+            background-color: #1B52AC ; /* change la couleur de fond */
+            color: #fff; /* change la couleur du texte */
+        }
+    </style>
 {% endblock %}
 
+
+
+
+
+
+{#<h1 class="my-2  text-start">Offer</h1>#}
+
+{#<div class="row">#}
+{#    <div class="col-md-6">#}
+{#        {{ form_start(form) }}#}
+
+{#        <div class="form-group">#}
+{#            {{ form_row(form.name, {'label': 'Name' ,'attr': {'class': 'form-control'}}) }}#}
+{#        </div>#}
+
+{#        <div class="form-group">#}
+{#            {{ form_row(form.nbDays, {'label': 'Number of days', 'attr': {'class': 'form-control'}}) }}#}
+{#        </div>#}
+
+{#        <div class="form-group">#}
+{#            {{ form_row(form.nbProductTypes, {'label': 'Number of product types', 'attr': {'class': 'form-control' }}) }}#}
+{#        </div>#}
+
+{#        <h2>Offer Product Types</h2>#}
+
+{#        <ul class="offer-product-types-wrapper list-group"#}
+{#            data-prototype="{{ form_widget(form.offerProductTypes.vars.prototype)|e('html_attr') }}"#}
+{#            data-index="{{ form.offerProductTypes|length > 0 ? form.offerProductTypes|last.vars.name + 1 : 0 }}">#}
+{#            {% for offerProductTypeForm in form.offerProductTypes %}#}
+{#                <li class="list-group-item">#}
+{#                    <div class="row">#}
+{#                        <div class="col-md-10">#}
+{#                            {{ form_row(offerProductTypeForm.maxItems, {'label': 'Max items', 'attr': {'class': 'form-control'}}) }}#}
+{#                        </div>#}
+{#                        <div class="col-md-10">#}
+{#                            {{ form_row(offerProductTypeForm.price, {'label': 'price', 'attr': {'class': 'form-control'}}) }}#}
+{#                        </div>#}
+
+{#                        <div class="col-md-6">#}
+{#                            <button type="button" class="btn btn-danger remove-offer-product-type">Remove</button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </li>#}
+{#            {% endfor %}#}
+
+{#        </ul>#}
+
+{#        <button type="button" class="btn btn-primary add-offer-product-typeForm">Add New OfferProductType</button>#}
+
+{#        <button type="submit" class="btn btn-success">Save</button>#}
+
+{#        {{ form_end(form) }}#}
+{#    </div>#}
+{#</div>#}
+{#    </div>#}

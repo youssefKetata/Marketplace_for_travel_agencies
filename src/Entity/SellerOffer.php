@@ -14,7 +14,7 @@ class SellerOffer
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sellerOffers')]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'sellerOffers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Offer $offer = null;
 
@@ -79,5 +79,11 @@ class SellerOffer
         $this->startDate = $startDate;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->offer->getName();
+        // TODO: Implement __toString() method.
     }
 }

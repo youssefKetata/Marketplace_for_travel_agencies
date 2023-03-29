@@ -18,7 +18,7 @@ class ProductType
     #[ORM\Column(length: 45)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'productType', targetEntity: OfferProductType::class ,  cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'productType', targetEntity: OfferProductType::class, cascade: ['remove'], fetch: 'EAGER')]
     private Collection $offerProductTypes;
 
     #[ORM\OneToMany(mappedBy: 'productType_idProductType', targetEntity: ApiProduct::class)]

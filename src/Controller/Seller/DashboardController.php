@@ -4,7 +4,6 @@ namespace App\Controller\Seller;
 
 use App\Entity\MarketSubscriptionRequest;
 use App\Entity\Offer;
-use App\Entity\Seller;
 use App\Entity\SellerOffer;
 use App\Form\MarketSubscriptionRequestType;
 use App\Form\SellerProfileType;
@@ -14,24 +13,25 @@ use App\Repository\OfferRepository;
 use App\Repository\SellerOfferRepository;
 use App\Repository\SellerRepository;
 use App\Service\Helpers;
+use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use DoctrineExtensions\Query\Mysql\Date;
 use Exception;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 
 #[Route('/seller_side', name: 'app_seller_side_')]
 class DashboardController extends AbstractController
@@ -40,62 +40,14 @@ class DashboardController extends AbstractController
                                 private readonly MenuItemSellerRepository $menuItemSellerRepository,
                                 private readonly Security                 $security,
                                 private readonly Helpers                  $helpers
-    ){}
-
-
-    #[Route('', name: 'login' )]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    )
     {
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-        // $view = "shared/login/login_".$type.".html.twig";
-        return $this->render('seller_side/login.html.twig', [
-            'controller_name' => 'LoginController',
-            'last_username' => $lastUsername,
-            'error' => $error
-        ]);
-
     }
 
-    #[Route('/home', name: 'home' )]
-    public function home(AuthenticationUtils $authenticationUtils): Response
-    {
-        return $this->render('seller_side/home.html.twig');
-    }
 
-    #[Route('/subscription', name: 'subscription' )]
-    public function subscription(Request $request,
-                                 MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository,
 
-    ): Response
-    {
-
-        $marketSubscriptionRequest = new MarketSubscriptionRequest();
-        $form = $this->createForm(MarketSubscriptionRequestType::class, $marketSubscriptionRequest);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
-                return $this->render('seller_side/requestSubmitted.html.twig',[
-                    'marketSubscriptionRequest'=>$marketSubscriptionRequest]);
-
-            }catch (UniqueConstraintViolationException $e){
-                $this->addFlash('error', 'An error occurred: ' . $e->getMessage());
-                return $this->RedirectToRoute('app_seller_side_subscription');
-
-            }
-        }
-        return $this->renderForm('seller_side/subscription.html.twig', [
-            'market_subscription_request' => $marketSubscriptionRequest,
-            'form' => $form
-        ]);
-
-    }
-    #[Route('/dashboard', name: 'dashboard' ) , IsGranted('ROLE_SELLER')]
-    public function index(SellerRepository $sellerRepository): Response
+    #[Route('/dashboard', name: 'dashboard'), IsGranted('ROLE_SELLER')]
+    public function dashboard(SellerRepository $sellerRepository): Response
     {
         $user = $this->security->getUser();
         $email = $user->getUserIdentifier();
@@ -104,18 +56,17 @@ class DashboardController extends AbstractController
         ]);
         $session = $this->requestStack->getSession();
 
-        if(!$session->has('menu')){ // Uncomment to get menu from session if exists.
-            if($this->isGranted('ROLE_SELLER')) {
+        if (!$session->has('menu')) { // Uncomment to get menu from session if exists.
+            if ($this->isGranted('ROLE_SELLER')) {
                 $menu_object = $this->menuItemSellerRepository->findBy([], ['displayOrder' => 'ASC']);
                 $menu = $this->helpers->convert_ObjectArray_to_2DArray($menu_object);
-            }else{ // ROLE_ADMIN
+            } else { // ROLE_ADMIN
                 $menu = $this->menuItemSellerRepository->find_innerJoin();
             }
             $menu_as_tree = $this->helpers->buildTree($menu);
-            if(array_key_exists('ADMIN', $menu_as_tree))
-                $session->set('menu' , $menu_as_tree['ADMIN']['children']);
-        }
-        else{
+            if (array_key_exists('ADMIN', $menu_as_tree))
+                $session->set('menu', $menu_as_tree['ADMIN']['children']);
+        } else {
             $menu = $session->get('menu');
         }
         return $this->render('seller_side/dashboardPartial/dashboard.html.twig', [
@@ -124,62 +75,52 @@ class DashboardController extends AbstractController
             'seller' => $seller
         ]);
     }
-    #[Route('/aboutUs', name: 'aboutUs' )]
-    public function aboutUs(): Response
-    {
-        return $this->render('seller_side/partial/aboutUs.html.twig');
 
-    }
-    #[Route('/contact', name: 'contact' )]
-    public function contact(): Response
-    {
-        return $this->render('seller_side/partial/contact.html.twig');
 
-    }
-    #[Route('/offers', name: 'offer' ), isGranted('ROLE_SELLER')]
+    #[Route('/offers', name: 'offer'), isGranted('ROLE_SELLER')]
     public function offer(offerRepository $offerRepository, SellerRepository $sellerRepository): Response
     {
         $user = $this->security->getUser();
         $seller = $sellerRepository->findOneBy(['user' => $user]);
-        $offer = $offerRepository->findAll();
-        return $this->render('seller_side/offer.html.twig',[
-            'offers' => $offer,
+        $offers = $offerRepository->findAll();
+        $top_offers = array_splice($offers, 0, 3);
+        return $this->render('seller_side/offer.html.twig', [
+            'offers' => $offers,
             'seller' => $seller
         ]);
 
     }
 
     #[Route('/addToCard/{offer}', name: 'addToCard', methods: ['GET', 'POST']), isGranted('ROLE_SELLER')]
-    public function addToCard(Offer $offer, SellerRepository $sellerRepository ): Response
+    public function addToCard(Offer $offer, SellerRepository $sellerRepository): Response
     {
-        if(!$this->getUser())
+        if (!$this->getUser())
             return $this->redirectToRoute('app_seller_side_login');
 
 
         $session = $this->requestStack->getSession();
-        $user = $this->getUser();
         $seller = $sellerRepository->findOneBy([
-            'user' => $user
+            'user' => $this->getUser()
         ]);
 
         //check if the user have this offer already
-        foreach($seller->getSellerOffers() as $sellerOffer){
-            if($sellerOffer->getOffer()===$offer){
+        foreach ($seller->getSellerOffers() as $sellerOffer) {
+            if ($sellerOffer->getOffer() === $offer) {
                 $this->addFlash('error', 'You already have this offer');
                 return $this->redirectToRoute('app_seller_side_offer');
             }
         }
 
-        if($session->has('selectedOffers')){
+        if ($session->has('selectedOffers')) {
             //verify if seller already add the offer to the card
             $selectedOffers = $session->get('selectedOffers');
-            foreach($selectedOffers as $selectedOffer){
-                if ($selectedOffer==$offer->getId()){
-                    $this->addFlash('error','You already added this offer to the Card');
+            foreach ($selectedOffers as $selectedOffer) {
+                if ($selectedOffer == $offer->getId()) {
+                    $this->addFlash('error', 'You already added this offer to the Card');
                     return $this->redirectToRoute('app_seller_side_offer');
                 }
             }
-        }else{
+        } else {
             $selectedOffers = [];
         }
 
@@ -190,156 +131,242 @@ class DashboardController extends AbstractController
         return $this->redirectToRoute('app_seller_side_offer');
     }
 
-    #[Route('/removeFromCard/{id}', name: 'removeFromCard' )]
+    #[Route('/removeFromCard/{id}', name: 'removeFromCard')]
     public function removeFromCard(Offer $offer): Response
     {
+
         $session = $this->requestStack->getSession();
         $selectedOffers = $session->get('selectedOffers');
-        //offer should be removed form session and the variable selectedOffers
-        $selectedOffers = $session->get('selectedOffers');
         $key = array_search($offer->getId(), $selectedOffers);
-        if($key!== false)
+        if ($key !== false) {
             unset($selectedOffers[$key]);
+            //re-index the array numerically starting from 0
+            $selectedOffers = array_values($selectedOffers);
+        }
         $session->set('selectedOffers', $selectedOffers);
         return $this->redirectToRoute('app_seller_side_sellerCard');
     }
 
-    #[Route('/sellerCard', name: 'sellerCard' )]
+    #[Route('/sellerCard', name: 'sellerCard')]
     public function sellerCard(Request $request, OfferRepository $offerRepository): Response
     {
-        $forms = [];
-
         $session = $this->requestStack->getSession();
         $offers = [];
-        if ($session->has('selectedOffers')){
+        $forms = [];
+
+        if ($session->has('selectedOffers')) {
             $selectedOffers = $session->get('selectedOffers');
-            foreach ($selectedOffers as $offerId){
+            foreach ($selectedOffers as $offerId) {
                 $offer = $offerRepository->findOneBy([
                     'id' => $offerId
                 ]);
                 $offers[] = $offer;
 
-                //create form for each offer
+                //create startDate form for each offer
                 $defaultData = ['id' => $offer->getId()];
-                $offerForm= $this->createFormBuilder($defaultData)
-                    ->add('startDate_'.$offer->getId(), DateType::class,[
-                        'label' => $offer->getName(),
+
+                $offerForm = $this->createFormBuilder($defaultData)
+                    ->add($offer->getId(), DateType::class, [
+                        'help' => 'The products will start appear in marketplace at this date',
+                        'data' => new DateTime(),
+                        'label' => "Starting date",
+                        'required' => true,
+                        'widget' => 'single_text',
+                        'constraints' => [
+                            new Length(['min' => 3]),
+                            new Assert\GreaterThan([
+                                'value' => new DateTime(),
+                                'message' => 'The date cannot be earlier than today.',
+                            ])
+                        ]
                     ])
-                    ->add('save', SubmitType::class)
                     ->getForm();
                 $offerForm->handleRequest($request);
                 $forms[] = $offerForm->createView();
-
-                if ($offerForm->isSubmitted() && $offerForm->isValid()){
-                    dd($offerForm->getData());
-                }
-
-
-                if($offerForm->isSubmitted() && $offerForm->isValid()){
-                    dd('submited');
-
-                }
             }
         }
-        return $this->render('seller_side/dashboardPartial/sellerCard.html.twig',[
+        return $this->render('seller_side/sellerCard.html.twig', [
             'selectedOffers' => $offers,
             'forms' => $forms
         ]);
     }
 
-    #[Route('/sellerValidOffers', name: 'sellerValidOffers' )]
-    public function sellerValidOffers(SellerRepository $sellerRepository): Response
+    #[Route('/sellerBoughtOffers', name: 'sellerBoughtOffers')]
+    public function sellerBoughtOffers(SellerRepository $sellerRepository): Response
     {
-        $session = $this->requestStack->getSession();
-        $user = $this->getUser();
         $seller = $sellerRepository->findOneBy([
-            'user' => $user
+            'user' => $this->getUser()
         ]);
-        return $this->render('seller_side/dashboardPartial/sellerValidOffer.html.twig',[
-            'seller' => $seller
+
+        return $this->render('seller_side/sellerValidOffer.html.twig', [
+            'seller' => $seller,
         ]);
     }
 
 
-    #[Route('/buyOffer', name: 'buyOffer' )]
-    public function buyOffer(SellerRepository $sellerRepository,
-                             SellerOfferRepository $sellerOfferRepository,
+    #[Route('/buyOffer', name: 'buyOffer'), IsGranted('ROLE_SELLER')]
+    public function buyOffer(SellerRepository       $sellerRepository,
+                             SellerOfferRepository  $sellerOfferRepository,
                              EntityManagerInterface $em,
-                             OfferRepository $offerRepository
-    ): Response
+                             OfferRepository        $offerRepository,
+                             Request                $request
+    ): JsonResponse
     {
-        if(!$this->getUser())
-            return $this->redirectToRoute('app_seller_side_login');
-
+        if (!$this->getUser()) {
+            $newPageUrl = $this->generateUrl('app_seller_side_login');
+            return new JsonResponse(['newPageUrl' => $newPageUrl]);
+        }
 
         $session = $this->requestStack->getSession();
-        $user = $this->getUser();
         $seller = $sellerRepository->findOneBy([
-            'user' => $user
+            'user' => $this->getUser()
         ]);
 
+        //get the start dates
+        $formData = $request->request->all();
+        if ($formData == null)
+            $this->redirectToRoute('app_seller_side_sellerCard');
+        // simplify fromData
+        try {
+            $selectedDates = [];
+            foreach ($formData["form"] as $id => $date)
+                if (is_int($id)) {
+                    $specificDate = new DateTime();
+                    $dateTime = DateTime::createFromFormat('Y-m-d', $date);
+                    if ($dateTime > $specificDate) {
+                        $selectedDates[$id] = $dateTime;
+                    } else {
+                        $this->addFlash('error', 'Invalid date selected: ' . $date);
+                        $newPageUrl = $this->generateUrl('app_seller_side_sellerCard');
+                        return new JsonResponse(['newPageUrl' => $newPageUrl]);
+                    }
+
+                }
+
+        } catch (Exception $e) {
+            $this->addFlash('error', 'error occurred: ' . $e->getMessage());
+            $newPageUrl = $this->generateUrl('app_seller_side_sellerCard');
+            return new JsonResponse(['newPageUrl' => $newPageUrl]);
+        }
+
         $selectedOffers = $session->get('selectedOffers');
+        $boughtOffers = [];
 
         try {
-            foreach($selectedOffers as $selectedOffer){
-                $sellerOffer = new SellerOffer();
-                $sellerOffer->setSeller($seller);
+            for ($i = 0; $i < count($selectedOffers); $i++) {
+                $selectedOffer = $selectedOffers[$i];
                 $offer = $offerRepository->findOneBy([
                     'id' => $selectedOffer
                 ]);
+                //verify if the seller has the offer
+                foreach ($seller->getSellerOffers() as $sellerOffer) {
+                    if ($sellerOffer->getOffer()->getId() === $offer->getId()) {
+                        $this->addFlash('error', 'You have this offer: ' . $offer->getName() . '. Remove it form the card');
+                        $newPageUrl = $this->generateUrl('app_seller_side_sellerCard');
+                        return new JsonResponse(['newPageUrl' => $newPageUrl]);
+                    }
+                }
+
+                $sellerOffer = new SellerOffer();
+                $sellerOffer->setSeller($seller);
                 $sellerOffer->setOffer($offer);
-                $sellerOffer->setCreationDate(new \DateTime());
-                $sellerOffer->setStartDate(new \DateTime());
+                $sellerOffer->setCreationDate(new DateTime());
+                $date = $selectedDates[$offer->getId()];
+                $sellerOffer->setStartDate($date);
                 $sellerOfferRepository->save($sellerOffer, true);
+                $boughtOffers[] = $sellerOffer;
             }
-            $session->set('selectedOffers', []);
-
-        }catch (Exception $e){
-
-            $this->addFlash('error', $e->getMessage());
-            return $this->redirectToRoute('app_seller_side_sellerCard');
-
+        } catch (Exception $e) {
+            $this->addFlash('error', 'error occurred2: ' . $e);
+            $newPageUrl = $this->generateUrl('app_seller_side_sellerCard');
+            return new JsonResponse(['newPageUrl' => $newPageUrl]);
         }
-
-        $session->set('selectedOffer',[]);
-        $this->addFlash('success','you purchase was completed successfully');
-        return $this->redirectToRoute('app_seller_side_sellerValidOffers');
+        $session->set('selectedOffers', []);
+        $newPageUrl = $this->generateUrl('app_seller_side_sellerBoughtOffers', [
+            'boughtOffers' => $boughtOffers
+        ]);
+        return new JsonResponse(['newPageUrl' => $newPageUrl]);
     }
 
 
-    #[Route('/{id}/edit', name: 'profile', methods: ['GET', 'POST']), IsGranted('ROLE_SELLER')]
-    public function edit(Request $request,
-                         Seller $seller,
-                         SellerRepository $sellerRepository,
-                         UserPasswordHasherInterface $passwordHasher,
+    #[Route('/profile', name: 'profile', methods: ['GET', 'POST']), IsGranted('ROLE_SELLER')]
+    public function profile(Request                     $request,
+                            SellerRepository            $sellerRepository,
+                            UserPasswordHasherInterface $passwordHasher,
+                            SluggerInterface            $slugger,
     ): Response
     {
+        $seller = $sellerRepository->findOneBy([
+            'user' => $this->getUser()
+        ]);
+
         $oldPassword = $seller->getUser()->getPassword();
-        $form = $this->createForm(SellerProfileType::class,$seller);
-        //$form->handleRequest($request);
+
+        $form = $this->createForm(SellerProfileType::class, $seller);
+//        try {
+            $form->handleRequest($request);
+//        } catch (Exception $e) {
+//            $form->addError(new FormError('error: ' . $e->getMessage()));
+//            return $this->renderForm('seller_side/dashboardPartial/profile.html.twig', [
+//                    'form' => $form,
+//                    'seller' => $seller
+//                ]
+//            );
+//        }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if($form->get('oldPassword')->getData()!=0 and $form->get('user')->get('password')->getData()!=0){
-                $testPassword = $form->get('oldPassword')->getData();
-                $newPassword = $form->get('user')->get('password')->getData();
-                $seller->getUser()->setPassword($oldPassword);
-                if($passwordHasher->isPasswordValid($seller->getUser(), $testPassword)){
-                    $seller->getUser()->setPassword(
-                        $passwordHasher->hashPassword($seller->getUser(),$newPassword)
+            $brochureFile = $form->get('brochure')->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                // Move the file to the directory where brochures are stored
+                dump('dump');
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
                     );
+                } catch (FileException $e) {
+                    dd($e->getMessage());
+                }
+
+                // updates the 'brochureFilename' property to store the image file name
+                // instead of its contents
+                $seller->setBrochureFilename($newFilename);
+            }
+
+            if ($form->get('oldPassword')->getData() != 0 and $form->get('newPassword')->getData() != 0) {
+                //dd($oldPassword, $form->get('oldPassword')->getData(), $form->get('user')->get('password')->getData());
+                $testPassword = $form->get('oldPassword')->getData();
+                $newPassword = $form->get('newPassword')->getData();
+                $seller->getUser()->setPassword($oldPassword);
+                if ($passwordHasher->isPasswordValid($seller->getUser(), $testPassword)) {
+                    $seller->getUser()->setPassword(
+                        $passwordHasher->hashPassword($seller->getUser(), $newPassword)
+                    );
+                } else {
+                    $form->get('oldPassword')->addError(new FormError('invalid password.'));
+                    return $this->renderForm('seller_side/dashboardPartial/profile.html.twig', [
+                        'form' => $form,
+                        'seller' => $seller
+                    ]);
                 }
             }
-            $sellerRepository->save($seller, true);
-            return $this->redirectToRoute('app_seller_side_profile', ['id'=>$seller->getId()], Response::HTTP_SEE_OTHER);
+            try {
+                $sellerRepository->save($seller, true);
+            } catch (\PHPUnit\Exception $e) {
+                $form->addError(new FormError('error'));
+                return $this->render('profile/index.html.twig');
+            }
+
+            return $this->redirectToRoute('app_seller_side_profile', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('seller_side/dashboardPartial/profile.html.twig', [
-            'seller' => $seller,
-            'form' => $form
+            'form' => $form,
+            'seller' => $seller
         ]);
     }
-
-
-
-
 }

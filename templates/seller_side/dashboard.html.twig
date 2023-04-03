@@ -80,10 +80,12 @@
             <div class="col-lg-4">
                 <div class="dashboard_sidebar">
                     <div class="dashboard_sidebar_user">
-                        <img alt="img" src={{ asset("assets/images/common/dashboard-user.png") }}>
+                        <img alt="img" src={{ asset('assets/images/' ~ seller.brochureFilename) }}
+                        onerror="this.src='{{ asset('assets/images/common/dashboard-user.png') }}'">
+{#                        <a href="{{ asset('uploads/brochures/' ~ product.brochureFilename) }}">View brochure (PDF)</a>#}
                         <h3>{{ seller.name }}</h3>
-                        <p><a href="tel:+00-123-456-789">+00 123 456 789</a></p>
-                        <p><a href="mailto:sherlyn@domain.com">{{seller.user.email}}</a></p>
+                        <p><a href="">+00 123 456 789</a></p>
+                        <p><a href="">{{seller.user.email}}</a></p>
                     </div>
                     <div class="dashboard_menu_area">
                         <ul>
@@ -94,7 +96,7 @@
                                 <span> <i class="fas fa-angle-down"></i></span>
                                 <div class="booing_sidebar_dashboard" id="show_dropdown_item" style="display: none;">
                                     <ul>
-                                        <li><a href="{{ path('app_seller_side_sellerValidOffers') }}"><i class="fas fa-hotel"></i>Active
+                                        <li><a href="{{ path('app_seller_side_sellerBoughtOffers') }}"><i class="fas fa-hotel"></i>Active
                                                 offers</a></li>
                                         <li><a href="flight-booking.html"><i class="fas fa-paper-plane"></i>Flight
                                                 booking</a></li>
@@ -109,7 +111,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li><a href="{{ path('app_seller_side_profile',{'id':seller.id}) }}"><i class="fas fa-user-circle">
+                            <li><a href="{{ path('app_seller_side_profile') }}"><i class="fas fa-user-circle">
                                     </i>My profile</a>
                             </li>
                             <li><a href="wallet.html"><i class="fas fa-wallet"></i>Wallet</a></li>

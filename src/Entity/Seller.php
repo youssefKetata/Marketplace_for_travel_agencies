@@ -19,6 +19,8 @@ class Seller
 
     #[ORM\Column(length: 45)]
     #[Assert\NotBlank(message: 'This value should not be blank')]
+    #[Assert\NotNull(message: 'This value should not be null')]
+
     #[Assert\Type(
         type: 'string',
         message: 'Not a valid name.',
@@ -61,6 +63,9 @@ class Seller
 
     #[ORM\OneToMany(mappedBy: 'seller', targetEntity: SellerOffer::class, cascade: ['persist'],fetch: 'EAGER')]
     private Collection $sellerOffers;
+
+    #[ORM\Column(type: 'string')]
+    private $brochureFilename;
 
     public function __construct()
     {
@@ -152,6 +157,18 @@ class Seller
     public function getSellerOffers(): Collection
     {
             return $this->sellerOffers;
+    }
+
+    public function getBrochureFilename(): string
+    {
+        return $this->brochureFilename;
+    }
+
+    public function setBrochureFilename(string $brochureFilename): self
+    {
+        $this->brochureFilename = $brochureFilename;
+
+        return $this;
     }
 
     public function addSellerOffer(SellerOffer $sellerOffer): self

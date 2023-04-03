@@ -13,6 +13,7 @@ use App\Trait\TimeStampTrait;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[ORM\HasLifecycleCallbacks]
+#[Assert\GroupSequence(['User', 'update'])]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -20,27 +21,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',)]
+        message: 'The email {{ value }} is not a valid email.',
+        groups: ['Default, update']
+    )]
     #[Assert\Length(
         min: 5,
-        minMessage: 'Not a valid Email')]
-    private $email;
+        minMessage: 'Not a valid Email',
+        groups: ['Default, update'])
+    ]
+    private ?string $email;
 
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    private array $roles = [];
 
     #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(
+        groups: ['Default']
+    )]
     #[Assert\Length(
         min: 3,
         max: 50,
         minMessage: 'Your name must be at least {{ limit }} characters long',
         maxMessage: 'Your name cannot be longer than {{ limit }} characters',
+        groups: ['Default'],
     )]
-    private $password;
+    private ?string $password;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Type(
@@ -53,11 +62,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: 'Your name must be at least {{ limit }} characters long',
         maxMessage: 'Your name cannot be longer than {{ limit }} characters',
     )]
-    private $display_name;
+    private ?string $display_name;
 
 
     #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    private bool $isVerified = false;
 
 
     #[ORM\Column(length: 255)]

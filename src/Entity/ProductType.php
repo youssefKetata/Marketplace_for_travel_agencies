@@ -55,27 +55,27 @@ class ProductType
         return $this->offerProductTypes;
     }
 
-    public function addOfferProductType(OfferProductType $offerProductType): self
-    {
-        if (!$this->offerProductTypes->contains($offerProductType)) {
-            $this->offerProductTypes->add($offerProductType);
-            $offerProductType->setProductTypeidProductType($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOfferProductType(OfferProductType $offerProductType): self
-    {
-        if ($this->offerProductTypes->removeElement($offerProductType)) {
-            // set the owning side to null (unless already changed)
-            if ($offerProductType->getProductTypeidProductType() === $this) {
-                $offerProductType->setProductTypeidProductType(null);
-            }
-        }
-
-        return $this;
-    }
+//    public function addOfferProductType(OfferProductType $offerProductType): self
+//    {
+//        if (!$this->offerProductTypes->contains($offerProductType)) {
+//            $this->offerProductTypes->add($offerProductType);
+//            $offerProductType->setProductTypeidProductType($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeOfferProductType(OfferProductType $offerProductType): self
+//    {
+//        if ($this->offerProductTypes->removeElement($offerProductType)) {
+//            // set the owning side to null (unless already changed)
+//            if ($offerProductType->getProductTypeidProductType() === $this) {
+//                $offerProductType->setProductTypeidProductType(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 
     /**
      * @return Collection<int, ApiProduct>

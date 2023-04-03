@@ -53,7 +53,7 @@
         </div>
     </div>
 </div>
-{{ include('seller_side/partial/header.html.twig') }}
+{{ include('/front/partial/header.html.twig') }}
 
 
 <!-- Banner Area -->
@@ -61,11 +61,11 @@
 {% endblock %}
 
 {% block content %}
-{#--------------content goes here--------------#}
+    {#--------------content goes here--------------#}
 {% endblock %}
 
 {#--------------footer--------------#}
-    {{ include('seller_side/partial/footer.html.twig') }}
+{{ include('/front/partial/footer.html.twig') }}
 {#--------------end footer--------------#}
 
 {#--------------javascrip--------------#}

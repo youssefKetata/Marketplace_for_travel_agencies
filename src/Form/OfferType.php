@@ -17,11 +17,9 @@ class OfferType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('nbProductTypes')
             ->add('nbDays')
-            //the Code added in 3/03/2023
             ->add('offerProductTypes', CollectionType::class, [
-                'entry_type' => \App\Form\OfferProdType::class,
+                'entry_type' => OfferProdType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -37,17 +35,5 @@ class OfferType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Offer::class,
         ]);
-    }
-    public function addOfferProductType(OfferProductType $offerProductType): self
-    {
-        if (!$this->offerProductTypes->contains($offerProductType)) {
-            //added in 3/03/2023
-            /* $offerProductType->setOffer($this);
-             $this->offerProductTypes[] = $offerProductType;*/
-            $this->offerProductTypes->add($offerProductType);
-            $offerProductType->setOffer($this);
-        }
-
-        return $this;
     }
 }

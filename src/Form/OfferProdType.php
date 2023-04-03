@@ -22,49 +22,21 @@ class OfferProdType extends AbstractType
         $builder
             ->add('maxItems')
             ->add('price')
-            ->add('offer', EntityType::class, [
-                'required' => true,
-                'class'=> Offer::class
-            ])
+//            ->add('offer', EntityType::class, [
+//                'required' => true,
+//                'class'=> Offer::class
+//            ])
             ->add('productType', EntityType::class, [
                 'required' => true,
                 'class'=> ProductType::class
             ])
         ;
-
-
-        /* $builder
-            ->add('maxItems')
-            ->add('price')
-            ->add('offer')
-           //  $builder->add('ProductTypeName',ProductType::class)
-            //->add('name')
-        ->add('productType', EntityType::class, [
-        'class' => ProductType::class,
-        'choice_label' => 'name',
-        'label' => 'Product Type',  ]);
-
-       /* ->add('productType', EntityType::class, [
-                'class' => ProductType::class,
-                'choice_label' => 'name',
-                'label' => 'Other Entity Name',
-                // add more options as needed
-
-          //  ->add('productType')
-        ;*/
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => OfferProductType::class
-          //  'data_class2' => ProductType::class,
         ]);
-    }
-    public function setProductType(ProductType $productType): self
-    {
-        $this->productType = $productType;
-
-        return $this;
     }
 }

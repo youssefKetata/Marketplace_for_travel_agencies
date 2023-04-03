@@ -1,4 +1,4 @@
-{% extends 'seller_side/base_seller.html.twig' %}
+{% extends 'front/base_user.html.twig' %}
 
 {% block content %}
     <!-- Common Banner Area -->
@@ -27,9 +27,9 @@
                 <div class="col-lg-12">
                     <div class="vendor_form_heading">
                         <h2>Subscription request</h2>
-{#                        <p>Eu sint minim tempor anim aliqua officia voluptate incididunt deserunt.#}
-{#                            <br /> Velitgo quis Lorem culpa qui pariatur occaecat.#}
-{#                        </p>#}
+                        {#                        <p>Eu sint minim tempor anim aliqua officia voluptate incididunt deserunt. #}
+                        {#                            <br /> Velitgo quis Lorem culpa qui pariatur occaecat. #}
+                        {#                        </p> #}
                     </div>
                 </div>
 
@@ -61,20 +61,15 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-{#                                        <div class="form-control form-select bg_input">#}
-                                            {{ form_widget(form.city) }}
+                                        {{ form_label(form.city, null, {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+                                        {{ form_errors(form.city, {'attr': {'class': 'invalid-feedback'}}) }}
                                     </div>
                                 </div>
+
                                 <div class="booking_tour_form_submit pt-4">
-                                    <div class="form-check write_spical_check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf1">
-                                        <label class="form-check-label" for="flexCheckDefaultf1">
-                                            I have read and accept the <a href="terms-service.html">Terms and
-                                                conditions</a> and <a href="privacy-policy.html">Privacy policy</a>
-                                        </label>
-                                    </div>
                                     {{ form_row(form.terms) }}
-                                    <button type="submit"  class="btn btn_theme btn_md mt-4">Send request</button>
+                                    <button type="submit" class="btn btn_theme btn_md mt-4">Send request</button>
                                 </div>
                                 {{ form_end(form) }}
                             </div>
@@ -83,10 +78,11 @@
                     </div>
                 </div>
 
-
                 <div class="col-lg-4">
-                    <div class="vendor_img">
-                        <img src="{{ asset('assets/images/common/vendor.png') }}" alt="img">
+                    <div class="faqs_call_area">
+                        <img src="{{ asset('assets/images/icon/call.png') }}" alt="img">
+                        <h5>Contact us 24/7</h5>
+                        <h3><a href="tel:+216-74-400-514">(+216) 74 400 514</a></h3>
                     </div>
                 </div>
             </div>

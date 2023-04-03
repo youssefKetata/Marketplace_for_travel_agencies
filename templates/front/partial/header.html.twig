@@ -1,0 +1,85 @@
+
+<!-- Header Area -->
+<header class="main_header_arae">
+    <!-- Top Bar -->
+    <div class="topbar-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <ul class="topbar-list">
+                        <li>
+                            <a href="https://www.facebook.com/TechnologyTravelTourism3t" target="_blank"><i class="bi-facebook"></i></a>
+{#                            <a href="#"><i class="bi-twitter"></i></a>#}
+{#                            <a href="#"><i class="bi-instagram"></i></a>#}
+                            <a href="https://www.linkedin.com/company/technology-travel-tourism/" target="_blank"><i class="bi-linkedin"></i></a>
+                        </li>
+                        <li><a href="#"><span> (+216) 74 400 514 </span></a></li>
+                        <li><a href="#"><span>contact@3t.tn</span></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <ul class="topbar-others-options">
+                        {% if is_granted('ROLE_SELLER') %}
+                            <li><a href={{ path('app_logout') }}>Logout</a></li>
+                        {% else %}
+                            <li><a href={{ path('app_login') }}>Login</a></li>
+                        {% endif %}
+{#                        <li><a href="register.html">Sign up</a></li>#}
+                        <li>
+                            <div class="dropdown language-option">
+                                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <span class="lang-name"></span>
+                                </button>
+                                <div class="dropdown-menu language-dropdown-menu">
+                                    <a class="dropdown-item" href="#">English</a>
+                                    <a class="dropdown-item" href="#">Arabic</a>
+                                    <a class="dropdown-item" href="#">French</a>
+                                </div>
+                            </div>
+                        </li>
+                        {% if is_granted('ROLE_SELLER') %}
+                        <li>
+                            <div class="dropdown language-option">
+                                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <span class="lang-name"></span>
+                                </button>
+                                <div class="dropdown-menu language-dropdown-menu">
+                                    <a class="dropdown-item" href="#">USD</a>
+                                    <a class="dropdown-item" href="#">BD</a>
+                                    <a class="dropdown-item" href="#">URO</a>
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+    <!-- Navbar Bar -->
+        {{ include('front/partial/navbar.html.twig') }}
+    </div>
+</header>
+<!-- search -->
+<div class="search-overlay">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="search-overlay-layer"></div>
+            <div class="search-overlay-layer"></div>
+            <div class="search-overlay-layer"></div>
+            <div class="search-overlay-close">
+                <span class="search-overlay-close-line"></span>
+                <span class="search-overlay-close-line"></span>
+            </div>
+            <div class="search-overlay-form">
+                <form>
+                    <input type="text" class="input-search" placeholder="Search here...">
+                    <button type="button"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

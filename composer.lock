@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c3faa803195aa816cb3b6eda69193c1",
+    "content-hash": "6c83d915c282993730e5c2bd02f17838",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -7281,16 +7281,16 @@
         },
         {
             "name": "symfony/ux-turbo",
-            "version": "v1.3.0",
+            "version": "v2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-turbo.git",
-                "reference": "dabb11b70cfc20f77c302ff1c173279fc941f723"
+                "reference": "2c82aad06d7c1493615d09188b70a3a86f6cc6ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-turbo/zipball/dabb11b70cfc20f77c302ff1c173279fc941f723",
-                "reference": "dabb11b70cfc20f77c302ff1c173279fc941f723",
+                "url": "https://api.github.com/repos/symfony/ux-turbo/zipball/2c82aad06d7c1493615d09188b70a3a86f6cc6ab",
+                "reference": "2c82aad06d7c1493615d09188b70a3a86f6cc6ab",
                 "shasum": ""
             },
             "require": {
@@ -7303,26 +7303,24 @@
             "require-dev": {
                 "doctrine/annotations": "^1.12",
                 "doctrine/doctrine-bundle": "^2.2",
-                "doctrine/orm": "~2.8.0",
+                "doctrine/orm": "^2.8 | 3.0",
                 "phpstan/phpstan": "^0.12",
-                "symfony/debug-bundle": "^5.2",
-                "symfony/form": "^5.2",
-                "symfony/framework-bundle": "^5.2",
+                "symfony/debug-bundle": "^5.2|^6.0",
+                "symfony/expression-language": "^5.4|^6.0",
+                "symfony/form": "^5.2|^6.0",
+                "symfony/framework-bundle": "^5.2|^6.0",
                 "symfony/mercure-bundle": "^0.3",
-                "symfony/messenger": "^5.2",
-                "symfony/panther": "^1.0",
-                "symfony/phpunit-bridge": "^5.2.1",
-                "symfony/property-access": "^5.2",
-                "symfony/security-core": "^5.2",
-                "symfony/stopwatch": "^5.2",
-                "symfony/twig-bundle": "^5.2",
-                "symfony/web-profiler-bundle": "^5.2"
+                "symfony/messenger": "^5.2|^6.0",
+                "symfony/panther": "^1.0|^2.0",
+                "symfony/phpunit-bridge": "^5.2.1|^6.0",
+                "symfony/property-access": "^5.2|^6.0",
+                "symfony/security-core": "^5.2|^6.0",
+                "symfony/stopwatch": "^5.2|^6.0",
+                "symfony/twig-bundle": "^5.2|^6.0",
+                "symfony/web-profiler-bundle": "^5.2|^6.0"
             },
             "type": "symfony-bundle",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.3-dev"
-                },
                 "thanks": {
                     "name": "symfony/ux",
                     "url": "https://github.com/symfony/ux"
@@ -7330,11 +7328,8 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Symfony\\UX\\Turbo\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
+                    "Symfony\\UX\\Turbo\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -7361,7 +7356,7 @@
                 "turbo-stream"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-turbo/tree/v1.3.0"
+                "source": "https://github.com/symfony/ux-turbo/tree/v2.7.1"
             },
             "funding": [
                 {
@@ -7377,7 +7372,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-20T17:58:12+00:00"
+            "time": "2023-01-24T15:40:19+00:00"
         },
         {
             "name": "symfony/validator",

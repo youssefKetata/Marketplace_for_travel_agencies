@@ -8,7 +8,7 @@
                     <div class="common_bannner_text">
                         <h2>Customer dashboard</h2>
                         <ul>
-                            <li><a href="index.html">Home</a></li>
+                            <li><a href="{{ path('app_seller_side_dashboard') }}">Home</a></li>
                             <li><span><i class="fas fa-circle"></i></span>Customer dashboard</li>
                         </ul>
                     </div>
@@ -20,8 +20,7 @@
 
 {% block content %}
 
-
-    {% if app.session.has('selectedOffers') and app.session.get('selectedOffers')|length != 0%}
+    {% if selectedOffers is defined and app.session.has('selectedOffers') and app.session.get('selectedOffers')|length != 0 %}
         {% set totalPrice = 0 %}
         <section id="tour_details_main" class="section_padding">
             <div class="container">
@@ -33,15 +32,34 @@
                                     <h2>Card</h2>
                                 </div>
                             </div>
+
+                            {% for message in app.flashes('error') %}
+                                <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-danger" role="alert">
+                                    <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                    <span>{{ message }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+
+                            {% for message in app.flashes('success') %}
+                                <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-success" role="alert">
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <span>{{ message }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+
                             {% set nbOffer = 0 %}
-                            {% for offer in selectedOffers %}
+                            {% for index in 0..selectedOffers|length-1 %}
                                 {% set nbOffer = nbOffer + 1 %}
+                                {% set offer = selectedOffers[index] %}
+                                {% set form = forms[index] %}
 
                                 {% set offerPrice = 0 %}
                                 <div class="tour_details_boxed">
                                     <h3 class="heading_theme">Offer: {{ offer.name }} <p>validity: ({{ offer.nbDays }} days)</p></h3>
                                     <div class="tour_details_boxed_inner">
-                                        <h4>Including products</h4><br>
+                                        <h4>Including products ({{ offer.nbProductTypes }})</h4><br>
                                         <ul>
                                             {% for offerProductType in  offer.offerProductTypes%}
                                                 {% set offerPrice = offerPrice + offerProductType.price %}
@@ -55,22 +73,19 @@
                                             {% endfor %}
                                         </ul>
                                     </div>
+                                    <!--  date form -->
+                                    {{ form_start(form, { 'attr': {'class': 'offer-form'} }) }}
+                                    {{ form_widget(form) }}
+                                    {{ form_end(form) }}
                                     <div class="edit_person">
                                         <p>Price: {{ offerPrice }}</p>
                                     </div>
                                     <a class="" href="{{ path('app_seller_side_removeFromCard',{'id': offer.id}) }}">
                                         <i class="bi bi-trash"></i>Remove item</a>
 
+                                </div>
+                            {% endfor %}
 
-                                </div>
-                            {% endfor %}
-                            <!--  date form -->
-                            {% for formItem in forms %}
-                                <div>
-                                    {{ form(formItem) }}
-                                    {{ dump(formItem) }}
-                                </div>
-                            {% endfor %}
 
                         </div>
                     </div>
@@ -85,7 +100,7 @@
 
                                         <ul>
                                             <li><i class="fas fa-circle"></i>Total offers ({{ nbOffer }})</li>
-                                            <li><i class="fas fa-circle"></i>The offers will start directly after you buy them</li>
+                                            <li><i class="fas fa-circle"></i>Others details</li>
 
                                         </ul>
                                     </div>
@@ -100,8 +115,7 @@
                                 <div class="tour_select_offer_bar_bottom">
                                     <button class="btn btn_theme btn_md w-100" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal"
-                                            id="submit-all-forms"
-                                    >Buy</button>
+                                            id="submit-all-forms">Buy</button>
                                 </div>
                             </div>
                         </div>
@@ -112,6 +126,9 @@
     {% else %}
         <div class="d-flex justify-content-center">
             <div class="tour_details_boxed col-lg-10">
+                <div style="margin-left: 38%">
+                    <img class=""style="" src="{{ asset('assets/images/emptyCard.png') }}">
+                </div>
                 <p class="top_form_search_button">You didn't choose any offer, you can pick one here</p>
                 <div class="top_form_search_button">
                     <a href="{{ path('app_seller_side_offer') }}">
@@ -146,28 +163,46 @@
     </div>
 
     <script>
-        document.getElementById('logout-confirm-btn').addEventListener('click', function (){
-            window.location.href= "{{ path('app_seller_side_buyOffer') }}"
-        })
-
-        $(document).ready(function() {
-            $('#submit-all-forms').click(function() {
-                event.preventDefault();
-                var formData = '';
-                $('.my-form').each(function() {
-                    formData += $(this).serialize();
+        $(function() {
+            document.getElementById('logout-confirm-btn').addEventListener('click', function (){
+                let formData = {};
+                let isFormValid = true; // add a variable to check if all required fields are filled out
+                $('.offer-form').each(function() {
+                    let formFields = $(this).serializeArray();
+                    formFields.forEach(function(field) {
+                        if(field.value.trim() === '') { // check if the field is empty or only contains spaces
+                            isFormValid = false; // set the flag to false if any required field is empty
+                        }
+                        formData[field.name] = field.value;
+                    });
                 });
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ path('app_seller_side_dashboard') }}',
-                    data: formData,
-                    success: function() {
-                        alert('All forms submitted successfully');
-                    }
-                });
+                if(isFormValid) { // only send the data if all required fields are filled out
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('app_seller_side_buyOffer') }}',
+                        data: formData,
+                        success: function(response) {
+                            console.log('Success: ' + JSON.stringify(response));
+                            // redirect to the new page
+                            window.location.href = response.newPageUrl;
+                            document.getElementById('logout-confirm-btn').removeEventListener('click',this);
+                        },
+                        error: function(response) {
+                            console.log('Error: ' + JSON.stringify(response));
+                        }
+                    });
+                    isFormValid=false;
+                } else {
+                    console.log('date no valid')
+                }
             });
         });
     </script>
 
+    <style>
+        input[type="date"] {
+            width: 50%;
+        }
+    </style>
 
 {% endblock %}

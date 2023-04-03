@@ -29,6 +29,8 @@ class MarketSubscriptionRequestType extends AbstractType
             ])
             ->add('terms', CheckboxType::class, [
                 'mapped' => false,
+                'label' => 'I have read and accept the Terms and conditions and Privacy policy',
+                'label_html' => true,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Please accept the terms and conditions.',

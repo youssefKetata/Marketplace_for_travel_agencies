@@ -70,10 +70,14 @@ class Offer
         return $this->offerProductTypes;
     }
 
+
+    public function getNbProductTypes():int {
+        return $this->offerProductTypes->count();
+    }
+
     public function addOfferProductType(OfferProductType $offerProductType): self
     {
         if (!$this->offerProductTypes->contains($offerProductType)) {
-           //added in 3/03/2023
             /* $offerProductType->setOffer($this);
              $this->offerProductTypes[] = $offerProductType;*/
            $this->offerProductTypes->add($offerProductType);
@@ -83,16 +87,16 @@ class Offer
         return $this;
     }
 
-    public function removeOfferProductType(OfferProductType $offerProductType): self
+    public function removeOfferProductType(OfferProductType $offerProductType): void
     {
-        if ($this->offerProductTypes->removeElement($offerProductType)) {
-            // set the owning side to null (unless already changed)
-            if ($offerProductType->getOffer() === $this) {
-                $offerProductType->setOffer(null);
-            }
-        }
-
-        return $this;
+        $this->offerProductTypes->removeElement($offerProductType);
+//        if ($this->offerProductTypes->removeElement($offerProductType)) {
+//            if ($offerProductType->getOffer() === $this) {
+//                $offerProductType->setOffer(null);
+//            }
+//        }
+//
+//        return $this;
     }
 
     /**
@@ -113,6 +117,7 @@ class Offer
         return $this;
     }
 
+
     public function removeSellerOffer(SellerOffer $sellerOffer): self
     {
         if ($this->sellerOffers->removeElement($sellerOffer)) {
@@ -123,6 +128,13 @@ class Offer
         }
 
         return $this;
+    }
+
+    public function getPrice():float{
+        $price = 0;
+        foreach($this->offerProductTypes as $offerProductType)
+            $price += $offerProductType->getPrice();
+        return $price;
     }
     public function __toString(): string
     {

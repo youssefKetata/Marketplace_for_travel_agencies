@@ -63,24 +63,24 @@ class MarketSubscriptionRequestController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_market_subscription_request_edit', methods: ['GET', 'POST']), IsGranted('ROLE_SUPER_ADMIN')]
-    public function edit(Request $request, MarketSubscriptionRequest $marketSubscriptionRequest, MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository): Response
-    {
-        $form = $this->createForm(MarketSubscriptionRequestType::class, $marketSubscriptionRequest);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
-
-            return $this->render('seller_side/requestSubmitted.html.twig');
-            //return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('market_subscription_request/edit.html.twig', [
-            'market_subscription_request' => $marketSubscriptionRequest,
-            'form' => $form,
-        ]);
-    }
+//    #[Route('/{id}/edit', name: 'app_market_subscription_request_edit', methods: ['GET', 'POST']), IsGranted('ROLE_SUPER_ADMIN')]
+//    public function edit(Request $request, MarketSubscriptionRequest $marketSubscriptionRequest, MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository): Response
+//    {
+//        $form = $this->createForm(MarketSubscriptionRequestType::class, $marketSubscriptionRequest);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
+//
+//            return $this->render('seller_side/requestSubmitted.html.twig');
+//            //return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->renderForm('market_subscription_request/edit.html.twig', [
+//            'market_subscription_request' => $marketSubscriptionRequest,
+//            'form' => $form,
+//        ]);
+//    }
 
     #[Route('/{id}', name: 'app_market_subscription_request_delete', methods: ['POST']), IsGranted('ROLE_SUPER_ADMIN')]
     public function delete(Request $request, MarketSubscriptionRequest $marketSubscriptionRequest, MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository): Response

@@ -45,18 +45,18 @@ class OfferProductType
 
         return $this;
     }
-
-    public function getProductTypeidProductType(): ?ProductType
-    {
-        return $this->productType;
-    }
-
-    public function setProductTypeidProductType(?ProductType $productType): self
-    {
-        $this->productType = $productType;
-
-        return $this;
-    }
+//
+//    public function getProductTypeidProductType(): ?ProductType
+//    {
+//        return $this->productType;
+//    }
+//
+//    public function setProductTypeidProductType(?ProductType $productType): self
+//    {
+//        $this->productType = $productType;
+//
+//        return $this;
+//    }
 
 
      public function getProductType(): ?ProductType

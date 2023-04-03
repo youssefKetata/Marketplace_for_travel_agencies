@@ -3,8 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\SellerOfferRepository;
+use DateInterval;
+use DateTime;
+use DateTimeZone;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 #[ORM\Entity(repositoryClass: SellerOfferRepository::class)]
 class SellerOffer
@@ -80,6 +84,47 @@ class SellerOffer
 
         return $this;
     }
+
+
+    /**
+     * @throws Exception
+     */
+    public function getRemainingDays(): int|bool
+    {
+        $nbDays = $this->getOffer()->getNbDays();
+        $endDate = clone $this->startDate;
+        $endDate->add(new DateInterval('P' . $nbDays . 'D'));
+        $currentDate = new DateTime();
+        if ($currentDate>$endDate) {
+            return 0;
+        } elseif($currentDate < $this->startDate){
+            return $nbDays;
+        } else {
+            $remainingDays = $endDate->diff($currentDate)->days;
+            return ($remainingDays >= 0) ? $remainingDays : 0;
+        }
+    }
+
+
+
+    /**
+     * @throws Exception
+     */
+    public function getStatus(): string
+    {
+        $currentDate = new DateTime();
+        $status = '';
+        if($this->startDate > $currentDate)
+            $status = 'pending';
+        else{
+            if($this->getRemainingDays() <= 0)
+                $status = 'expired';
+            else
+                $status = 'active';
+        }
+        return $status;
+    }
+
 
     public function __toString(): string
     {

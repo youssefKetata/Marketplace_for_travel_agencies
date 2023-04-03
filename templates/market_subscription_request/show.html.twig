@@ -3,7 +3,7 @@
 {% block title %}MarketSubscriptionRequest{% endblock %}
 
 {% block body %}
-    <h1>MarketSubscriptionRequest</h1>
+    <h4>Market subscription request</h4>
 
     <table class="table">
         <tbody>
@@ -37,10 +37,5 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('app_market_subscription_request_index') }}">back to list</a>
-
-    <a href="{{ path('app_market_subscription_request_edit', {'id': market_subscription_request.id}) }}">edit</a>
-
     {{ include('market_subscription_request/_delete_form.html.twig') }}
 {% endblock %}

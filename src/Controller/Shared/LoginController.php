@@ -17,11 +17,16 @@ class LoginController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $view = "shared/login/login_".$type.".html.twig";
-        return $this->render($view, [
+        //$view = "shared/login/login_".$type.".html.twig";
+        return $this->render('front/main/login.html.twig',[
             'controller_name' => 'LoginController',
             'last_username' => $lastUsername,
             'error' => $error
         ]);
+//        return $this->render($view, [
+//            'controller_name' => 'LoginController',
+//            'last_username' => $lastUsername,
+//            'error' => $error
+//        ]);
     }
 }

@@ -1,9 +1,5 @@
-
-{% for traveler in nonSellers %}
-
-
+ {% for traveler in nonSellers %}
     <tr>
-
         <div class="d-flex align-items-center">
 
             <td>{{ traveler.id }}</td>
@@ -35,25 +31,20 @@
                         class="btn btn-link btn-rounded btn-sm fw-bold btn-danger btn-sm"
                         data-action="modal-form#openModal"
                         data-form-url-value="{{ path('app_traveler_delete', {'id': traveler.id}) }}"
-                        {#                        data-url-value="{{ path('app_product_type_index', { ajax: 1 } ) }}"#}
+                        {#                        data-url-value="{{ path('app_product_type_index', { ajax: 1 } ) }}" #}
                         data-node-dest-id-value="myOneCustomContent"
                         data-refresh-key-value="refresh-html">
                     <i class="fas fa-trash-alt"></i> Delete
                 </button>
 
 
-
-
             </td>
         </div>
     </tr>
 
-    </td>
-    </tr>
-    {% endif %}
 {% else %}
     <tr>
         <td colspan="3">no records found</td>
     </tr>
-    {% endfor %}
+
 {% endfor %}

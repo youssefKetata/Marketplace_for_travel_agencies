@@ -18,10 +18,10 @@ class TravelerController extends AbstractController
     #[Route('/', name: 'app_traveler_index', methods: ['GET'])]
     public function index(TravelerRepository $travelerRepository , UserRepository $userRepository ,EntityManagerInterface $entityManager,): Response
     {
-        $nonSellers = $userRepository->findNonSellers();
+        $nonSellers = $userRepository->findByRole('ROLE_USER');
         return $this->render('traveler/index.html.twig', [
             'travelers' => $travelerRepository->findAll(),
-//            'nonSellers' => $nonSellers,
+            'nonSellers' => $nonSellers,
         ]);
     }
 

@@ -37,23 +37,12 @@ class SellerProfileType extends AbstractType
 
             ])
 
-            ->add('name',TextType::class, [
-                'constraints' => [
-                    new NotBlank()
-                ]
-            ])
+            ->add('name',TextType::class)
             ->add('website',UrlType::class)
-            ->add('address',TextType::class, [
-                'constraints' => [
-                    new NotBlank()
-                ]
-            ])
+            ->add('address',TextType::class)
             ->add('city', EntityType::class, [
                 'required' => true,
                 'class' => City::class,
-                'constraints' => [
-                    new NotBlank()
-                ]
             ])
             ->add('api', EntityType::class, [
                 'required' => false,
@@ -106,6 +95,11 @@ class SellerProfileType extends AbstractType
                 'error_bubbling' => false,
                 'constraints' => [
                     new Email(),
+                    new NotBlank()
+                ]
+            ])
+            ->add('username', TextType::class, [
+                'constraints' => [
                     new NotBlank()
                 ]
             ])

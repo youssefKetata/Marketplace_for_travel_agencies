@@ -20,6 +20,12 @@
 {% endblock %}
 
 {% block container %}
+    <!-- Flashy depends on jQuery -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Load Flashy default JavaScript -->
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    <!-- Include Flashy default partial -->
+    {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -27,17 +33,17 @@
                     <ul class="nav nav-pills navtab-bg nav-justified">
                         <li class="nav-item">
                             <a href="#tab_continent" data-bs-toggle="tab" aria-expanded="false" class="nav-link active btn-hover">
-                                Liste des continents
+                                List of continents
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#tab_country" data-bs-toggle="tab" aria-expanded="true" class="nav-link btn-hover">
-                                Liste des pays
+                                List of countries
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#tab_city" data-bs-toggle="tab" aria-expanded="true" class="nav-link btn-hover">
-                                Liste des villes
+                                List of cities
                             </a>
                         </li>
                     </ul>

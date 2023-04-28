@@ -21,10 +21,10 @@ class City
     private $name;
 
     #[ORM\Column(type: 'decimal', precision: 16, scale: 12 , nullable: true)]
-    private $latitude;
+    private ?string $latitude;
 
     #[ORM\Column(type: 'decimal', precision: 16, scale: 12 , nullable: true)]
-    private $longitude;
+    private ?string $longitude;
 
     #[ORM\Column(type: 'boolean')]
     private $active;
@@ -41,6 +41,11 @@ class City
 
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: MarketSubscriptionRequest::class)]
     private Collection $marketSubscriptionRequests;
+
+    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'cities')]
+    #[ORM\JoinColumn(name: "country_code", referencedColumnName: 'code')]
+    private $country;
+
 
 
     public function __construct()
@@ -73,7 +78,7 @@ class City
         return $this->latitude;
     }
 
-    public function setLatitude(string $latitude): self
+    public function setLatitude(?string $latitude): self
     {
         $this->latitude = $latitude;
 
@@ -85,7 +90,7 @@ class City
         return $this->longitude;
     }
 
-    public function setLongitude(string $longitude): self
+    public function setLongitude(?string $longitude): self
     {
         $this->longitude = $longitude;
 
@@ -210,5 +215,21 @@ public function removeMarketSubscriptionRequest(MarketSubscriptionRequest $marke
 
     return $this;
 }
+
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country): void
+    {
+        $this->country = $country;
+    }
 
 }

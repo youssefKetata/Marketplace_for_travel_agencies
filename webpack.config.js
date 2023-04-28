@@ -11,8 +11,11 @@ Encore
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
-    // only needed for CDN's or sub-directory deploy
+    // only needed for CD's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
+
+    // uncomment if you use React
+    .enableReactPreset()
 
     /*
      * ENTRY CONFIG
@@ -22,6 +25,9 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('mapbox', './assets/mapboxJs.js')
+    .addEntry('myComponent', './assets/myComponent.js')
+    .addEntry('HotelsForm', './assets/HotelsForm.js')
+    .addEntry('HotelCard', './assets/HotelCard.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -62,8 +68,7 @@ Encore
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
 
-    // uncomment if you use React
-    .enableReactPreset()
+
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher

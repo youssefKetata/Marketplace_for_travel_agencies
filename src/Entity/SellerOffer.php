@@ -106,7 +106,6 @@ class SellerOffer
     }
 
 
-
     /**
      * @throws Exception
      */

@@ -7,6 +7,30 @@
             <td>{{ city.longitude }}</td>
             <td>{{ city.active ? 'Yes' : 'No' }}</td>
             <td>
+                <button
+
+                        class="btn btn-success waves-effect waves-light"
+                        data-action="modal-form#openModal"
+                        data-form-url-value="{{ path('app_admin_location_city_edit', {'id': city.id}) }}"
+                        data-url-value="{{ path('app_admin_location_city_index', { ajax: 1 } ) }}"
+                        data-node-dest-id-value="myOneCustomContent"
+                        data-modal-title-value="{{ 'Buttons.General.Modifier'|trans }}"
+                        data-refresh-key-value="refresh-html"
+                >
+                    <i class="fe-edit"></i>
+                </button>
+                <button
+
+                        class="btn btn-danger waves-effect waves-light"
+                        data-action="modal-form#openModal"
+                        data-form-url-value="{{ path('app_admin_location_city_delete', {'id': city.id}) }}"
+                        data-url-value="{{ path('app_admin_location_city_index', { ajax: 1 } ) }}"
+                        data-node-dest-id-value="myOneCustomContent"
+                        data-modal-title-value="{{ 'Buttons.General.Delete'|trans }}"
+                        data-refresh-key-value="refresh-html"
+                >
+                    <i class="fe-delete"></i>
+                </button>
                 {# <a href="{{ path('app_admin_location_city_show', {'id': city.id}) }}">show</a> #}
                 {# <a href="{{ path('app_admin_location_city_edit', {'id': city.id}) }}">edit</a> #}
 

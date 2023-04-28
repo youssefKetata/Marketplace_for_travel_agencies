@@ -1,4 +1,4 @@
-{% extends 'seller_side/base_seller.html.twig' %}
+{% extends 'front/base_user.html.twig' %}
 
 {% block banner %}
 <section id="common_banner">
@@ -8,7 +8,7 @@
                 <div class="common_bannner_text">
                     <h2>Request Confirmation</h2>
                     <ul>
-                        <li><a href={{ path('app_seller_side_login') }}>Home</a></li>
+                        <li><a href={{ path('app_login') }}>Home</a></li>
                         <li><span><i class="fas fa-circle"></i></span>request</li>
                     </ul>
                 </div>

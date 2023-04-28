@@ -1,0 +1,54 @@
+{% extends 'seller_side/dashboard.html.twig' %}
+
+{% block dynamic_content %}
+    <div class="col-lg-8">
+        <div class="dashboard_common_table">
+            <h3>API</h3>
+            <div class="profile_update_form">
+                <div action="!#" id="profile_form_area">
+                    <div class="row">
+                        {% if seller.api is null %}
+                            <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-danger" role="alert">
+                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                <span>Create you api</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+                        {% if form_errors(form) %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(form) }}
+                            </div>
+                        {% endif %}
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ form_start(form) }}
+                                {{ form_row(form.baseUrl) }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ form_row(form.apiKeyValue) }}
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ form_row(form.login) }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ form_row(form.password) }}
+                            </div>
+                        </div>
+                        <div class="col-lg6">
+                            <button type="submit" class="btn btn_theme btn_md">Save</button>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

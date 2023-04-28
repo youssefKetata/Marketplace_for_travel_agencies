@@ -136,6 +136,13 @@ class Offer
             $price += $offerProductType->getPrice();
         return $price;
     }
+
+    public function getOfferProductType(ProductType $productType): ?OfferProductType{
+        foreach($this->offerProductTypes as $offerProductType)
+            if($offerProductType->getProductType() === $productType)
+                return $offerProductType;
+        return null;
+    }
     public function __toString(): string
     {
         // TODO: Implement __toString() method.

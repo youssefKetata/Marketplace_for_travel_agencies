@@ -1,35 +1,37 @@
 <?php
+
 namespace App\Service;
-use Symfony\Component\Mailer\MailerInterface;
+
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+
 
 class Mailer
 {
 
-    public function __construct(private MailerInterface $mailer)
+    public function __construct(private readonly MailerInterface $mailer)
     {
     }
 
-    public function sendEmail(
-        $to = 'yusufketata5@gmail.com',
-        $content= 'See Twig integration for better HTML integration!',
-        $subject= 'Time for Symfony Mailer!'
-    ): void
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function sendEmail(string $toEmail, string $subject, string $text, string $html): void
     {
+        $api_key = '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';
+        $server = 'smtp.sendgrid.net';
+        $port = '25, 587'; //for unencrypted/TLS connections
+        $ports = '465'; //(for SSL connections
+        $Username = 'api_key';
+        $Password = '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';
+        $sender = 'jusuf.ktata@enetcom.u-sfax.tn';
         $email = (new Email())
-            ->from('yusufketata@gmail.com')
-            ->to($to)
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
+            ->from($sender)
+            ->to($toEmail)
             ->subject($subject)
-            ->text('Sending emails is fun again!')
-            ->html($content);
-
+            ->text($text)
+            ->html($html);
         $this->mailer->send($email);
-
-        // ...
     }
 }

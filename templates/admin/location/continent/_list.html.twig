@@ -20,6 +20,18 @@
      >
                         <i class="fe-edit"></i>
                     </button>
+                <button
+
+                        class="btn btn-danger waves-effect waves-light"
+                        data-action="modal-form#openModal"
+                        data-form-url-value="{{ path('app_admin_location_continent_delete', {'code': continent.code}) }}"
+                        data-url-value="{{ path('app_admin_location_continent_index', { ajax: 1 } ) }}"
+                        data-node-dest-id-value="myOneCustomContent"
+                        data-modal-title-value="{{ 'Buttons.General.Delete'|trans }}"
+                        data-refresh-key-value="refresh-html"
+                >
+                    <i class="fe-delete"></i>
+                </button>
 
 
 

@@ -88,6 +88,8 @@ class ApiController extends AbstractController
             ));
     }
 
+
+
     #[Route('/{id}', name: 'app_api_delete', methods: ['POST'])]
     public function delete(Request $request, Api $api, ApiRepository $apiRepository): Response
     {

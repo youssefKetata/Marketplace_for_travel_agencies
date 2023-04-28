@@ -70,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $username = null;
 
     #[ORM\Column(nullable: true)]
@@ -89,7 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
@@ -154,7 +155,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->display_name;
     }
 
-    public function setDisplayName(string $display_name): self
+    public function setDisplayName(?string $display_name): self
     {
         $this->display_name = $display_name;
 
@@ -177,7 +178,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 

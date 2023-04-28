@@ -1,26 +1,20 @@
-
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Offers list {% endblock %}
 
 {% block container %}
 
-    <div class="card container shadow mt-5" >
+    <div>
+        <a href="{{ path('app_offer_new') }}" class="btn btn-sm btn-success"
+           >
+            <i class="bi bi-plus-lg">&nbsp;</i>New
+        </a>
         <div>
-            <a href="{{ path('app_offer_new') }}" class="btn btn-sm btn-success" style="position: relative; top: 90px; left: 20px">
-                <i class="fas fa-plus-circle m-1">  New Offer</i>
-            </a>
 
-            <div class="card-tools text-center">
-                <h1 class="card-title fs-4 font-italic" style="font-weight: bold;"><ins>Offers List</ins></h1>
-
-            </div>
-        </div>
-        <div class="card-body table-responsive p-3 text-center">
-            <table class="table"  data-search= "true"
-                   data-toggle="table"  data-pagination="true" data-page-size="10"
+            <table class="table align-middle mb-0 bg-white shadow-lg " data-search="true"
+                   data-toggle="table" data-pagination="true" data-page-size="10"
                    data-show-pagination-switch="true" data-show-columns="true">
-                <thead>
+                <thead class="bg-secondary text-white">
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
@@ -30,7 +24,7 @@
                 </tr>
                 </thead>
                 <tbody data-reload-content-target="myOneCustomContent">
-                {{ include('offer/_liste.html.twig') }}
+                {{ include('offer/_list.html.twig') }}
                 </tbody>
             </table>
         </div>

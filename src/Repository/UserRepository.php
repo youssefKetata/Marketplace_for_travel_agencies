@@ -74,17 +74,60 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
-   /* public function findNonSellers(EntityManagerInterface $entityManager): array
+    public function findNonSellers(): array
     {
-        $queryBuilder = $entityManager->createQueryBuilder();
-        $queryBuilder->select('u')
-            ->from(User::class, 'u')
-            ->where($queryBuilder->expr()->not($queryBuilder->expr()->isMemberOf(':sellerRole', 'u.roles')));
+        $queryBuilder = $this->createQueryBuilder('u');
 
-        $queryBuilder->setParameter('sellerRole', 'ROLE_SELLER');
+        $queryBuilder->select('u')
+            ->where($queryBuilder->expr()->not($queryBuilder->expr()->isMemberOf(':sellerRole', 'u.roles')))
+            ->setParameter('sellerRole', 'ROLE_SELLER');
 
         return $queryBuilder->getQuery()->getResult();
-    }*/
+    }
+
+    public function findSingleUserRoleUsers(): array
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->select('u')
+            ->leftJoin('u.roles', 'r')
+            ->groupBy('u')
+            ->having('COUNT(r) = 1')
+            ->andHaving("MAX(r.name) = 'ROLE_USER'");
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Find all users who have only one role, and that role is 'ROLE_USER'.
+     *
+     * @return User[]
+     */
+    public function findAllWithUserRole(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.roles', 'r')
+            ->groupBy('u.id')
+            ->having('COUNT(r.id) = 1')
+            ->andWhere('r.name = :role')
+            ->setParameter('role', 'ROLE_USER')
+            ->getQuery()
+            ->getResult();
+    }
+
+//    public function findNonSellers(): array
+//    {
+//        $queryBuilder = $this->createQueryBuilder('u');
+//
+//        //$queryBuilder = $entityManager->createQueryBuilder();
+//        $queryBuilder->select('u')
+//            ->from(User::class, 'u')
+//            ->where($queryBuilder->expr()->not($queryBuilder->expr()->isMemberOf(':sellerRole', 'u.roles')));
+//
+//        $queryBuilder->setParameter('sellerRole', 'ROLE_SELLER');
+//
+//        return $queryBuilder->getQuery()->getResult();
+//    }
 
 //    public function findOneBySomeField($value): ?User
 //    {

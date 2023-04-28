@@ -18,7 +18,7 @@ class ApiType extends AbstractType
             ->add('baseUrl')
             ->add('apiKeyValue')
             ->add('login')
-            ->add('password')
+            ->add('password', PasswordType::class)
 //            ->add('seller', SellerType::class,[
 //                'data_class' => Seller::class
 //            ])

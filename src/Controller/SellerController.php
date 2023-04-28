@@ -15,20 +15,35 @@ use App\Service\Mailer;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Helpers;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 #[Route('/seller') , IsGranted('ROLE_SUPER_ADMIN')]
 class SellerController extends AbstractController
 {
+
+    protected $flashy;
+    protected $translator;
+
+    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
+    {
+        $this->flashy = $flashy;
+        $this->translator = $translator;
+    }
+
     #[Route('/', name: 'app_seller_index', methods: ['GET'])]
     public function index(SellerRepository $sellerRepository): Response
     {
@@ -60,7 +75,6 @@ class SellerController extends AbstractController
         //set default values
         $marketSubscriptionRequest=$idM;
         $password = $helpers->generateRandomPassword();
-        dump($password);
         $user->setEmail($marketSubscriptionRequest->getEmail());
         $user->setPassword(
             $passwordHasher->hashPassword(
@@ -85,19 +99,30 @@ class SellerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
-//            if($user !=null){
-//
-//            }
+            $testUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+            if ($testUser) {
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
+            }
+
             try {
                 $marketSubscriptionRequest->setStatus('validated');
                 $userRepository->add($user, true);
                 $sellerRepository->save($seller, true);
-                dd($password);
+                //send mail using service/mailer
             }catch (UniqueConstraintViolationException $e){
-
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
             }
+            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
+            if ($request->isXmlHttpRequest()) {
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
+            }
+
             return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
+
+            //return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';

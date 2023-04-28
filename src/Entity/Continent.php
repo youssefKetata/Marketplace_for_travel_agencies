@@ -12,18 +12,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Translatable\Translatable ;
 
 #[ORM\Entity(repositoryClass: ContinentRepository::class)]
-#[UniqueEntity('name')]
+#[UniqueEntity('code', message: 'This code is already in use.')]
 class Continent //implements Translatable
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 2)]
-    private $code;
+    #[Assert\NotBlank(message: 'This value should not be blank')]
+    private string $code;
 
     //#[Gedmo\Translatable]
     #[ORM\Column(name: 'name', type: 'string', length: 50)]
-    //#[Assert\NotBlank(message: 'This value should not be blank')]
-    //#[Assert\Unique]
-    private $name;
+    #[Assert\NotBlank(message: 'This value should not be blank')]
+    private string $name;
 
     #[ORM\OneToMany(mappedBy: 'continent', targetEntity: Country::class)]
     private $countries;
@@ -50,7 +50,7 @@ class Continent //implements Translatable
     }
 
 
-    public function setCode($code): void
+    public function setCode(?String $code): void
     {
         $this->code = $code;
     }

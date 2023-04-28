@@ -1,0 +1,25 @@
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: ['http://localhost:3000'] # allow to react local server to send http request
+        allow_headers: ['Content-Type', 'application/json']
+        allow_methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS']
+        max_age: 3600
+    paths:
+        '^/':
+            allow_origin: [ '*' ]
+            allow_headers: [ '*' ]
+            allow_methods: [ 'POST', 'PUT', 'GET', 'DELETE' ]
+            max_age: 3600
+
+#nelmio_cors:
+#    defaults:
+#        origin_regex: true
+#        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
+#        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+#        allow_headers: ['Content-Type', 'Authorization']
+#        expose_headers: ['Link']
+#        max_age: 3600
+#    paths:
+#        '^/': null
+#        '^/search/hotel/api/getFormData':

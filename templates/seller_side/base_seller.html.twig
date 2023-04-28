@@ -30,6 +30,9 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href={{ asset("assets/images/favicon.png") }}>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+
 </head>
 <body>
 <!-- preloader Area -->
@@ -63,6 +66,7 @@
 {% block content %}
 {#--------------content goes here--------------#}
 {% endblock %}
+{{ include('@MercurySeriesFlashy/flashy.html.twig') }}
 
 {#--------------footer--------------#}
     {{ include('seller_side/partial/footer.html.twig') }}
@@ -70,6 +74,7 @@
 
 {#--------------javascrip--------------#}
 {% block javascript %}
+
 <script src={{ asset("assets/js/jquery-3.6.0.min.js") }}></script>
 <!-- Bootstrap js -->
 <script src={{ asset("assets/js/bootstrap.bundle.js") }}></script>
@@ -89,4 +94,6 @@
 
 {% endblock %}
 {#--------------end javascrip--------------#}
+
+
 </body>

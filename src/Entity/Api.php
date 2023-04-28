@@ -21,7 +21,7 @@ class Api
     #[Assert\Url(message: '{{value}} is not a valid Url')]
     private ?string $baseUrl = null;
 
-    #[ORM\Column(length: 45)]
+    #[ORM\Column(length: 100)]
     #[Assert\NotNull(message: 'This value should not be blank.')]
     private ?string $apiKeyValue = null;
 
@@ -33,13 +33,11 @@ class Api
     )]
     private ?string $login = null;
 
-    #[ORM\Column(length: 45)]
+    #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message: 'This value should not be blank.')]
     #[Assert\Length(
         min: 5,
-        max: 50,
         minMessage: 'Password must be at least {{ limit }} characters long',
-        maxMessage: 'Password cannot be longer than {{ limit }} characters',
     )]
     private ?string $password = null;
 

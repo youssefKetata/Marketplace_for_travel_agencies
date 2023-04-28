@@ -8,6 +8,30 @@
             <td>{{ country.capital }}</td>
             <td>{{ country.active ? 'Yes' : 'No' }}</td>
             <td>
+                <button
+
+                        class="btn btn-success waves-effect waves-light"
+                        data-action="modal-form#openModal"
+                        data-form-url-value="{{ path('app_admin_location_country_edit', {'code': country.code}) }}"
+                        data-url-value="{{ path('app_admin_location_country_index', { ajax: 1 } ) }}"
+                        data-node-dest-id-value="myOneCustomContent"
+                        data-modal-title-value="{{ 'Buttons.General.Modifier'|trans }}"
+                        data-refresh-key-value="refresh-html"
+                >
+                    <i class="fe-edit"></i>
+                </button>
+                <button
+
+                        class="btn btn-danger waves-effect waves-light"
+                        data-action="modal-form#openModal"
+                        data-form-url-value="{{ path('app_admin_location_country_delete', {'code': country.code}) }}"
+                        data-url-value="{{ path('app_admin_location_country_index', { ajax: 1 } ) }}"
+                        data-node-dest-id-value="myOneCustomContent"
+                        data-modal-title-value="{{ 'Buttons.General.Delete'|trans }}"
+                        data-refresh-key-value="refresh-html"
+                >
+                    <i class="fe-delete"></i>
+                </button>
 {#                <a href="{{ path('app_admin_location_country_show', {'code': country.code}) }}">show</a>#}
 {#                <a href="{{ path('app_admin_location_country_edit', {'code': country.code}) }}">edit</a>#}
 

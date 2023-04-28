@@ -6,15 +6,26 @@ use App\Entity\MarketSubscriptionRequest;
 use App\Form\MarketSubscriptionRequestType;
 use App\Repository\MarketSubscriptionRequestRepository;
 use App\Repository\UserRepository;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/market/subscription/request')]
 class MarketSubscriptionRequestController extends AbstractController
 {
+
+    protected $flashy;
+    protected $translator;
+
+    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
+    {
+        $this->flashy = $flashy;
+        $this->translator = $translator;
+    }
     #[Route('/', name: 'app_market_subscription_request_index', methods: ['GET']) , IsGranted('ROLE_SUPER_ADMIN')]
     public function index(MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository,
                           Request $request,
@@ -87,6 +98,10 @@ class MarketSubscriptionRequestController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$marketSubscriptionRequest->getId(), $request->request->get('_token'))) {
             $marketSubscriptionRequestRepository->remove($marketSubscriptionRequest, true);
+            if ($request->isXmlHttpRequest()) {
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
+            }
         }
 
         return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
@@ -99,6 +114,10 @@ class MarketSubscriptionRequestController extends AbstractController
         if ($marketSubscriptionRequest->getStatus() === "pending") {
             $marketSubscriptionRequest->setStatus("rejected");
             $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
+            if ($request->isXmlHttpRequest()) {
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
+            }
         }
 
         return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);

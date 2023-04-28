@@ -62,6 +62,18 @@
     "mercuryseries/flashy-bundle": {
         "version": "v5.1.0"
     },
+    "nelmio/cors-bundle": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
+        },
+        "files": [
+            "./config/packages/nelmio_cors.yaml"
+        ]
+    },
     "phpunit/phpunit": {
         "version": "9.5",
         "recipe": {
@@ -264,6 +276,15 @@
             "./config/packages/security.yaml"
         ]
     },
+    "symfony/sendgrid-mailer": {
+        "version": "6.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.4",
+            "ref": "b46e4f8f1adb2864f0aa9c0ff57aea3324a07199"
+        }
+    },
     "symfony/translation": {
         "version": "6.1",
         "recipe": {
@@ -289,6 +310,9 @@
             "./config/packages/twig.yaml",
             "./templates/base.html.twig"
         ]
+    },
+    "symfony/ux-react": {
+        "version": "v2.7.1"
     },
     "symfony/ux-turbo": {
         "version": "v1.3.0"

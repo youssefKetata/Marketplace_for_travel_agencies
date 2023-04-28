@@ -5,19 +5,28 @@ namespace App\Controller\Admin\Location;
 use App\Entity\City;
 use App\Form\CityType;
 use App\Repository\CityRepository;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/location/city')]
 class CityController extends AbstractController
 {
-    #[Route('/', name: 'app_admin_location_city_index', methods: ['GET'])]
-    public function index(CityRepository $cityRepository, Request $request): Response
+    protected $flashy;
+    protected $translator;
+
+    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
     {
-        $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
-        return $this->render('admin/location/city/'.$template, [
+        $this->flashy = $flashy;
+        $this->translator = $translator;
+    }
+    #[Route('/', name: 'app_admin_location_city_index', methods: ['GET'])]
+    public function index(CityRepository $cityRepository): Response
+    {
+        return $this->render('admin/location/city/index.html.twig', [
             'cities' => $cityRepository->findAll(),
         ]);
     }
@@ -31,9 +40,10 @@ class CityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $cityRepository->add($city, true);
-
+            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
             if ($request->isXmlHttpRequest()) {
-                return new Response(null, 204);
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
             }
 
             return $this->redirectToRoute('app_admin_location_city_index', [], Response::HTTP_SEE_OTHER);
@@ -68,13 +78,17 @@ class CityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $cityRepository->add($city, true);
-
+            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
+            if ($request->isXmlHttpRequest()) {
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
+            }
             return $this->redirectToRoute('app_admin_location_city_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';
 
-        return $this->renderForm('admin/location/city/'.$template, [
+        return $this->renderForm('admin/location/city/edit.html.twig', [
             'city' => $city,
             'form' => $form,
         ],
@@ -90,8 +104,11 @@ class CityController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$city->getId(), $request->request->get('_token'))) {
             $cityRepository->remove($city, true);
+            if ($request->isXmlHttpRequest()) {
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
+            }
         }
-
         return $this->redirectToRoute('app_admin_location_city_index', [], Response::HTTP_SEE_OTHER);
     }
 }

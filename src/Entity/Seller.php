@@ -19,7 +19,6 @@ class Seller
 
     #[ORM\Column(length: 45)]
     #[Assert\NotBlank(message: 'This value should not be blank')]
-    #[Assert\NotNull(message: 'This value should not be null')]
 
     #[Assert\Type(
         type: 'string',
@@ -52,6 +51,7 @@ class Seller
 
     #[ORM\ManyToOne(inversedBy: 'sellers')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?City $city = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -65,7 +65,8 @@ class Seller
     private Collection $sellerOffers;
 
     #[ORM\Column(type: 'string')]
-    private $brochureFilename;
+    #[ORM\JoinColumn(nullable: true)]
+    private string $brochureFilename;
 
     public function __construct()
     {
@@ -84,7 +85,7 @@ class Seller
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -96,7 +97,7 @@ class Seller
         return $this->website;
     }
 
-    public function setWebsite(string $website): self
+    public function setWebsite(?string $website): self
     {
         $this->website = $website;
 
@@ -108,7 +109,7 @@ class Seller
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
@@ -126,6 +127,7 @@ class Seller
 
         return $this;
     }
+
 
     public function getUser(): ?User
     {
@@ -147,7 +149,6 @@ class Seller
     public function setApi(?Api $api): self
     {
         $this->api = $api;
-
         return $this;
     }
 
@@ -164,7 +165,7 @@ class Seller
         return $this->brochureFilename;
     }
 
-    public function setBrochureFilename(string $brochureFilename): self
+    public function setBrochureFilename(?string $brochureFilename): self
     {
         $this->brochureFilename = $brochureFilename;
 
@@ -192,6 +193,22 @@ class Seller
 
         return $this;
     }
+
+    public function getValidSellerOffers(): Collection
+    {
+        //get all active offers
+        $validOffers = new ArrayCollection();
+        if (count($this->sellerOffers) > 0) {
+            foreach ($this->sellerOffers as $sellerOffer) {
+                if ($sellerOffer->getStatus() === 'active' &&
+                    $sellerOffer->getOffer()->getNbProductTypes() != 0) {
+                    $validOffers->add($sellerOffer);
+                }
+            }
+        }
+        return $validOffers;
+    }
+
     public function __toString(): string
     {
         // TODO: Implement __toString() method.

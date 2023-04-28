@@ -30,6 +30,9 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href={{ asset("assets/images/favicon.png") }}>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {% block stylesheet %}
+    {% endblock %}
 </head>
 <body>
 <!-- preloader Area -->
@@ -86,7 +89,7 @@
 <script src={{ asset("assets/js/add-form.js") }}></script>
 <script src={{ asset("assets/js/video.js") }}></script>
 
-
 {% endblock %}
 {#--------------end javascrip--------------#}
 </body>
+</html>

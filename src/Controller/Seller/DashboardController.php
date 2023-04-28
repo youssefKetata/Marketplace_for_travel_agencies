@@ -2,14 +2,18 @@
 
 namespace App\Controller\Seller;
 
+use App\Entity\Api;
 use App\Entity\MarketSubscriptionRequest;
 use App\Entity\Offer;
 use App\Entity\SellerOffer;
+use App\Form\ApiType;
 use App\Form\MarketSubscriptionRequestType;
 use App\Form\SellerProfileType;
+use App\Repository\ApiRepository;
 use App\Repository\MarketSubscriptionRequestRepository;
 use App\Repository\MenuItemSellerRepository;
 use App\Repository\OfferRepository;
+use App\Repository\ProductTypeRepository;
 use App\Repository\SellerOfferRepository;
 use App\Repository\SellerRepository;
 use App\Service\Helpers;
@@ -17,6 +21,7 @@ use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,18 +41,21 @@ use Symfony\Component\Validator\Constraints\Length;
 #[Route('/seller_side', name: 'app_seller_side_')]
 class DashboardController extends AbstractController
 {
+    private FlashyNotifier $flashy;
+
     public function __construct(private readonly RequestStack             $requestStack,
                                 private readonly MenuItemSellerRepository $menuItemSellerRepository,
                                 private readonly Security                 $security,
-                                private readonly Helpers                  $helpers
+                                private readonly Helpers                  $helpers,
+                                FlashyNotifier                            $flashy
     )
     {
+        $this->flashy = $flashy;
     }
 
 
-
     #[Route('/dashboard', name: 'dashboard'), IsGranted('ROLE_SELLER')]
-    public function dashboard(SellerRepository $sellerRepository): Response
+    public function dashboard(SellerRepository $sellerRepository, Request $request): Response
     {
         $user = $this->security->getUser();
         $email = $user->getUserIdentifier();
@@ -69,33 +77,40 @@ class DashboardController extends AbstractController
         } else {
             $menu = $session->get('menu');
         }
+        //build pagination system
         return $this->render('seller_side/dashboardPartial/dashboard.html.twig', [
             'controller_name' => 'DashboardController',
             'menu' => $menu,
-            'seller' => $seller
+            'seller' => $seller,
         ]);
     }
 
 
     #[Route('/offers', name: 'offer'), isGranted('ROLE_SELLER')]
-    public function offer(offerRepository $offerRepository, SellerRepository $sellerRepository): Response
+    public function offer(offerRepository $offerRepository,
+                          SellerRepository $sellerRepository,
+                          ProductTypeRepository $productTypeRepository
+    ): Response
     {
         $user = $this->security->getUser();
         $seller = $sellerRepository->findOneBy(['user' => $user]);
         $offers = $offerRepository->findAll();
+        $productTypes = $productTypeRepository->findAll();
         $top_offers = array_splice($offers, 0, 3);
         return $this->render('seller_side/offer.html.twig', [
             'offers' => $offers,
-            'seller' => $seller
+            'seller' => $seller,
+            'productTypes' => $productTypes,
         ]);
 
     }
 
     #[Route('/addToCard/{offer}', name: 'addToCard', methods: ['GET', 'POST']), isGranted('ROLE_SELLER')]
-    public function addToCard(Offer $offer, SellerRepository $sellerRepository): Response
+    public function addToCard(Offer $offer, SellerRepository $sellerRepository,
+    ): Response
     {
         if (!$this->getUser())
-            return $this->redirectToRoute('app_seller_side_login');
+            return $this->redirectToRoute('app_main');
 
 
         $session = $this->requestStack->getSession();
@@ -107,6 +122,7 @@ class DashboardController extends AbstractController
         foreach ($seller->getSellerOffers() as $sellerOffer) {
             if ($sellerOffer->getOffer() === $offer) {
                 $this->addFlash('error', 'You already have this offer');
+                $this->flashy->error('You already have this offer', 'https://symfony.com/doc/current/controller.html');
                 return $this->redirectToRoute('app_seller_side_offer');
             }
         }
@@ -126,7 +142,8 @@ class DashboardController extends AbstractController
 
         $selectedOffers[] = $offer->getId();
         $session->set('selectedOffers', $selectedOffers);
-        $this->addFlash('success', 'offer added to your card');
+        //add a flash message that tell the user that the offer was added to the card
+        $this->addFlash('success', "You added $offer to your card");
         //trigger sql query 'eager' to get all productTypes
         return $this->redirectToRoute('app_seller_side_offer');
     }
@@ -213,7 +230,7 @@ class DashboardController extends AbstractController
     ): JsonResponse
     {
         if (!$this->getUser()) {
-            $newPageUrl = $this->generateUrl('app_seller_side_login');
+            $newPageUrl = $this->generateUrl('app_login');
             return new JsonResponse(['newPageUrl' => $newPageUrl]);
         }
 
@@ -303,17 +320,7 @@ class DashboardController extends AbstractController
         $oldPassword = $seller->getUser()->getPassword();
 
         $form = $this->createForm(SellerProfileType::class, $seller);
-//        try {
-            $form->handleRequest($request);
-//        } catch (Exception $e) {
-//            $form->addError(new FormError('error: ' . $e->getMessage()));
-//            return $this->renderForm('seller_side/dashboardPartial/profile.html.twig', [
-//                    'form' => $form,
-//                    'seller' => $seller
-//                ]
-//            );
-//        }
-
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $brochureFile = $form->get('brochure')->getData();
             if ($brochureFile) {
@@ -367,6 +374,35 @@ class DashboardController extends AbstractController
         return $this->renderForm('seller_side/dashboardPartial/profile.html.twig', [
             'form' => $form,
             'seller' => $seller
+        ]);
+    }
+
+    #[Route('/apiForm', name: 'api_form', methods: ['GET', 'POST']), IsGranted('ROLE_SELLER')]
+    public function apiForm(Request          $request,
+                            SellerRepository $sellerRepository,
+                            ApiRepository    $apiRepository,
+    ): Response
+    {
+        $seller = $sellerRepository->findOneBy([
+            'user' => $this->getUser()
+        ]);
+        $seller->getApi() ? $api = $seller->getApi() : $api = new Api();
+        $form = $this->createForm(ApiType::class, $api);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $apiRepository->save($api, true);
+            $seller->setApi($api);
+            $sellerRepository->save($seller, true);
+            //$api->setSeller($seller);
+            return $this->redirectToRoute('app_seller_side_api_form', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('seller_side/dashboardPartial/api.html.twig', [
+            'api' => $api,
+            'form' => $form,
+            'seller' => $seller,
         ]);
     }
 }

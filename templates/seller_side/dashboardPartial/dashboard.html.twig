@@ -19,10 +19,11 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     {% set offers_per_page = 10 %}
                     {% set page = app.request.query.get('page')|default(1) %}
                     {% set start_index = (page - 1) * offers_per_page %}
-                    {% set end_index = start_index + offers_per_page - 1 %}
+                    {% set end_index = start_index + offers_per_page %}
                     {% set total_pages = (seller.sellerOffers.count + offers_per_page - 1) // offers_per_page %}
                     {% if seller.sellerOffers.count > 0 %}
                         {% for sellerOffer in seller.sellerOffers|slice(start_index, end_index) %}
@@ -40,6 +41,8 @@
                             <td colspan="6"><p>You didn't buy any offer</p></td>
                         </tr>
                     {% endif %}
+
+
                     </tbody>
                 </table>
             </div>

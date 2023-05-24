@@ -1,7 +1,7 @@
 nelmio_cors:
     defaults:
         allow_credentials: false
-        allow_origin: ['http://localhost:3000'] # allow to react local server to send http request
+        allow_origin: ['http://localhost:3000'] # allow to React local server to send http request
         allow_headers: ['Content-Type', 'application/json']
         allow_methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS']
         max_age: 3600

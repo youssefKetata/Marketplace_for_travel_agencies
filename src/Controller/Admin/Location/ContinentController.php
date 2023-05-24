@@ -107,7 +107,7 @@ class ContinentController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$continent->getCode(), $request->request->get('_token'))) {
             $continentRepository->remove($continent, true);
-            $this->flashy->message( $this->translator->trans('Message.Facility.Delete'));
+            $this->flashy->warning("Continent Deleted");
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);

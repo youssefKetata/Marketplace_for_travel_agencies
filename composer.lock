@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "00a82dc8094067a6b792b87e61891506",
+    "content-hash": "0dc8d6bc3a27d413de3feab27ebf6e6b",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -3109,6 +3109,135 @@
             "time": "2019-03-08T08:55:37+00:00"
         },
         {
+            "name": "sendgrid/php-http-client",
+            "version": "3.14.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sendgrid/php-http-client.git",
+                "reference": "6d589564522be290c7d7c18e51bcd8b03aeaf0b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sendgrid/php-http-client/zipball/6d589564522be290c7d7c18e51bcd8b03aeaf0b6",
+                "reference": "6d589564522be290c7d7c18e51bcd8b03aeaf0b6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "phpunit/phpunit": "^5.7 || ^6.5",
+                "sebastian/version": "^1.0.6",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "suggest": {
+                "composer/ca-bundle": "Including this library will ensure that a valid CA bundle is available for secure connections"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SendGrid\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bernier",
+                    "email": "mbernier@twilio.com"
+                },
+                {
+                    "name": "Elmer Thomas",
+                    "email": "ethomas@twilio.com"
+                }
+            ],
+            "description": "HTTP REST client, simplified for PHP",
+            "homepage": "http://github.com/sendgrid/php-http-client",
+            "keywords": [
+                "api",
+                "fluent",
+                "http",
+                "rest",
+                "sendgrid"
+            ],
+            "support": {
+                "issues": "https://github.com/sendgrid/php-http-client/issues",
+                "source": "https://github.com/sendgrid/php-http-client/tree/3.14.4"
+            },
+            "time": "2022-03-09T20:21:55+00:00"
+        },
+        {
+            "name": "sendgrid/sendgrid",
+            "version": "8.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sendgrid/sendgrid-php.git",
+                "reference": "285381257100b73aa50d8d70f0bcfb1f48b63747"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sendgrid/sendgrid-php/zipball/285381257100b73aa50d8d70f0bcfb1f48b63747",
+                "reference": "285381257100b73aa50d8d70f0bcfb1f48b63747",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "php": ">=7.3",
+                "sendgrid/php-http-client": "~3.10",
+                "starkbank/ecdsa": "0.*"
+            },
+            "replace": {
+                "sendgrid/sendgrid-php": "*"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.5",
+                "phpunit/phpunit": "^9",
+                "squizlabs/php_codesniffer": "3.*",
+                "swaggest/json-diff": "^3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SendGrid\\Mail\\": "lib/mail/",
+                    "SendGrid\\Stats\\": "lib/stats/",
+                    "SendGrid\\Helper\\": "lib/helper/",
+                    "SendGrid\\Contacts\\": "lib/contacts/",
+                    "SendGrid\\EventWebhook\\": "lib/eventwebhook/"
+                },
+                "classmap": [
+                    "lib/BaseSendGridClientInterface.php",
+                    "lib/SendGrid.php",
+                    "lib/TwilioEmail.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This library allows you to quickly and easily send emails through Twilio SendGrid using PHP.",
+            "homepage": "http://github.com/sendgrid/sendgrid-php",
+            "keywords": [
+                "email",
+                "grid",
+                "send",
+                "sendgrid",
+                "twilio sendgrid"
+            ],
+            "support": {
+                "source": "https://github.com/sendgrid/sendgrid-php/tree/8.0.1"
+            },
+            "time": "2022-08-10T18:37:45+00:00"
+        },
+        {
             "name": "sendinblue/api-v3-sdk",
             "version": "v8.4.2",
             "source": {
@@ -3292,6 +3421,49 @@
                 "source": "https://github.com/sherlockode/configuration-bundle/tree/v0.5.2"
             },
             "time": "2023-03-02T08:58:25+00:00"
+        },
+        {
+            "name": "starkbank/ecdsa",
+            "version": "0.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/starkbank/ecdsa-php.git",
+                "reference": "484bedac47bac4012dc73df91da221f0a66845cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/starkbank/ecdsa-php/zipball/484bedac47bac4012dc73df91da221f0a66845cb",
+                "reference": "484bedac47bac4012dc73df91da221f0a66845cb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/ellipticcurve.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "StarkBank",
+                    "email": "developers@starkbank.com",
+                    "homepage": "https://starkbank.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "fast openSSL-compatible implementation of the Elliptic Curve Digital Signature Algorithm (ECDSA)",
+            "homepage": "https://github.com/starkbank/ecdsa-php",
+            "support": {
+                "issues": "https://github.com/starkbank/ecdsa-php/issues",
+                "source": "https://github.com/starkbank/ecdsa-php/tree/v0.0.5"
+            },
+            "time": "2021-06-06T22:24:49+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -5373,6 +5545,83 @@
             "time": "2023-01-01T08:36:55+00:00"
         },
         {
+            "name": "symfony/lock",
+            "version": "v6.1.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/lock.git",
+                "reference": "cbc3366559a568ed56d9e7ed6d8e29a083eebb5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/lock/zipball/cbc3366559a568ed56d9e7ed6d8e29a083eebb5b",
+                "reference": "cbc3366559a568ed56d9e7ed6d8e29a083eebb5b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "psr/log": "^1|^2|^3"
+            },
+            "conflict": {
+                "doctrine/dbal": "<2.13"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^2.13|^3.0",
+                "predis/predis": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Lock\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jérémy Derussé",
+                    "email": "jeremy@derusse.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Creates and manages locks, a mechanism to provide exclusive access to a shared resource",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "cas",
+                "flock",
+                "locking",
+                "mutex",
+                "redlock",
+                "semaphore"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/lock/tree/v6.1.11"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-01-01T08:36:55+00:00"
+        },
+        {
             "name": "symfony/mailer",
             "version": "v6.1.11",
             "source": {
@@ -6692,6 +6941,76 @@
             "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/proxy-manager-bridge/tree/v6.1.11"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-01-01T08:36:55+00:00"
+        },
+        {
+            "name": "symfony/rate-limiter",
+            "version": "v6.1.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/rate-limiter.git",
+                "reference": "aef8d8b9b9921e8fccb3ecf73cc6f930b47f0a5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/aef8d8b9b9921e8fccb3ecf73cc6f930b47f0a5d",
+                "reference": "aef8d8b9b9921e8fccb3ecf73cc6f930b47f0a5d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "symfony/lock": "^5.4|^6.0",
+                "symfony/options-resolver": "^5.4|^6.0"
+            },
+            "require-dev": {
+                "psr/cache": "^1.0|^2.0|^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\RateLimiter\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Wouter de Jong",
+                    "email": "wouter@wouterj.nl"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides a Token Bucket implementation to rate limit input and output in your application",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "limiter",
+                "rate-limiter"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/rate-limiter/tree/v6.1.11"
             },
             "funding": [
                 {
@@ -8671,6 +8990,56 @@
                 }
             ],
             "time": "2023-01-10T18:53:01+00:00"
+        },
+        {
+            "name": "symfonycasts/reset-password-bundle",
+            "version": "v1.17.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SymfonyCasts/reset-password-bundle.git",
+                "reference": "6601f15fce7a4934bc9570f76feaf1b93536b1a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SymfonyCasts/reset-password-bundle/zipball/6601f15fce7a4934bc9570f76feaf1b93536b1a7",
+                "reference": "6601f15fce7a4934bc9570f76feaf1b93536b1a7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.2.5",
+                "symfony/config": "^5.4 | ^6.0",
+                "symfony/dependency-injection": "^5.4 | ^6.0",
+                "symfony/deprecation-contracts": "^2.2 | ^3.0",
+                "symfony/http-kernel": "^5.4 | ^6.0"
+            },
+            "conflict": {
+                "doctrine/orm": "<2.7",
+                "php": ">=8.1 <8.1.10"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^1.0",
+                "doctrine/doctrine-bundle": "^2.0.3",
+                "doctrine/orm": "^2.7",
+                "symfony/framework-bundle": "^5.4 | ^6.0",
+                "symfony/phpunit-bridge": "^5.4 | ^6.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "SymfonyCasts\\Bundle\\ResetPassword\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Symfony bundle that adds password reset functionality.",
+            "support": {
+                "issues": "https://github.com/SymfonyCasts/reset-password-bundle/issues",
+                "source": "https://github.com/SymfonyCasts/reset-password-bundle/tree/v1.17.0"
+            },
+            "time": "2023-02-02T15:11:33+00:00"
         },
         {
             "name": "symfonycasts/verify-email-bundle",

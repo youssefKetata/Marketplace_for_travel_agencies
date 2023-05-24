@@ -6,14 +6,25 @@ use App\Entity\Api;
 use App\Entity\Seller;
 use App\Form\ApiType;
 use App\Repository\ApiRepository;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/api')]
 class ApiController extends AbstractController
 {
+    protected $flashy;
+    protected $translator;
+
+    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
+    {
+        $this->flashy = $flashy;
+        $this->translator = $translator;
+    }
+
     #[Route('/', name: 'app_api_index', methods: ['GET'])]
     public function index(ApiRepository $apiRepository, Request $request): Response
     {

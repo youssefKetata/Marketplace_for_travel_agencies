@@ -7,10 +7,13 @@ use App\Form\CityType;
 use App\Repository\CityRepository;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/admin/location/city')]
 class CityController extends AbstractController
@@ -18,7 +21,10 @@ class CityController extends AbstractController
     protected $flashy;
     protected $translator;
 
-    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
+    public function __construct(FlashyNotifier $flashy,
+                                TranslatorInterface $translator,
+                                private SerializerInterface $serializer
+    )
     {
         $this->flashy = $flashy;
         $this->translator = $translator;
@@ -30,6 +36,19 @@ class CityController extends AbstractController
             'cities' => $cityRepository->findAll(),
         ]);
     }
+
+    #[Route('/getCities', name: 'app_admin_location_cities', methods: ['GET', 'POST'])]
+    public function getCities(CityRepository $cityRepository): Response
+    {
+        $cities = $cityRepository->findBy(['active' => true]);
+
+        $c = [];
+        foreach ($cities as $city) {
+            $c[$city->getId()] = $city->getName();
+        }
+        return new JsonResponse($c, Response::HTTP_OK, []);
+    }
+
 
     #[Route('/new', name: 'app_admin_location_city_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CityRepository $cityRepository): Response

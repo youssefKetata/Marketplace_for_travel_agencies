@@ -199,6 +199,36 @@ section {
     box-shadow: none;
 }
 
+.my-custom-class {
+    height: 40px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    padding: 10px 22px;
+    font-size: 18px;
+    text-align: left;
+    border-radius: 5px;
+    background-color: rgb(245, 238, 253);
+    width: 50%;
+}
+
+.my-custom-class:focus {
+    color: var(--heading-color);
+    border: 1px solid var(--main-color);
+    outline: none;
+    box-shadow: none;
+}
+
+.my-custom-class option{
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+.my-custom-class option:hover{
+    background-color: var(--main-color);
+    color: var(--white-color);
+}
+
+
+
 .section_padding {
     padding: 100px 0;
 }
@@ -514,7 +544,7 @@ section {
 
 /* --Banner Area-- */
 #home_one_banner {
-    background-image: url(../images/banner/bg.png);
+    background-image: url(../images/banner/index1-backgound.webp);
     padding: 370px 0 280px 0;
     position: relative;
     background-position: center;
@@ -589,6 +619,11 @@ section {
     border-radius: 10px;
     position: relative;
 }
+@media screen and (max-width: 767px) {
+    .flight_Search_boxed {
+        height: 100%;
+    }
+}
 
 .plan_icon_posation {
     position: absolute;
@@ -621,7 +656,15 @@ section {
 
 .flight_Search_boxed p {
     font-size: 14px;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
+
+.flight_Search_boxed > span {
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
 
 .flight_Search_boxed input {
     font-size: 22px;
@@ -2306,13 +2349,11 @@ font-weight: 500;
 =========================*/
 /* --Common Banner-- */
 #common_banner {
-    background-image: url(../images/banner/background.jpg);
-    padding: 10px 0 130px 0;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: rgb(139, 62, 234);
+    padding: 0 0 110px 0;
 }
 
-.common_bannner_text {
+.common_banner_text {
     text-align: center;
 }
 
@@ -5359,7 +5400,7 @@ textarea {
     border-radius: 5px;
     display: inline;
     border: solid 1px #ccc;
-    text-align: center;
+    /*text-align: center;*/
 
 }
 
@@ -5386,4 +5427,23 @@ textarea {
 
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+
+.form-control-age{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.form-control-age-input{
+    display: inline-block;
+    width: 100px;
+    margin: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 25rem;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #ffffff;
+    background-clip: padding-box;
 }

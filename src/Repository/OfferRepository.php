@@ -32,6 +32,9 @@ class OfferRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function remove(Offer $entity, bool $flush = false): void
     {
 
@@ -46,14 +49,12 @@ class OfferRepository extends ServiceEntityRepository
                 ->execute();
 
             $em->remove($entity);
-            $em->flush();
+            if ($flush) {
+                $em->flush();
+            }
         } catch (ForeignKeyConstraintViolationException $e) {
             // Handle the exception
-        }
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
+            throw new \Exception($e->getMessage());
         }
     }
 

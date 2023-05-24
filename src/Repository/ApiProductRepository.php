@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ApiProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,6 +39,23 @@ class ApiProductRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findOneByTwoFields($field1, $field2)
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+
+        $queryBuilder->where('a.api = :field1')
+            ->andWhere('a.idProductFromApi = :field2')
+            ->setParameter('field1', $field1)
+            ->setParameter('field2', $field2);
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
 
 //    /**
 //     * @return ApiProduct[] Returns an array of ApiProduct objects

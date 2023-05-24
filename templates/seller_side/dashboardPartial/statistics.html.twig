@@ -1,0 +1,44 @@
+{% extends 'seller_side/dashboard.html.twig' %}
+
+{% block dynamic_content %}
+
+    <div class="col-lg-8">
+{#        {% for message in app.flashes('error') %}#}
+{#            <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-danger"#}
+{#                 role="alert">#}
+{#                <i class="bi bi-x-circle-fill text-danger me-2"></i>#}
+{#                <span>{{ message }}</span>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#        <div class="dashboard_main_top">#}
+{#        </div>#}
+
+        {% if apiProducts %}
+            <div class="dashboard_common_table">
+                <h3>Statistics</h3>
+                <div class="table-responsive-lg table_common_area">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>product name</th>
+                            <th>nb clicks</th>
+{#                            <th>location</th>#}
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for apiProduct in apiProducts %}
+                            <tr>
+                                <td>{{ apiProduct.name }}</td>
+                                <td>{{ clicksCount[apiProduct.id] }}</td>
+{#                                    <td>{{ apiProductLocation[apiProduct.id] }}</td>#}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

@@ -143,6 +143,8 @@ class Offer
                 return $offerProductType;
         return null;
     }
+
+
     public function __toString(): string
     {
         // TODO: Implement __toString() method.

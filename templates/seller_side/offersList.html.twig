@@ -1,0 +1,124 @@
+{% extends 'seller_side/base_seller.html.twig' %}
+
+{% block stylesheet%}
+    <link rel="stylesheet" href="{{ asset('assets/css/offersTable.css') }}">
+{% endblock %}
+
+{% block banner %}
+    <section id="common_banner">
+    </section>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <section id="explore_area" class="section_padding">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>Offers List</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="row ">
+
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-danger"
+                                 role="alert">
+                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                <span>{{ message }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-success"
+                                 role="alert">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <span>{{ message }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="row ">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Offer</th>
+                        {% for productType in productTypes %}
+                            <th>{{ productType.name }}</th>
+                        {% endfor %}
+                        <th>
+                            Price
+                        </th>
+                        <th>action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if offers|length != null %}
+                        {% for offer in offers %}
+                            <tr>
+                                <td>{{ offer.id }}</td>
+                                <td>{{ offer.name }}</td>
+                                {% for productType in productTypes %}
+                                    {% set found = false %}
+                                    {% for offerProductType in offer.offerProductTypes %}
+                                        {% if offerProductType.productType.id == productType.id %}
+                                            {% set found = true %}
+                                            {#                            {% if offerProductType.maxItems == -1 %} #}
+                                            <td><span class="checkmark">&#10003;</span></td>
+                                            {#                            {% else %} #}
+                                            {#                                <td><span class="crossmark">&#10005;</span></td> #}
+                                            {#                            {% endif %} #}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not found %}
+                                        <td><span class="crossmark">&#10005;</span></td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>
+                                    {{ offer.price }}
+                                </td>
+                                <td>
+                                    <form action="{{ path('app_seller_side_addToCard',{'offer':offer.id}) }}"
+                                          method="POST">
+                                        <button type="submit" class="btn btn_theme btn_sm w-72">Add to
+                                            Cart
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="100%">
+                                <div class="row justify-content-center">
+                                    <p>No offers found</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </section>
+
+{% endblock %}
+
+
+

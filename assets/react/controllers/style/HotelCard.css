@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+body {
+    background: #f9f9f9;
+    font-family: "roboto", sans-serif;
+}
+
+.main-content {
+    padding-top: 0px;
+    padding-bottom: 10px;
+}
+
+.container {
+    border-radius: 10px;
+}
+
+.text-striked {
+    text-decoration: line-through;
+}
+
+.shadow {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+}
+
+.hotel-card {
+    border-radius: 5px;
+}
+
+.hotel-card .hotel-card_images {
+    flex: 2;
+    flex-basis: 30%;
+    /* border:rgb(0, 0, 0) solid 1px; */
+    border-radius: 15px 15px 15px 15px;
+    padding: 5px;
+    /* overflow: hidden; */
+}
+/* .hotel-card .hotel-card_images .carousel-item img {
+
+	height: 20px;
+} */
+
+
+.hotel-card .hotel-card_info {
+    flex: 3;
+    /* border:rgb(0, 0, 0) solid 1px; */
+    border-radius: 15px 15px 15px 15px;
+    padding: 5px;
+    flex-basis: 50%;
+}
+
+.hotel-card .hotel-card_info .hotel-stars {
+    border:rgb(0, 0, 0) solid 1px;
+    border-radius: 15px 15px 15px 15px;
+    padding: 5px;
+    flex-basis: 50%;
+}
+
+
+.hotel-card .amnities img {
+    max-height: 20px;
+    /* border:rgb(0, 0, 0) solid 1px; */
+}
+
+.hotel-card .other-seller {
+    list-style-type: none;
+    /* border:rgb(0, 0, 0) solid 1px; */
+}
+
+.hotel-card .price {
+    flex: 4;
+    flex-basis: 20%;
+    /* border:rgb(0, 0, 0) solid 1px; */
+    border-radius: 10px;
+}
+
+
+
+/* edit htoel card pricing */
+.hotel-card .hotel-card_pricing {
+    border:rgb(0, 0, 0) solid 1px;
+}
+
+.carousel .carousel-control-prev {
+    background: linear-gradient(to right, #333333bb, #33333300);
+}
+
+.carousel .carousel-control-next {
+    background: linear-gradient(to left, #333333bb, #33333300);
+}
+
+@media(min-width: 992px) {
+    .hotel-card .hotel-card_images {
+        min-height: 300px;
+        max-width: 280px;
+
+    }
+}
+@media (min-width: 992px) {
+    .hotel-card .hotel-card_images .carousel-item img {
+        height: 100%;
+        border-radius: 15px 15px 15px 15px;
+
+    }
+}

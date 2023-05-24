@@ -9,16 +9,18 @@
     <!-- Bootstrap css -->
     <link rel="stylesheet" href={{ asset("assets/css/bootstrap.min.css") }} />
     <!-- animate css -->
-    <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">
+{#    <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">#}
     <!-- Fontawesome css -->
+
+    {# bootstrap slows donw the inital page load and 95% not used #}
     <link rel="stylesheet" href={{asset('assets/css/fontawesome.all.min.css')}} />
-    <link rel="stylesheet" href= "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" >
+{#    <link rel="stylesheet" href= "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" >#}
     <!-- popup css -->
-    <link rel="stylesheet" href={{ asset("assets/css/popup.css") }} />
+{#    <link rel="stylesheet" href={{ asset("assets/css/popup.css") }} />#}
     <!-- owl.carousel css -->
-    <link rel="stylesheet" href={{ asset("assets/css/owl.carousel.min.css") }} />
+{#    <link rel="stylesheet" href={{ asset("assets/css/owl.carousel.min.css") }} />#}
     <!-- owl.theme.default css -->
-    <link rel="stylesheet" href={{ asset("assets/css/owl.theme.default.min.css") }} />
+{#    <link rel="stylesheet" href={{ asset("assets/css/owl.theme.default.min.css") }} />#}
     <!-- navber css -->
     <link rel="stylesheet" href={{ asset("assets/css/navber.css") }} />
     <!-- meanmenu css -->
@@ -29,6 +31,9 @@
     <link rel="stylesheet" href={{ asset("assets/css/responsive.css") }} />
     <!-- Favicon -->
     <link rel="icon" type="image/png" href={{ asset("assets/images/favicon.png") }}>
+    <link rel="stylesheet" href={{ asset('assets/css/React/App.css') }} >
+    <link rel="stylesheet" href={{ asset('assets/css/React/HotelCard.css') }} >
+    <link rel="stylesheet" href={{ asset('assets/css/React/NoResultsCard.css') }} >
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     {% block stylesheet %}
@@ -61,6 +66,7 @@
 
 <!-- Banner Area -->
 {% block banner %}
+
 {% endblock %}
 
 {% block content %}
@@ -86,8 +92,8 @@
 <script src={{ asset("assets/js/wow.min.js") }}></script>
 <!-- Custom js -->
 <script src={{ asset("assets/js/custom.js") }}></script>
-<script src={{ asset("assets/js/add-form.js") }}></script>
-<script src={{ asset("assets/js/video.js") }}></script>
+{#<script src={{ asset("assets/js/add-form.js") }}></script>#}
+{#<script src={{ asset("assets/js/video.js") }}></script>#}
 
 {% endblock %}
 {#--------------end javascrip--------------#}

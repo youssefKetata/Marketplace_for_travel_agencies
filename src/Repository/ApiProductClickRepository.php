@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ApiProductClick;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,20 +40,24 @@ class ApiProductClickRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return ApiProductClick[] Returns an array of ApiProductClick objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByApiProductAndDate($apiProduct, DateTime $date)
+    {
+        $startOfDay = clone $date;
+        $startOfDay->setTime(0, 0, 0);
+
+        $endOfDay = clone $date;
+        $endOfDay->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('apc')
+            ->andWhere('apc.apiProduct = :apiProduct')
+            ->andWhere('apc.date >= :startOfDay')
+            ->andWhere('apc.date <= :endOfDay')
+            ->setParameter('apiProduct', $apiProduct)
+            ->setParameter('startOfDay', $startOfDay)
+            ->setParameter('endOfDay', $endOfDay)
+            ->getQuery()
+            ->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?ApiProductClick
 //    {

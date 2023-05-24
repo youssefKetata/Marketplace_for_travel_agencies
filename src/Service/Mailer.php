@@ -13,6 +13,12 @@ class Mailer
     public function __construct(private readonly MailerInterface $mailer)
     {
     }
+//key name : marketplcae
+//apikey: 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
+//server: smtp.sendgrid.net
+//username: apikey
+//port: 25,587 	(for unencrypted/TLS connections)
+//port: 465 	(for SSL connections)
 
     /**
      * @throws TransportExceptionInterface

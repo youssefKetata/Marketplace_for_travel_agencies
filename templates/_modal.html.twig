@@ -15,14 +15,17 @@
                  data-modal-form-target="{{ is_second_modal is defined ? 'modalFooterTwo' : 'modalFooter'}}"
             >
                 <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    {{ 'Buttons.General.Annuler'|trans }}
+{#                    {{ 'Buttons.General.Annuler'|trans }}#}
+                    Cancel
                 </a>
                 <a type="button" class="btn btn-primary" data-action="modal-form#submitForm"
                         {% if is_second_modal is defined  %}
                         data-bs-target="#exampleModal"
                         {% endif %}
                 >
-                    {{ 'Buttons.General.Enregistrer'|trans }}
+
+{#                    {{ 'Buttons.General.Enregistrer'|trans }}#}
+                    Save
                 </a>
             </div>
         </div>

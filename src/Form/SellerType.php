@@ -41,13 +41,7 @@ class SellerType extends AbstractType
                 'class' => City::class,
                 "disabled" => true,
 
-            ])
-            ->add('api', EntityType::class, [
-                'required' => false,
-                'class'=> Api::class
-            ])
-
-        ;
+            ]);
 
         $builder->get('user')
             ->remove('password');

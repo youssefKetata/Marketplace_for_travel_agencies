@@ -1,0 +1,147 @@
+:root {
+    --select-border: #777;
+    --select-focus: #8b3eea;
+    --select-arrow: var(--select-border);
+}
+
+/*drop down sort*/
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&display=swap');
+.dropdown-sort::before{
+    content: 'sort by';
+}
+.dropdown-sort {
+    position: relative;
+    box-sizing: content-box;
+    display: inline-block;
+    /* float: right; */
+    width: 200px;
+    height: 0.75em;
+    /* margin-left: auto; */
+    margin-right: 1;
+    padding: 18px 21px;
+
+    margin-bottom: 10px;
+    font-family: inherit;
+    border: 1px solid transparent; /* Set the initial border to transparent */
+    border-radius: 10px;
+    background-color: #fff;
+    /* box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.dropdown-sort::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 1px solid #8b3eea; /* Set the border color here */
+    border-radius: 10px; /* Match the border radius */
+    pointer-events: none;
+    z-index: 2;
+}
+
+
+.sort-by {
+    display: inline-block;
+    margin-right: 20px;
+
+    /* position: absolute; */
+    /* right: 350px;
+    margin-top: 15px; */
+
+
+}
+
+.dropdown-sort:hover svg {
+    transform: scale(1.1);
+}
+
+.dropdown-sort button {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+}
+
+.dropdown-sort button:focus~svg {
+    transform: rotate(-180deg);
+}
+
+.dropdown-sort .options {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.dropdown-sort input {
+    display: none;
+}
+
+.dropdown-sort input:checked+label {
+    display: block;
+    z-index: 2;
+    font-weight: 600;
+    transform: none !important;
+}
+
+.dropdown-sort label {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    padding: 18px 21px;
+    line-height: 1;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s ease;
+}
+
+.dropdown-sort label:hover {
+    background-color: #d6d6d6;
+}
+
+.dropdown-sort button:focus+.options input:not(:checked)+label,
+.dropdown-sort .options label:active,
+.dropdown-sort .options label:active~label {
+    transform: translateY(calc(var(--index) * 100%));
+}
+
+.dropdown-sort button:focus+.options input:checked+label~label,
+.dropdown-sort .options input:checked~label:active,
+.dropdown-sort .options input:checked~label:active~label {
+    transform: translateY(calc((var(--index) - 1) * 100%));
+}
+
+.dropdown-sort svg {
+    position: absolute;
+    width: 21px;
+    top: 25%;
+    right: 14px;
+    z-index: 2;
+    fill: currentColor;
+    transition: transform 0.1s;
+}
+
+
+
+
+/* filters-row*/
+@media screen and (min-width: 991px) {
+    .filters-row {
+        overflow-y: visible;
+        position: sticky;
+        top: -300px;
+        height: 100dvh;
+        z-index: 1;
+        padding: 10px;
+
+
+    }
+}

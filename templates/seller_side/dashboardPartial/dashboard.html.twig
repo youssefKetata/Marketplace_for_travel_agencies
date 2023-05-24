@@ -1,11 +1,45 @@
 {% extends 'seller_side/dashboard.html.twig' %}
 
 {% block dynamic_content %}
+
     <div class="col-lg-8">
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-danger"
+                 role="alert">
+                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                <span>{{ message }}</span>
+            </div>
+        {% endfor %}
+        <div class="dashboard_main_top">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="dashboard_top_boxed">
+                        <div class="dashboard_top_icon">
+                            <i class="bi bi-hand-index-thumb-fill"></i>
+                        </div>
+                        <div class="dashboard_top_text">
+                            <h3>Today clicks</h3>
+                            <h1>{{ todayClicks }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="dashboard_top_boxed">
+                        <div class="dashboard_top_icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <div class="dashboard_top_text">
+                            <h3>Yesterday clicks</h3>
+                            <h1>{{ yesterdayClicks }}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="dashboard_main_top">
         </div>
         <div class="dashboard_common_table">
-            <h3>My offers</h3>
+            <h3>Active offers</h3>
             <div class="table-responsive-lg table_common_area">
                 <table class="table">
                     <thead>
@@ -15,7 +49,7 @@
                         <th>Nb products</th>
                         <th>Remaining days</th>
                         <th>Status</th>
-                        <th>Action</th>
+{#                        <th>Action</th>#}
                     </tr>
                     </thead>
                     <tbody>
@@ -26,14 +60,14 @@
                     {% set end_index = start_index + offers_per_page %}
                     {% set total_pages = (seller.sellerOffers.count + offers_per_page - 1) // offers_per_page %}
                     {% if seller.sellerOffers.count > 0 %}
-                        {% for sellerOffer in seller.sellerOffers|slice(start_index, end_index) %}
+                        {% for sellerOffer in activeSellerOffers|slice(start_index, end_index) %}
                             <tr>
                                 <td>{{ start_index + loop.index }}</td>
                                 <td>{{ sellerOffer.offer.name }}</td>
                                 <td>{{ sellerOffer.offer.nbProductTypes }}</td>
                                 <td>{{ sellerOffer.remainingDays }}</td>
                                 <td class="text-center {{ sellerOffer.status == 'active' ? 'text-success' : (sellerOffer.status == 'pending' ? 'text-warning' : 'text-danger') }}">{{ sellerOffer.status }}</td>
-                                <td><i class="fas fa-eye"></i></td>
+{#                                <td><i class="fas fa-eye"></i></td>#}
                             </tr>
                         {% endfor %}
                     {% else %}
@@ -47,10 +81,13 @@
                 </table>
             </div>
         </div>
+
+
         <div class="pagination_area">
             <ul class="pagination">
                 <li class="page-item {{ page == 1 ? 'disabled' }}">
-                    <a class="page-link" href="{{ path(app.request.get('_route'), {'page': page-1}) }}" aria-label="Previous">
+                    <a class="page-link" href="{{ path(app.request.get('_route'), {'page': page-1}) }}"
+                       aria-label="Previous">
                         <span aria-hidden="true">«</span>
                         <span class="sr-only">Previous</span>
                     </a>
@@ -61,7 +98,8 @@
                     </li>
                 {% endfor %}
                 <li class="page-item {{ page == total_pages ? 'disabled' }}">
-                    <a class="page-link" href="{{ path(app.request.get('_route'), {'page': page+1}) }}" aria-label="Next">
+                    <a class="page-link" href="{{ path(app.request.get('_route'), {'page': page+1}) }}"
+                       aria-label="Next">
                         <span aria-hidden="true">»</span>
                         <span class="sr-only">Next</span>
                     </a>

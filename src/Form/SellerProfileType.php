@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Api;
 use App\Entity\City;
 use App\Entity\Seller;
-use http\Url;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -19,7 +18,6 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class SellerProfileType extends AbstractType
 {
@@ -44,10 +42,6 @@ class SellerProfileType extends AbstractType
                 'required' => true,
                 'class' => City::class,
             ])
-            ->add('api', EntityType::class, [
-                'required' => false,
-                'class'=> Api::class
-            ])
             ->add('oldPassword',PasswordType::class, [
                 'mapped' => false,
                 'required' => false,
@@ -58,7 +52,7 @@ class SellerProfileType extends AbstractType
                 'error_bubbling' => false, // Prevent errors from bubbling up to the parent form
         ])
             ->add('brochure', FileType::class, [
-                'label' => 'Image',
+                'label' => 'Logo',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -86,7 +80,6 @@ class SellerProfileType extends AbstractType
                     )
                 ]
             ])
-            ->add('api')
 
         ;
 

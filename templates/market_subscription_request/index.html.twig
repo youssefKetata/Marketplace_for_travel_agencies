@@ -1,11 +1,8 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Market Subscription Requests list{% endblock %}
 
 {% block container %}
-    <h1 class="text-start fs-2 bold my-2 mb-3 fs-4 display-1">Market Subscription Requests list</h1>
-
-
     <div>
 
         <table class="table align-middle mb-0 bg-white shadow-lg " data-search="true"
@@ -75,6 +72,7 @@
                                             data-form-url-value="{{ path('app_market_subscription_request_delete', {'id':market_subscription_request.id}) }}"
                                             data-url-value="{{ path('app_market_subscription_request_index', { ajax: 1 } ) }}"
                                             data-node-dest-id-value="myThreeCustomContent"
+                                            data-modal-title-value="Delete request"
                                             data-refresh-key-value="refresh-html">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                              class="bi bi-trash-fill text-dark" viewBox="0 0 16 16">

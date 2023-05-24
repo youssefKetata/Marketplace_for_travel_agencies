@@ -1,0 +1,17 @@
+.noResult-card {
+    margin: 0 auto;
+    border: 1px solid #8b3eea;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #161616;
+}
+.noResult-card-body {
+    text-align: center;
+}
+.noResult-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.noResult-card-text {
+    font-size: 1.25rem;
+}

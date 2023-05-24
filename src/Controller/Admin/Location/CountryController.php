@@ -15,6 +15,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/admin/location/country')]
 class CountryController extends AbstractController
 {
+    protected $flashy;
+    protected $translator;
 
     public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
     {
@@ -101,6 +103,7 @@ class CountryController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$country->getCode(), $request->request->get('_token'))) {
             $countryRepository->remove($country, true);
+            $this->flashy->message( $this->translator->trans('Message.Facility.Delete'));
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);

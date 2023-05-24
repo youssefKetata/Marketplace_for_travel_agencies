@@ -3,14 +3,13 @@
 namespace App\Controller\Seller;
 
 use App\Entity\Api;
-use App\Entity\MarketSubscriptionRequest;
 use App\Entity\Offer;
 use App\Entity\SellerOffer;
 use App\Form\ApiType;
-use App\Form\MarketSubscriptionRequestType;
 use App\Form\SellerProfileType;
+use App\Repository\ApiProductClickRepository;
+use App\Repository\ApiProductRepository;
 use App\Repository\ApiRepository;
-use App\Repository\MarketSubscriptionRequestRepository;
 use App\Repository\MenuItemSellerRepository;
 use App\Repository\OfferRepository;
 use App\Repository\ProductTypeRepository;
@@ -18,8 +17,9 @@ use App\Repository\SellerOfferRepository;
 use App\Repository\SellerRepository;
 use App\Service\Helpers;
 use DateTime;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr;
 use Exception;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\Form\FormError;
@@ -36,7 +36,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Validator\Constraints\Length;
 
 #[Route('/seller_side', name: 'app_seller_side_')]
 class DashboardController extends AbstractController
@@ -53,9 +52,28 @@ class DashboardController extends AbstractController
         $this->flashy = $flashy;
     }
 
+    #[Route('/my_offers', name: 'my_offers'), IsGranted('ROLE_SELLER')]
+    public function myOffers(SellerRepository $sellerRepository): Response
+    {
+        $user = $this->security->getUser();
+        $email = $user->getUserIdentifier();
+        $seller = $sellerRepository->findOneBy([
+            'user' => $user
+        ]);
+        $session = $this->requestStack->getSession();
+        return $this->render('seller_side/dashboardPartial/myOffers.html.twig', [
+            'seller' => $seller,
+        ]);
+    }
+
 
     #[Route('/dashboard', name: 'dashboard'), IsGranted('ROLE_SELLER')]
-    public function dashboard(SellerRepository $sellerRepository, Request $request): Response
+    public function dashboard(SellerRepository          $sellerRepository,
+                              Request                   $request,
+                              ApiProductRepository      $apiProductRepository,
+                              ApiProductClickRepository $apiProductClickRepository,
+
+    ): Response
     {
         $user = $this->security->getUser();
         $email = $user->getUserIdentifier();
@@ -77,27 +95,62 @@ class DashboardController extends AbstractController
         } else {
             $menu = $session->get('menu');
         }
+
+        if ($seller->getApi() === null) {
+            $this->addFlash('error', 'Please wait until the admin set your api');
+        }
+        //active sellerOffers
+        $sellerOffers = $seller->getSellerOffers();
+        $activeSellerOffers = [];
+        foreach ($sellerOffers as $sellerOffer) {
+            if ($sellerOffer->getStatus() === 'active') {
+                $activeSellerOffers[] = $sellerOffer;
+            }
+        }
+
+        //clicks count
+        $apiProducts = $apiProductRepository->findBy([
+            'api' => $seller->getApi()
+        ]);
+        $todayClicks = 0;
+        $yesterdayClicks = 0;
+        $today = new DateTime();
+        $yesterday = new DateTime();
+        $yesterday->modify('-1 day');
+
+        foreach ($apiProducts as $apiProduct) {
+            $a = $apiProductClickRepository->findByApiProductAndDate($apiProduct, $today);
+            $b = $apiProductClickRepository->findByApiProductAndDate($apiProduct, $yesterday);
+            $todayClicks += count($a);
+            $yesterdayClicks += count($b);
+        }
+
+        //avg click per day
+        
+
         //build pagination system
         return $this->render('seller_side/dashboardPartial/dashboard.html.twig', [
-            'controller_name' => 'DashboardController',
             'menu' => $menu,
             'seller' => $seller,
+            'activeSellerOffers' => $activeSellerOffers,
+            'todayClicks' => $todayClicks,
+            'yesterdayClicks' => $yesterdayClicks,
         ]);
     }
 
 
     #[Route('/offers', name: 'offer'), isGranted('ROLE_SELLER')]
-    public function offer(offerRepository $offerRepository,
-                          SellerRepository $sellerRepository,
+    public function offer(offerRepository       $offerRepository,
+                          SellerRepository      $sellerRepository,
                           ProductTypeRepository $productTypeRepository
     ): Response
     {
         $user = $this->security->getUser();
         $seller = $sellerRepository->findOneBy(['user' => $user]);
         $offers = $offerRepository->findAll();
+        $offer = $offerRepository->findOneBy(['id' => '11139']);
         $productTypes = $productTypeRepository->findAll();
-        $top_offers = array_splice($offers, 0, 3);
-        return $this->render('seller_side/offer.html.twig', [
+        return $this->render('seller_side/offersList.html.twig', [
             'offers' => $offers,
             'seller' => $seller,
             'productTypes' => $productTypes,
@@ -184,19 +237,18 @@ class DashboardController extends AbstractController
 
                 $offerForm = $this->createFormBuilder($defaultData)
                     ->add($offer->getId(), DateType::class, [
-                        'help' => 'The products will start appear in marketplace at this date',
+                        'label' => 'Start date',
                         'data' => new DateTime(),
-                        'label' => "Starting date",
                         'required' => true,
                         'widget' => 'single_text',
                         'constraints' => [
-                            new Length(['min' => 3]),
                             new Assert\GreaterThan([
                                 'value' => new DateTime(),
                                 'message' => 'The date cannot be earlier than today.',
                             ])
                         ]
                     ])
+                    ->remove('_token')
                     ->getForm();
                 $offerForm->handleRequest($request);
                 $forms[] = $offerForm->createView();
@@ -215,7 +267,7 @@ class DashboardController extends AbstractController
             'user' => $this->getUser()
         ]);
 
-        return $this->render('seller_side/sellerValidOffer.html.twig', [
+        return $this->render('seller_side/sellerBoughtOffer.html.twig', [
             'seller' => $seller,
         ]);
     }
@@ -306,6 +358,53 @@ class DashboardController extends AbstractController
     }
 
 
+    #[Route('/statistics', name: 'statistics'), IsGranted('ROLE_SELLER')]
+    public function statistics(SellerRepository $sellerRepository, ApiProductRepository $apiProductRepository): Response
+    {
+        $seller = $sellerRepository->findOneBy([
+            'user' => $this->getUser()
+        ]);
+
+        $apiProducts = $apiProductRepository->findBy(['api' => $seller->getApi()]);
+        $clicksCountHotels = [];
+//        $apiProductLocation = [[]];
+        //count number of clicks for each product
+        foreach ($apiProducts as $apiProduct) {
+            if ($apiProduct->getProductType()->getName() === 'hotels') {
+                $clicksCountHotels[$apiProduct->getId()] = 0;
+//                $apiProductLocation[$apiProduct->getName()] = [];
+                foreach ($apiProduct->getApiProductClicks() as $click) {
+                    $clicksCountHotels[$apiProduct->getId()]++;
+//                    if(!array_key_exists($click->getIpLocation(), $apiProductLocation[$apiProduct->getName()]))
+//                        $apiProductLocation[$apiProduct->getName()][$click->getIpLocation()] = 1;
+//                    else
+//                        $apiProductLocation[$apiProduct->getName()][$click->getIpLocation()]++;
+                }
+            }
+            //other products
+            //if ProductType === 'flights'
+        }
+        // Sort the array based on the number of clicks (in descending order)
+        $keys = array_keys($clicksCountHotels);
+        $values = array_values($clicksCountHotels);
+        // Sort the values array while maintaining key-value association
+        usort($values, function ($a, $b) {
+            return $b - $a; // Sort in ascending order, use $b - $a for descending order
+        });
+
+        // Combine the sorted values with the original keys
+        $sortedArray = array_combine($keys, $values);
+
+
+        return $this->render('seller_side/dashboardPartial/statistics.html.twig', [
+            'seller' => $seller,
+            'apiProducts' => $apiProducts,
+            'clicksCount' => $sortedArray,
+//            'apiProductLocation' => $apiProductLocation,
+        ]);
+    }
+
+
     #[Route('/profile', name: 'profile', methods: ['GET', 'POST']), IsGranted('ROLE_SELLER')]
     public function profile(Request                     $request,
                             SellerRepository            $sellerRepository,
@@ -329,7 +428,6 @@ class DashboardController extends AbstractController
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
                 // Move the file to the directory where brochures are stored
-                dump('dump');
                 try {
                     $brochureFile->move(
                         $this->getParameter('brochures_directory'),

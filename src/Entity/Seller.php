@@ -66,7 +66,7 @@ class Seller
 
     #[ORM\Column(type: 'string')]
     #[ORM\JoinColumn(nullable: true)]
-    private string $brochureFilename;
+    private ?string $brochureFilename;
 
     public function __construct()
     {
@@ -160,7 +160,7 @@ class Seller
             return $this->sellerOffers;
     }
 
-    public function getBrochureFilename(): string
+    public function getBrochureFilename(): ?string
     {
         return $this->brochureFilename;
     }

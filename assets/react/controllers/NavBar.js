@@ -3,7 +3,8 @@ import Hotels from './HotelsForm'; // Import the Hotels component
 import Tours from './ToursForm'; // Import the Tours component
 import Flights from './FlightsForm'; // Import the Flights component
 
-const NavBar = () => {
+
+const NavBar = (props) => {
     const [activeTab, setActiveTab] = useState('hotels'); // State to keep track of the active tab
 
     // Function to handle tab click
@@ -38,7 +39,7 @@ const NavBar = () => {
                             </div>
                             <div className="tab-content" id="myTabContent">
                                 {/* Render active component */}
-                                {activeTab === 'hotels' && <Hotels />}
+                                {activeTab === 'hotels' && <Hotels onDataReceived = {props.onDataReceived }/>}
                                 {activeTab === 'tours' && <Tours />}
                                 {activeTab === 'flights' && <Flights />}
                             </div>

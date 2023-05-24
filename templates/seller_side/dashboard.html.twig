@@ -1,66 +1,9 @@
-{# <!DOCTYPE html>#}
-{# <html lang="zxx">#}
-
-{# <head>#}
-{#    <meta charset="utf-8">#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">#}
-{#    <!-- Title -->#}
-{#    <title>Home - Andtourtravel </title>#}
-{#    <!-- Bootstrap css -->#}
-{#    <link rel="stylesheet" href={{ asset("assets/css/bootstrap.min.css") }} />#}
-{#    <!-- animate css -->#}
-{#    <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">#}
-{#    <!-- Fontawesome css -->#}
-{#    <link rel="stylesheet" href={{asset('assets/css/fontawesome.all.min.css')}} />#}
-{#    <link rel="stylesheet" href= "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" >#}
-{#    <!-- popup css -->#}
-{#    <link rel="stylesheet" href={{ asset("assets/css/popup.css") }} />#}
-{#    <!-- owl.carousel css -->#}
-{#    <link rel="stylesheet" href={{ asset("assets/css/owl.carousel.min.css") }} />#}
-{#    <!-- owl.theme.default css -->#}
-{#    <link rel="stylesheet" href={{ asset("assets/css/owl.theme.default.min.css") }} />#}
-{#    <!-- navber css -->#}
-{#    <link rel="stylesheet" href={{ asset("assets/css/navber.css") }} />#}
-{#    <!-- meanmenu css -->#}
-{#    <link rel="stylesheet" href={{ asset("assets/css/meanmenu.css") }} />#}
-{#    <!-- Style css -->#}
-{#    <link rel="stylesheet" href={{ asset("assets/css/style.css") }} />#}
-{#    <!-- Responsive css -->#}
-{#    <link rel="stylesheet" href={{ asset("assets/css/responsive.css") }} />#}
-{#    <!-- Favicon -->#}
-{#    <link rel="icon" type="image/png" href={{ asset("assets/images/favicon.png") }}>#}
-{# </head>#}
-{# <body>#}
-{# <!-- preloader Area -->#}
-{# <div class="preloader">#}
-{#    <div class="d-table">#}
-{#        <div class="d-table-cell">#}
-{#            <div class="lds-spinner">#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#                <div></div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{# </div>#}
-{# {{ include('seller_side/partial/header.html.twig') }}#}
-
-
-{# <!-- Banner Area -->#}
-{# {% block banner %}#}
-{#    <section id="common_banner">#}
-{#        <div class="container">#}
-{#            <div class="row">#}
-{#                <div class="col-lg-12">#}
+{% extends 'seller_side/base_seller.html.twig' %}
+{% block banner %}
+    <section id="common_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
 {#                    <div class="common_bannner_text">#}
 {#                        <h2>Customer dashboard</h2>#}
 {#                        <ul>#}
@@ -68,153 +11,6 @@
 {#                            <li><span><i class="fas fa-circle"></i></span>Customer dashboard</li>#}
 {#                        </ul>#}
 {#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </section>#}
-{# {% endblock %}#}
-
-{# <section id="dashboard_main_arae" class="section_padding">#}
-{#    <div class="container">#}
-{#        <div class="row">#}
-{#            <div class="col-lg-4">#}
-{#                <div class="dashboard_sidebar">#}
-{#                    <div class="dashboard_sidebar_user">#}
-{#                        <img alt="img" src={{ asset('assets/images/' ~ seller.brochureFilename) }}#}
-{#                        onerror="this.src='{{ asset('assets/images/common/dashboard-user.png') }}'">#}
-{#                        <h3>{{ seller.name }}</h3>#}
-{#                        <p><a href="">+00 123 456 789</a></p>#}
-{#                        <p><a href="">{{seller.user.email}}</a></p>#}
-{#                    </div>#}
-{#                    <div class="dashboard_menu_area">#}
-{#                        <ul>#}
-{#                            <li><a href="{{ path('app_seller_side_dashboard') }}" class="active"><i#}
-{#                                            class="fas fa-tachometer-alt"></i>Dashboard</a></li>#}
-{#                            <li class="dashboard_dropdown_button" id="dashboard_dropdowns"><i#}
-{#                                        class="fas fa-address-card"></i>My offers#}
-{#                                <span> <i class="fas fa-angle-down"></i></span>#}
-{#                                <div class="booing_sidebar_dashboard" id="show_dropdown_item" style="display: none;">#}
-{#                                    <ul>#}
-{#                                        <li><a href="{{ path('app_seller_side_sellerBoughtOffers') }}"><i class="fas fa-hotel"></i>Active#}
-{#                                                offers</a></li>#}
-{#                                        <li><a href="{{ path('app_seller_side_api_form') }}"><i class="fas fa-paper-plane"></i>Api#}
-{#                                                </a></li>#}
-{#                                        <li>#}
-{#                                            <a href="tour-booking.html">#}
-{#                                                <i class="fas fa-map"></i>Tour booking#}
-{#                                            </a>#}
-{#                                        </li>#}
-{#                                        <li><a href="booking-history.html">#}
-{#                                                <i class="fas fa-history"></i>Booking history</a>#}
-{#                                        </li>#}
-{#                                    </ul>#}
-{#                                </div>#}
-{#                            </li>#}
-{#                            <li><a href="{{ path('app_seller_side_profile') }}"><i class="fas fa-user-circle">#}
-{#                                    </i>My profile</a>#}
-{#                            </li>#}
-{#                            <li><a href="wallet.html"><i class="fas fa-wallet"></i>Wallet</a></li>#}
-{#                            <li><a href="notification.html"><i class="fas fa-bell"></i>Notifications</a></li>#}
-{#                            <li>#}
-{#                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">#}
-{#                                    <i class="fas fa-sign-out-alt"></i>Logout#}
-{#                                </a>#}
-{#                            </li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div id="dynamic_content"#}
-{#            {% block dynamic_content %}#}
-{#                - -------------content goes here------------- -#}
-{#            {% endblock %}#}
-{#        </div>#}
-{#    </div>#}
-{#    </div>#}
-{# </section>#}
-
-{# <!-- Logout Modal -->#}
-{# <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">#}
-{#    <div class="modal-dialog modal-dialog-centered">#}
-{#        <div class="modal-content">#}
-{#            <div class="modal-body logout_modal_content">#}
-{#                <div class="btn_modal_closed">#}
-{#                    <button type="button" data-bs-dismiss="modal" aria-label="Close"><i#}
-{#                                class="fas fa-times"></i></button>#}
-{#                </div>#}
-{#                <h3>#}
-{#                    Are you sure? <br>#}
-{#                    you want to log out.#}
-{#                </h3>#}
-{#                <div class="logout_approve_button">#}
-{#                    <button data-bs-dismiss="modal" class="btn btn_theme btn_md" id="logout-confirm-btn">Yes Confirm</button> #}
-{#                    <button data-bs-dismiss="modal" class="btn btn_border btn_md">No Cancel</button>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{# </div>#}
-
-{# <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
-{# <script>#}
-{#    document.getElementById('logout-confirm-btn').addEventListener('click', function (){#}
-{#        window.location.href= "{{ path('app_logout') }}"#}
-{#    })#}
-
-{#    // $(document).ready(function() {#}
-{#    //     $('#show_dropdown_item a').click(function(event) {#}
-{#    //         event.preventDefault();#}
-{#    //         var url = $(this).attr('href');#}
-{#    //         $.get(url, function(response) {#}
-{#    //             $('#dynamic_content').html(response);#}
-{#    //         });#}
-{#    //     });#}
-{#    // });#}
-{# </script>#}
-
-
-{#- -------------footer------------- -#}
-{# {{ include('seller_side/partial/footer.html.twig') }}#}
-{#- -------------end footer------------- -#}
-
-{#- -------------javascrip------------- -#}
-{# {% block javascript %}#}
-{# <script src={{ asset("assets/js/jquery-3.6.0.min.js") }}></script>#}
-{# <!-- Bootstrap js -->#}
-{# <script src={{ asset("assets/js/bootstrap.bundle.js") }}></script>#}
-{# <!-- Meanu js -->#}
-{# <script src={{ asset("assets/js/jquery.magnific-popup.min.js") }}></script>#}
-{# <!-- Meanu js -->#}
-{# <script src={{ asset("assets/js/jquery.meanmenu.js") }}></script>#}
-{# <!-- owl carousel js -->#}
-{# <script src={{ asset("assets/js/owl.carousel.min.js") }}></script>#}
-{# <!-- wow.js -->#}
-{# <script src={{ asset("assets/js/wow.min.js") }}></script>#}
-{# <!-- Custom js -->#}
-{# <script src={{ asset("assets/js/custom.js") }}></script>#}
-{# <script src={{ asset("assets/js/add-form.js") }}></script>#}
-{# <script src={{ asset("assets/js/video.js") }}></script>#}
-
-
-{# {% endblock %}#}
-{#- -------------end javascrip------------- -#}
-{# </body>#}
-{# </html>#}
-
-
-{% extends 'seller_side/base_seller.html.twig' %}
-{% block banner %}
-    <section id="common_banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="common_bannner_text">
-                        <h2>Customer dashboard</h2>
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><span><i class="fas fa-circle"></i></span>Customer dashboard</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -228,8 +24,13 @@
                 <div class="col-lg-4">
                     <div class="dashboard_sidebar">
                         <div class="dashboard_sidebar_user">
-                            <img alt="img" src={{ asset('assets/images/' ~ seller.brochureFilename) }}
-                            onerror="this.src='{{ asset('assets/images/common/dashboard-user.png') }}'">
+                            {% if seller.brochureFilename is not null %}
+                                <img src="{{ asset('assets/images/' ~ seller.brochureFilename) }}"
+                                     onerror="this.src='{{ asset('assets/images/common/dashboard-user.png') }}'" alt="">
+                            {% else %}
+                                <img src="{{ asset('assets/images/common/dashboard-user.png') }}" alt="">
+                            {% endif %}
+
                             <h3>{{ seller.name }}</h3>
                             <p><a href="">+00 123 456 789</a></p>
                             <p><a href="">{{ seller.user.email }}</a></p>
@@ -239,33 +40,33 @@
                                 <li><a href="{{ path('app_seller_side_dashboard') }}" class=""><i
                                                 class="fas fa-tachometer-alt"></i>Dashboard</a></li>
                                 <li class="dashboard_dropdown_button" id="dashboard_dropdowns"><i
-                                            class="fas fa-address-card"></i>My offers
+                                            class="fas fa-address-card"></i>Offers
                                     <span> <i class="fas fa-angle-down"></i></span>
                                     <div class="booing_sidebar_dashboard" id="show_dropdown_item"
                                          style="display: none;">
                                         <ul>
-                                            <li><a href="{{ path('app_seller_side_sellerBoughtOffers') }}"><i
-                                                            class="fas fa-hotel"></i>Active
+                                            <li><a href="{{ path('app_seller_side_my_offers') }}"><i
+                                                            class="fas fa-hotel"></i>My
                                                     offers</a></li>
-                                            <li><a href="{{ path('app_seller_side_api_form') }}"><i
-                                                            class="fas fa-paper-plane"></i>Api
-                                                </a></li>
-                                            <li>
-                                                <a href="tour-booking.html">
-                                                    <i class="fas fa-map"></i>Tour booking
-                                                </a>
-                                            </li>
-                                            <li><a href="booking-history.html">
-                                                    <i class="fas fa-history"></i>Booking history</a>
-                                            </li>
+{#                                            <li>#}
+{#                                                <a href={{ path('app_seller_side_statistics') }}>#}
+{#                                                    <i class="fas fa-map"></i>Statistics#}
+{#                                                </a>#}
+{#                                            </li>#}
+{#                                            <li><a href="booking-history.html">#}
+{#                                                    <i class="fas fa-history"></i>Booking history</a>#}
+{#                                            </li>#}
                                         </ul>
                                     </div>
                                 </li>
                                 <li><a href="{{ path('app_seller_side_profile') }}" class=""><i class="fas fa-user-circle">
                                         </i>My profile</a>
                                 </li>
-                                <li><a href="wallet.html" class=""><i class="fas fa-wallet"></i>Wallet</a></li>
-                                <li><a href="notification.html" class=""><i class="fas fa-bell"></i>Notifications</a></li>
+                                <li><a href={{ path('app_seller_side_statistics') }} ><i class="fas fa-chart-bar">
+                                        </i>Statistics</a>
+                                </li>
+{#                                <li><a href="wallet.html" class=""><i class="fas fa-wallet"></i>Wallet</a></li>#}
+{#                                <li><a href="notification.html" class=""><i class="fas fa-bell"></i>Notifications</a></li>#}
                                 <li>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         <i class="fas fa-sign-out-alt"></i>Logout

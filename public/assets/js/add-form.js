@@ -8,7 +8,7 @@ $(document).ready(function () {
             return;
         }
         $(".multi_city_form_wrapper").append(`
-        
+
         <div class="multi_city_form">
         <div class="row">
             <div class="col-lg-12">
@@ -207,7 +207,7 @@ $(document).ready(function () {
         `);
 
     }))
-    // Remove Button Click 
+    // Remove Button Click
     $(document).on('click', (function (e) {
         if (e.target.id === "remove_multi_city") {
             $(e.target).parent().closest('.multi_city_form').remove()

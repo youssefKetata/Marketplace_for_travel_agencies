@@ -43,9 +43,12 @@
                             <a href="#" class="search-box">
                                 <i class="bi bi-search"></i></a>
                         </div>
+                        <div class="option-item">
+                            <a href={{ path('app_front_wishList') }} class="btn btn_navber"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                        </div>
                         {% if not is_granted('IS_AUTHENTICATED') %}
                         <div class="option-item">
-                            <a href={{ path('subscription') }} class="btn  btn_navber">Subscription request</a>
+                            <a href={{ path('subscription') }} class="btn btn_navber">Subscription request</a>
                         </div>
                         {% endif %}
                     </div>

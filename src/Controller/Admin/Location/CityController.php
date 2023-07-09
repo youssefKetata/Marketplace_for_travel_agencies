@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Location;
 use App\Entity\City;
 use App\Form\CityType;
 use App\Repository\CityRepository;
+use Exception;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,9 +31,11 @@ class CityController extends AbstractController
         $this->translator = $translator;
     }
     #[Route('/', name: 'app_admin_location_city_index', methods: ['GET'])]
-    public function index(CityRepository $cityRepository): Response
+    public function index(CityRepository $cityRepository, Request $request): Response
     {
-        return $this->render('admin/location/city/index.html.twig', [
+        $template = $request->query->get('ajax') ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render('admin/location/city/'.$template, [
             'cities' => $cityRepository->findAll(),
         ]);
     }
@@ -97,15 +100,13 @@ class CityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $cityRepository->add($city, true);
-            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
+            $this->flashy->success('The city has been successfully updated.');
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);
             }
             return $this->redirectToRoute('app_admin_location_city_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';
 
         return $this->renderForm('admin/location/city/edit.html.twig', [
             'city' => $city,
@@ -122,7 +123,13 @@ class CityController extends AbstractController
     public function delete(Request $request, City $city, CityRepository $cityRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$city->getId(), $request->request->get('_token'))) {
-            $cityRepository->remove($city, true);
+            try{
+                $cityRepository->remove($city, true);
+                $this->flashy->success('The city has been successfully deleted.');
+            }catch (Exception $e){
+                $this->flashy->error('The city could not be deleted.');
+            }
+
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);

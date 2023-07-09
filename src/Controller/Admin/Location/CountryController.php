@@ -42,7 +42,7 @@ class CountryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $countryRepository->add($country, true);
-            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
+            $this->flashy->success('The country has been successfully created.');
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);
@@ -62,7 +62,7 @@ class CountryController extends AbstractController
             ));
     }
 
-    #[Route('/{code}', name: 'app_admin_location_country_show', methods: ['GET'])]
+    #[Route('/{code}', name: 'app_admin_location_country_show', methods: ['GET', 'POST'])]
     public function show(Country $country): Response
     {
         return $this->render('admin/location/country/show.html.twig', [
@@ -78,16 +78,14 @@ class CountryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $countryRepository->add($country, true);
-            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
+            $this->flashy->success('The country has been successfully updated.');
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);
             }
-
             return $this->redirectToRoute('app_admin_location_country_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';
         return $this->renderForm('admin/location/country/edit.html.twig', [
             'country' => $country,
             'form' => $form,
@@ -102,8 +100,12 @@ class CountryController extends AbstractController
     public function delete(Request $request, Country $country, CountryRepository $countryRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$country->getCode(), $request->request->get('_token'))) {
-            $countryRepository->remove($country, true);
-            $this->flashy->message( $this->translator->trans('Message.Facility.Delete'));
+            try {
+                $countryRepository->remove($country, true);
+                $this->flashy->success('The country has been successfully deleted.');
+            }catch (\Exception $e){
+                $this->flashy->error('The country could not be deleted.');
+            }
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);

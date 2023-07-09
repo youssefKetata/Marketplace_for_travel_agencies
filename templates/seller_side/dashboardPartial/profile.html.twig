@@ -2,6 +2,25 @@
 
 {% block dynamic_content %}
     <div class="col-lg-8">
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-danger"
+                 role="alert">
+                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                <span>{{ message }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-light d-flex align-items-center alert-dismissible fade show border-success"
+                 role="alert">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                <span>{{ message }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+            </div>
+        {% endfor %}
         <div class="dashboard_common_table">
             <h3>My Profile</h3>
             <div class="profile_update_form">

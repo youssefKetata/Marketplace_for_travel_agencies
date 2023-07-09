@@ -97,7 +97,7 @@
                         you want to log out.
                     </h3>
                     <div class="logout_approve_button">
-                        <button data-bs-dismiss="modal" class="btn btn_theme btn_md" id="logout-confirm-btn">Yes Confirm</button>
+                        <button data-bs-dismiss="modal" class="btn btn_theme btn_md" id="logout-confirm-btn" href="{{ path('app_logout') }}">Yes Confirm</button>
                         <button data-bs-dismiss="modal" class="btn btn_border btn_md">No Cancel</button>
                     </div>
                 </div>
@@ -115,6 +115,20 @@
                     $(this).addClass("active");
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.getElementById("logout-confirm-btn").addEventListener("click", function() {
+            fetch("/logout", { method: "POST" })
+                .then(function(response) {
+                    // Handle the logout response
+                    // Example: Redirect to the homepage after logout
+                    window.location.href = "/";
+                })
+                .catch(function(error) {
+                    console.error("Logout failed:", error);
+                });
         });
     </script>
 {% endblock %}

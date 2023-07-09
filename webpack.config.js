@@ -27,6 +27,7 @@ Encore
     .addEntry('mapbox', './assets/mapboxJs.js')
     .addEntry('myComponent', './assets/myComponent.js')
     .addEntry('HotelsForm', './assets/HotelsForm.js')
+    .addEntry('Wishlist', './assets/Wishlist.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

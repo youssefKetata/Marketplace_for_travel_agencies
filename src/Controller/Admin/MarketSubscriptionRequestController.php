@@ -40,31 +40,31 @@ class MarketSubscriptionRequestController extends AbstractController
         ]);
     }
 
-//    #[Route('/new', name: 'app_market_subscription_request_new', methods: ['GET', 'POST'])]
-//    public function new(Request $request, MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository): Response
-//    {
-//        $marketSubscriptionRequest = new MarketSubscriptionRequest();
-//        $form = $this->createForm(MarketSubscriptionRequestType::class, $marketSubscriptionRequest);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            try {
-//                $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
-//                return $this->render('seller_side/requestSubmitted.html.twig');
-//            }catch (\Exception $e){
-//                $this->addFlash('error', 'An error occurred: ' . $e->getMessage());
-//                return $this->RedirectToRoute('app_seller_side_subscription');
-//
-//            }
-//        }
-//
-//        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
-//
-//        return $this->renderForm('market_subscription_request/'.$template, [
-//            'market_subscription_request' => $marketSubscriptionRequest,
-//            'form' => $form,
-//        ]);
-//    }
+    #[Route('/new', name: 'app_market_subscription_request_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, MarketSubscriptionRequestRepository $marketSubscriptionRequestRepository): Response
+    {
+        $marketSubscriptionRequest = new MarketSubscriptionRequest();
+        $form = $this->createForm(MarketSubscriptionRequestType::class, $marketSubscriptionRequest);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
+                return $this->render('seller_side/requestSubmitted.html.twig');
+            }catch (\Exception $e){
+                $this->addFlash('error', 'An error occurred: ' . $e->getMessage());
+                return $this->RedirectToRoute('app_seller_side_subscription');
+
+            }
+        }
+
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
+
+        return $this->renderForm('market_subscription_request/'.$template, [
+            'market_subscription_request' => $marketSubscriptionRequest,
+            'form' => $form,
+        ]);
+    }
 
     #[Route('/{id}', name: 'app_market_subscription_request_show', methods: ['GET']) , IsGranted('ROLE_SUPER_ADMIN')]
     public function show(MarketSubscriptionRequest $marketSubscriptionRequest): Response
@@ -114,6 +114,7 @@ class MarketSubscriptionRequestController extends AbstractController
         if ($marketSubscriptionRequest->getStatus() === "pending") {
             $marketSubscriptionRequest->setStatus("rejected");
             $marketSubscriptionRequestRepository->save($marketSubscriptionRequest, true);
+            $this->flashy->message( 'The request has been rejected');
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);

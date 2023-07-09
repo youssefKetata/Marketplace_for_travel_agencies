@@ -126,7 +126,7 @@
                                             <h6>
                                                 <del></del>
                                             </h6>
-                                            <h3>$ {{ totalPrice }} <sub></sub></h3>
+                                            <h3> {{ totalPrice }} <sub>TND</sub></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -166,21 +166,40 @@
             <div class="modal-content">
                 <div class="modal-body logout_modal_content">
                     <div class="btn_modal_closed">
-                        <button type="button" data-bs-dismiss="modal" aria-label="Close"><i
-                                    class="fas fa-times"></i></button>
+                        <button type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
                     </div>
-                    <h3>
-                        Buying process
-                    </h3>
+                    <h3>Buying process</h3>
+
+
+                    <div class="vendor_form col-lg-10 d-flex flex-column align-items-center">
+                        <div class="form-group input-margin">
+                            <label for="name" class="col-form-label mb-2">Name:</label>
+
+                                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+
+                        </div>
+                        <div class="form-group input-margin">
+                            <label for="email" class="col-form-label mb-2">Email:</label>
+
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+
+                        </div>
+                        <div class="form-group input-margin">
+                            <label for="phone" class="col-form-label mb-2">Phone:</label>
+
+                                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+
+                        </div>
+
+                    </div>
                     <div class="logout_approve_button">
-                        <button data-bs-dismiss="modal" class="btn btn_theme btn_md" id="logout-confirm-btn">Buy
-                        </button>
-                        <button data-bs-dismiss="modal" class="btn btn_border btn_md">No Cancel</button>
+                        <button data-bs-dismiss="modal" class="btn btn_theme btn-md" id="logout-confirm-btn">Buy</button>
+                        <button data-bs-dismiss="modal" class="btn btn_border btn-md">No Cancel</button>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
+
 
     <script>
         $(function () {
@@ -218,6 +237,17 @@
             });
         });
     </script>
+
+    <style>
+        .input-margin {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-control{
+
+        }
+    </style>
 
     <style>
         .card_container {

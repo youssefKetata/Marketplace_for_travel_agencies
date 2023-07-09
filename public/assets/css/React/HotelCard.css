@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+
 :root {
-    --background-color: #f5f5f5dc;
+    --background-color: #F2F2F2;
 }
+
 body {
     font-family: "roboto", sans-serif;
 }
@@ -9,6 +11,7 @@ body {
 .main-content {
     padding-top: 10px;
     padding-bottom: 10px;
+    /*width: 780px;*/
 }
 
 
@@ -21,10 +24,11 @@ body {
     box-sizing: border-box;
     flex-direction: row;
     border-radius: 10px;
-    height: 260px;
+    max-height: 260px;
     box-shadow: 0px 0px 5px 0px #0000004d;
     border: solid 0.5px #24113a00;
-    transition: all 0.2s ease-in-out;
+    transition: border 0.3s ease-in-out;
+
 }
 
 .hotel-card:hover {
@@ -33,26 +37,28 @@ body {
 
 .hotel-card .hotel-card_images {
     flex: 2;
-    flex-basis: 20%;
+    flex-basis: 30%;
+    max-width: 240px;
     padding: 15px 0px 15px 15px;
-    min-width: 250px;
-    max-width: 250px;
-    overflow: hidden;
     background-color: var(--background-color);
 }
 
 .hotel-card .hotel-card_images .carousel-item img {
-    min-height: 230px;
-    min-width: 100%;
+    aspect-ratio: 1 / 1;
+
     border-radius: 10px 10px 10px 10px;
     overflow: hidden;
+
+    height: 100%;
 }
 
 .carousel .carousel-control-prev,
-.carousel .carousel-control-next{
+.carousel .carousel-control-next {
     background: none !important;
 }
-.carousel-control-next-icon, .carousel-control-prev-icon{
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
     width: 1rem !important;
     height: 1rem !important;
 }
@@ -65,46 +71,45 @@ body {
     background: linear-gradient(to left, #333333bb, #33333300);
 }
 
-.heart-icon{
+.heart-icon {
     position: absolute;
     color: black;
     top: 20px;
-    right: 30px
+    right: -50px
 }
 
 .hotel-card .hotel-card_info {
     flex: 3;
-    flex-basis: 55%;
+    flex-basis: 50%;
     background-color: var(--background-color);
     display: grid;
     align-content: space-around;
     justify-content: space-between;
 }
 
+
 .hotel-card .price {
     flex: 4;
     flex-basis: 20%;
     background-color: var(--background-color);
-}
-
-.hotel-card .price {
-    /* copilot make all content go all way up to the buttom */
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 0px 0px 10px 0px;
+    overflow: visible !important;
 }
 
 
-.hotel-card .price .price_value{
+.hotel-card .price .price_value {
     padding-bottom: 10px;
 }
 
-.hotel-card .price .price_value .price_number{
+.hotel-card .price .price_value .price_number {
     font-size: 1.5rem;
     font-weight: 500;
 }
-.hotel-card .price .price_name{
+
+.hotel-card .price .price_name {
     font-size: 0.8rem;
     font-weight: 500;
 }
@@ -117,7 +122,6 @@ body {
     font-size: 1rem;
     letter-spacing: 0.3px;
     font-weight: 400;
-    font-family: 'roboto', sans-serif;
     border: none;
     background-color: rgb(139, 62, 234);
     color: white;
@@ -128,21 +132,20 @@ body {
     background-color: rgb(112, 43, 196);
 }
 
-.vertical-line{
+.vertical-line {
     position: relative;
     border-left: 10px solid #080505;
-
-
 }
 
-.sellers-line{
+.sellers-line {
     position: relative;
     border-left: 1px solid #080505;
     margin-top: 5px;
     margin-bottom: 5px;
     min-width: 350px;
 }
-.other-seller{
+
+.other-seller {
     display: grid;
     /* align-content: space-around; */
     gap: 25px;
@@ -152,11 +155,10 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 0px 0px 10px 0px;
     text-decoration: none;
 }
 
-.visible_sellers-name{
+.visible_sellers-name {
     font-size: 0.8rem;
     font-weight: 500;
     /*change text color*/
@@ -173,35 +175,42 @@ body {
 }
 
 
-.visible_sellers-price{
+.visible_sellers-price {
     font-size: 0.8rem;
     font-weight: 400;
     /*change text color*/
     color: #3a3a3a;
 }
 
-.visible_sellers-price:hover{
+.visible_sellers-price:hover {
     color: #3a3a3a;
 }
 
 
 
 /*hidden sellers*/
-.hiddenSellers {
-    /* position: absolute;
-    top: auto !important;
-    bottom: 0 !important;
-    transform: translateY(100%);
-    overflow: visible !important; */
+/* .hiddenSellers {
+	position: absolute;
+	top: auto !important;
+	bottom: 0 !important;
+	transform: translateY(100%);
+	overflow: visible !important;
+} */
+
+.btn-check:active+.btn-primary:focus,
+.btn-check:checked+.btn-primary:focus,
+.btn-primary.active:focus,
+.btn-primary:active:focus,
+.show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: none !important;
 }
 
-.btn-check:active+.btn-primary:focus, .btn-check:checked+.btn-primary:focus, .btn-primary.active:focus, .btn-primary:active:focus, .show>.btn-primary.dropdown-toggle:focus {
+.btn-check:focus+.btn-primary,
+.btn-primary:focus {
     box-shadow: none !important;
 }
-.btn-check:focus+.btn-primary, .btn-primary:focus{
-    box-shadow: none !important;
-}
-.dropdown-menu{
+
+.dropdown-menu {
     background-color: #f5f5f5 !important;
 }
 
@@ -227,9 +236,11 @@ body {
     color: rgb(139, 62, 234);
 }
 
-#hiddenSellers-item{
-    transition: max-height 0.5s ease-out;;
+#hiddenSellers-item {
+    transition: max-height 0.5s ease-out;
+;
 }
+
 #hiddenSellers-item:hover {
     transition: none;
     background-color: #e7e7e7c2;
@@ -243,12 +254,107 @@ body {
 
 
 
-/* @media screen and (max-width: 1100px){
+/* @media screen and (max-width: 1200px) {
+
 	.hotel-card {
-		display: flex;
-		flex-direction: column;
-		height: auto;
+		flex-direction: row;
+		max-width: 200px;
 	}
 
 
 } */
+@media screen and (min-width: 992px) {
+    .hotel-card {
+        padding: 0;
+        margin: 0;
+        max-height: 100%;
+        background-color: #080505;
+        /*transform: translate();*/
+        min-width: 110%;
+    }
+
+
+}
+@media screen and (max-width: 991px) {
+
+    .hotel-card {
+        flex-direction: column;
+        min-height: auto;
+        max-height: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        overflow: scroll;
+    }
+
+    .hotel-card .hotel-card_images {
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .hotel-card .hotel-card_images .carousel-item img {
+        min-width: 100%;
+
+    }
+
+    .carousel .carousel-control-prev,
+    .carousel .carousel-control-next {
+        background: none !important;
+        height: 80%;
+        margin: auto;
+
+    }
+
+    .heart-icon {
+        top: 30px;
+        right: 35px;
+    }
+
+    .price_value {
+        padding: 0 0 0 20px;
+    }
+
+    .price>.button {
+        padding: 10px 10px 10px 10px;
+        margin: auto;
+        width: 100%;
+        transform: translate(5%, 0);
+    }
+
+    .sellers-line {
+        position: relative;
+        min-width: 100%;
+
+    }
+
+}
+
+.popularity {
+    width: 2rem;
+    aspect-ratio: 1;
+    border-radius: 7px 7px 7px 0;
+    color: var(--white-color);
+    display: grid;
+    place-items: center;
+    background-color: var( --main-color);
+}
+
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    75% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.heartAnimation {
+    animation-name: heartBeat;
+    animation-duration: 1s;
+}
+

@@ -5,6 +5,11 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 const HotelsForm = (props) => {
     const [location, setLocation] = useState('');
     const [checkIn, setCheckIn] = useState(new Date());
@@ -21,9 +26,10 @@ const HotelsForm = (props) => {
     const [detail, setDetail] = useState('');
     const [isDisabled, setIsDisabled] = useState(false);
     const [error, setError] = useState(null);
-    const [expandPassenger , setExpandPassenger] = useState(false);
+    const [expandPassenger, setExpandPassenger] = useState(false);
     const [open, setOpen] = useState(false);//autocomplete
     const [loading, setLoading] = useState(true);//autocomplete
+
 
     const handleLocationChange = (event, value) => {
         setLocation(value);
@@ -33,8 +39,8 @@ const HotelsForm = (props) => {
             setErrorLocation('');
         }
     };
-
     useEffect(() => {
+
         let active = true;
 
         const fetchData = async () => {
@@ -150,6 +156,7 @@ const HotelsForm = (props) => {
     }, 0);
 
     const handleCheckInChange = e => {
+        e.stopPropagation();
         if (e.target.value) {
             setCheckIn(new Date(e.target.value))
         }
@@ -178,12 +185,16 @@ const HotelsForm = (props) => {
     };
 
     const validForm = () => {
-        if (location === '') {
+        if (location === '' || location === 'empty') {
             setErrorLocation('Location is required');
             return false;
         }
         if (rooms.length === 0) {
             setErrorRoom('Rooms is required');
+            return false;
+        }
+        if (rooms[0].adults === 0) {
+            setErrorRoom('At least one adult is required');
             return false;
         }
         if (checkIn === checkOut || checkIn > checkOut) {
@@ -220,13 +231,7 @@ const HotelsForm = (props) => {
         return result;
     }
 
-    function handleResponse(response) {
-        props.onDataReceived(response.data);
-        console.log(response);
-        setStatus('success');
-    }
-
-    const handleSubmit = async e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!validForm()) {
@@ -239,35 +244,34 @@ const HotelsForm = (props) => {
             checkIn: dateForm(checkIn),
             checkOut: dateForm(checkOut),
             rooms: convertData(rooms),
-        }
-        console.log(data);
+        };
+        console.log(data)
+
         setStatus('loading');
         setIsDisabled(true);
 
         try {
-            const response = await axios.post('http://user1-market.3t.tn/search/getFormData', data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-            })
+            const response = await axios.post(
+                'http://user1-market.3t.tn/search/getFormData',
+                data,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                    },
+                }
+            );
 
-                .then(handleResponse)
-                .catch(error => {
-                    props.onDataReceived(null);
-                    setStatus('error');
-                })
-                .finally(() => setIsDisabled(false)
-                );
-
+            setStatus('success');
+            props.onDataReceived(response.data);
         } catch (error) {
-            console.log(error);
+
+            props.onDataReceived(null);
             setStatus('error');
+        } finally {
+            setIsDisabled(false);
         }
-
-    }
-
-
+    };
 
     // prevent the user form choosing a check-out date before or the same day as checkIn date
     if (checkOut < checkIn) {
@@ -291,11 +295,13 @@ const HotelsForm = (props) => {
                                     <div className="flight_Search_boxed">
                                         <div className="form-group">
                                             <Autocomplete
-                                                id="asynchronous-demo"
-                                                sx={{ width: 280,
+
+                                                sx={{
+                                                    width: 250,
                                                     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
                                                         // border: "none"
-                                                    } }}
+                                                    }
+                                                }}
                                                 size="small"
                                                 open={open}
                                                 onOpen={() => {
@@ -314,7 +320,7 @@ const HotelsForm = (props) => {
                                                 renderInput={(params) => (
                                                     <TextField
                                                         {...params}
-                                                        label="Location"
+                                                        label="Destination"
 
                                                         InputProps={{
                                                             ...params.InputProps,
@@ -329,30 +335,34 @@ const HotelsForm = (props) => {
                                                 )}
                                             />
                                         </div>
-                                        <span>Where are you going?</span>
+                                        <span>Where are you going?<span className="font-italic text-danger">{errorLocation && errorLocation}</span></span>
                                     </div>
 
-                                    <p className="font-italic text-danger">{errorLocation && errorLocation}</p>
+
                                 </div>
                                 <div className="col-lg-4 col-md-6 col-sm-12 col-12">
                                     <div className="form_search_date">
                                         <div className="flight_Search_boxed date_flex_area">
                                             <div className="Journey_date">
-                                                <p>Journey date</p>
+                                                <p>Check-in</p>
                                                 <input type="date"
                                                        value={checkIn.toISOString().substr(0, 10)}
                                                        min={todayDate}
-                                                       onChange={handleCheckInChange}>
+                                                       onClick={(e)=>e.stopPropagation()}
+                                                       onChange={handleCheckInChange}
+                                                       style={{ marginRight: '10px' }}>
+
                                                 </input>
                                                 <span>{getWeekday(checkIn)}</span>
                                             </div>
                                             <div className="Journey_date">
-                                                <p>Return date</p>
+                                                <p>Check-out</p>
                                                 <input type="date"
                                                        value={checkOut.toISOString().substr(0, 10)}
                                                        min={new Date(checkIn.getTime() + 24 * 60 * 60 * 1000).toISOString().substr(0, 10)}
                                                        onChange={handleCheckOutChange}
                                                        ref={checkOutRef}
+                                                       style={{ marginRight: '10px' }}
                                                 >
                                                 </input>
                                                 <span>{getWeekday(checkOut)} ({nbNights} nights)</span>
@@ -365,23 +375,22 @@ const HotelsForm = (props) => {
                                 {/* start passenger area */}
                                 <div className="col-lg-2  col-md-6 col-sm-12 col-12">
                                     <div className="flight_Search_boxed dropdown_passenger_area">
-                                        <p>Passenger</p>
+                                        <p>Occupancy</p>
                                         <div className='dropdown'>
                                             <button className="dropdown-toggle final-count"
                                                     data-toggle="dropdown" type="button"
                                                     id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                    aria-expanded='false'
-                                                    // onClick={()=> setExpandPassenger(!expandPassenger)}
-                                                    // onBlur={()=> setExpandPassenger(false)}
+                                                    aria-expanded={expandPassenger}
                                             >
                                                 {personsCount} Passengers
+
                                             </button>
-                                            <div className='dropdown-menu dropdown_passenger_info'
+                                            <div className={`dropdown-menu dropdown_passenger_info ${expandPassenger ? "show" : ""}`}
                                                  aria-labelledby="dropdownMenuButton1">
                                                 <div className="traveller-calulate-persons">
                                                     <div className="passengers">
                                                         <h6>Rooms</h6>
-                                                        <button type='button' onClick={e => handleAddRoom(e)} style={{fontSize:'18px'}}><i className="fas fa-plus" style={{fontSize:'15px'}}></i>&nbsp;Add Room</button>
+                                                        <button type='button' onClick={e => handleAddRoom(e)} style={{ fontSize: '18px' }}><i className="fas fa-plus" style={{ fontSize: '15px' }}></i>&nbsp;Add Room</button>
                                                         <div className="passengers-types">
                                                             <div>
                                                                 {rooms.map((room, index) => (
@@ -424,26 +433,54 @@ const HotelsForm = (props) => {
                                                                         <div className='passengers-type'>
                                                                             <div id='children' className="form-control-age">
                                                                                 {room.children.map((age, childIndex) => (
-                                                                                    <div key={childIndex} className="">
-                                                                                        <input
+                                                                                    <div key={childIndex} className="" onClick={e => e.stopPropagation()}>
+                                                                                         <input
                                                                                             type="number"
                                                                                             onChange={(e) => handleChildAgeChange(room.id, childIndex, e.target.value)}
                                                                                             className="form-control form-control-age-input"
                                                                                             id="age"
                                                                                             placeholder="age"
-                                                                                            style={{ background: "white", border: '1px solid #ced4da', borderRadius: '.25rem', padding: '.375rem .75rem', display: 'inline-block', width: '100%' }}
-                                                                                        >
+                                                                                            style={{ background: "white", border: '1px solid #ced4da',
+                                                                                                borderRadius: '.25rem', padding: '.375rem .75rem',
+                                                                                                display: 'inline-block', width: '100%' }}>
+
                                                                                         </input>
+                                                                                        {/*<FormControl sx={{ m: 1, minWidth: 120 }} size="small">*/}
+                                                                                        {/*    <InputLabel id="demo-select-small-label">Age</InputLabel>*/}
+                                                                                        {/*    <Select*/}
+                                                                                        {/*        labelId="demo-select-small-label"*/}
+                                                                                        {/*        id="demo-select-small"*/}
+                                                                                        {/*        value={age}*/}
+                                                                                        {/*        label="Age"*/}
+                                                                                        {/*        defaultValue={1}*/}
+                                                                                        {/*        onClick={()=>setExpandPassenger(true)}*/}
+                                                                                        {/*        onChange={(e)=>handleChildAgeChange(e, room.id, childIndex, e.target.value)}*/}
+                                                                                        {/*    >*/}
+                                                                                        {/*        <MenuItem value={0}></MenuItem>*/}
+                                                                                        {/*        <MenuItem value={1}>1</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={2}>2</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={3}>3</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={4}>4</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={5}>5</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={6}>6</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={7}>7</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={8}>8</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={9}>9</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={10}>10</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={11}>11</MenuItem>*/}
+                                                                                        {/*        <MenuItem value={12}>12</MenuItem>*/}
+                                                                                        {/*    </Select>*/}
+                                                                                        {/*</FormControl>*/}
                                                                                     </div>
                                                                                 ))}
                                                                             </div>
                                                                         </div>
                                                                         {rooms.length > 1 && (
-                                                                            <button type='button' onClick={e => handleRemoveRoom(room.id, e)} style={{fontSize:'15px'}}>
-                                                                                <i className="fas fa-minus" style={{fontSize:'15px'}}></i>&nbsp;Remove room
+                                                                            <button type='button' onClick={e => handleRemoveRoom(room.id, e)} style={{ fontSize: '15px' }}>
+                                                                                <i className="fas fa-minus" style={{ fontSize: '15px' }}></i>&nbsp;Remove room
                                                                             </button>
                                                                         )}
-                                                                        <hr style={{display: 'flex', 'align-items':'center','justify-content': 'center',height: '1px'}}/>
+                                                                        <hr style={{ display: 'flex', 'alignItems': 'center', 'justifyContent': 'center', height: '1px' }} />
                                                                     </div>
                                                                 ))}
                                                             </div>
@@ -454,8 +491,9 @@ const HotelsForm = (props) => {
                                         </div>
                                         <span>{rooms.length} Rooms</span>
                                     </div>
-                                    <p className="font-italic text-danger">{errorRoom && errorRoom}</p>
+                                    {/* <p className="font-italic text-danger">{errorRoom && errorRoom}</p> */}
                                 </div>
+                                {errorRoom && <p className="font-italic text-danger">{errorRoom}</p>}
 
                                 <div className="top_form_search_button">
                                     <button type='submit' className="btn btn_theme btn_md" disabled={isDisabled}>
@@ -470,12 +508,8 @@ const HotelsForm = (props) => {
                                 </div>
                             </div>
                         </form>
-                        {status === 'loading' &&
-                            <div className="loader">
-                                <div className="loader-wheel"></div>
-                                <div className="loader-text"></div>
-                            </div>
-                        }
+                        {/* {status === 'error' && <div>error</div>}
+                        {status === 'noResult' && <div>No result found.</div>} */}
                     </div>
                 </div>
             </div>

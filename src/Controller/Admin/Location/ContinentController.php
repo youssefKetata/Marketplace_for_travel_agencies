@@ -43,7 +43,7 @@ class ContinentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $continent->setActive(true);
             $continentRepository->add($continent, true);
-            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
+            $this->flashy->success('The continent has been successfully created.');
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);
@@ -81,15 +81,13 @@ class ContinentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $continentRepository->add($continent, true);
-            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
+            $this->flashy->success('The continent has been successfully updated.');
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);
             }
             return $this->redirectToRoute('app_admin_location_continent_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';
 
         return $this->renderForm('admin/location/continent/edit.html.twig', [
             'continent' => $continent,
@@ -107,7 +105,7 @@ class ContinentController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$continent->getCode(), $request->request->get('_token'))) {
             $continentRepository->remove($continent, true);
-            $this->flashy->warning("Continent Deleted");
+            $this->flashy->success("The continent has been successfully deleted.");
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);

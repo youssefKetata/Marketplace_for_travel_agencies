@@ -1,10 +1,20 @@
 {% extends 'front/base_user.html.twig' %}
 
-{% block content %}
+{% block stylesheet %}
+    {{ encore_entry_script_tags('Wishlist') }}
+    <link rel="stylesheet" href={{ asset('assets/css/React/WishlistCard.css') }} >
 
 {% endblock %}
 
 {% block banner %}
+    <section id="common_banner">
+    </section>
+{% endblock %}
+
+{% block content %}
+<div id="whishList" ></div>
 
 {% endblock %}
+
+
 

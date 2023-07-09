@@ -17,8 +17,8 @@
                                     <img src="{{ asset('assets/images/icon/right.png') }}" alt="img">
                                 </div>
                                 <div class="booking_success_text">
-                                    <h3>{{ seller.name }}, your order was submitted successfully!</h3>
-                                    <h6>Your can see your offers here <a href="{{ path('app_seller_side_dashboard') }}">dashboard</a> </h6>
+                                    <h3>{{ seller.name }}, purchase was successful!</h3>
+                                    <h6>Your can see your offers here <a href="{{ path('app_seller_side_my_offers') }}">my offers</a> </h6>
                                 </div>
                             </div>
                         </div>
@@ -28,21 +28,20 @@
                             <div class="tour_booking_form_box">
                                 <div class="your_info_arae">
                                     <ul>
-                                        <li><span class="name_first">First name:</span> <span
-                                                    class="last_name">John</span></li>
-                                        <li><span class="name_first">Last name:</span> <span
-                                                    class="last_name">Doe</span></li>
+                                        <li><span class="name_first">Username:</span> <span
+                                                    class="last_name">{{ seller.user.username }}</span></li>
+                                        <li><span class="name_first">Name:</span> <span
+                                                    class="last_name">{{ seller.name }}</span></li>
                                         <li><span class="name_first">Email address:</span> <span
-                                                    class="last_name">yourmail@domain.com</span></li>
-                                        <li><span class="name_first">Address:</span> <span class="last_name">1901
-                                                Thornridge Cir. Shiloh, Hawaii 81063</span></li>
+                                                    class="last_name">{{seller.user.email}}</span></li>
+                                        <li><span class="name_first">Address:</span> <span class="last_name">{{ seller.address }}</span></li>
                                         <li><span class="name_first">City:</span> <span
-                                                    class="last_name">Thornridge</span></li>
-                                        <li><span class="name_first">State:</span> <span class="last_name">Hawaii</span>
-                                        </li>
-                                        <li><span class="name_first">Postal code:</span> <span
-                                                    class="last_name">81063</span></li>
-                                        <li><span class="name_first">Country:</span> <span class="last_name">USA</span>
+                                                    class="last_name">{{ seller.city.name }}</span></li>
+{#                                        <li><span class="name_first">State:</span> <span class="last_name">Hawaii</span>#}
+{#                                        </li>#}
+{#                                        <li><span class="name_first">Postal code:</span> <span#}
+{#                                                    class="last_name">81063</span></li>#}
+                                        <li><span class="name_first">Country:</span> <span class="last_name">{{ seller.city.country.name }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -55,14 +54,14 @@
                         <div class="tour_detail_right_sidebar">
                             <div class="tour_details_right_boxed">
                                 <div class="tour_details_right_box_heading">
-                                    <h3>Booking details</h3>
+                                    <h3>purchase details</h3>
                                 </div>
                                 <div class="tour_booking_amount_area">
                                     <ul>
-                                        <li>Booking ID: <span>#RB5783GH</span></li>
-                                        <li>Booking date: <span>10 February 2022</span></li>
-                                        <li>Payment method: <span>Bank transfer</span></li>
-                                        <li>Booking status: <span>Success</span></li>
+                                        <li>purchase ID: <span>#RB5783GH</span></li>
+                                        <li>purchase date: <span>19 June 2023</span></li>
+                                        <li>purchase method: <span>Bank transfer</span></li>
+                                        <li>purchase status: <span>Success</span></li>
                                     </ul>
                                     <ul>
                                         <li>Adult Price x 1 <span>$40,000.00</span></li>

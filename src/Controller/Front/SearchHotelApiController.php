@@ -137,6 +137,7 @@ class SearchHotelApiController extends AbstractController
                         $sellerInfo[$seller->getId()] = [
                             'name' => $seller->getName(),
                             'logo' => $seller->getBrochureFilename(),
+                            'chosenOfferProductTypeId' => $sellerOffer->getOffer()->getOfferProductType($productType)->getId(),
                             'chosenOfferProductType' => $sellerOffer->getOffer()->getOfferProductType($productType)->getMaxItems(),
                         ];
                         $validSellers[$seller->getId()] = $seller;
@@ -213,6 +214,7 @@ class SearchHotelApiController extends AbstractController
                     $result = json_decode($response->getBody(), true);
                     //guzzle will return response even if the api return error
                     if (isset($result['response'])){
+
                         $responseArray = array_slice($result['response'], 0, (int)$maxItems);
                     }
 
@@ -340,36 +342,41 @@ class SearchHotelApiController extends AbstractController
 
     public function popularity($resultObject): array{
         //iterate throw each hotel and add a popularity score wish is the sum of the click of each seller
-//        dd($resultObject);
+//        Popularity = (HotelClicks - MinClicks) / (MaxClicks - MinClicks) *10
+        $minClicks = 0;
+        $maxClicks = 0;
         foreach ($resultObject as $hotel) {
-            $popularity = 0;
-            $apiProduct = $this->apiProductRepository->findOneBy(['name' => strtoupper($hotel->hotelId)]);
-            if ($apiProduct){
+            $hotelClicks = 0;
+            $apiProducts = $this->apiProductRepository->findBy(['name' => strtoupper($hotel->hotelId)]);
+            foreach ($apiProducts as $apiProduct){
                 $currentMonth = date('m');
                 $currentYear = date('Y');
 
                 $startDate = new \DateTime("{$currentYear}-{$currentMonth}-01");
                 $endDate = new \DateTime("{$currentYear}-{$currentMonth}-31");
-                $apiProductClicks = $this->apiProductClickRepository->createQueryBuilder('apc')
-                    ->andWhere('apc.apiProduct = :apiProduct')
-                    ->andWhere('apc.date >= :startDate')
-                    ->andWhere('apc.date <= :endDate')
-                    ->setParameter('apiProduct', $apiProduct)
-                    ->setParameter('startDate', $startDate)
-                    ->setParameter('endDate', $endDate)
-                    ->getQuery()
-                    ->getResult();
+                $apiProductClicks = $this->apiProductClickRepository->findByApiProductAndDateRange(
+                    $apiProduct, $startDate, $endDate
+                );
 
                 foreach ($apiProductClicks as $apiProductClick){
-                    $popularity += 1;
+                    $hotelClicks += 1;
                 }
             }
+
+            if ($hotelClicks > $maxClicks)
+                $maxClicks = $hotelClicks;
+            if ($hotelClicks < $minClicks)
+                $minClicks = $hotelClicks;
+
+            // $maxClicks - $minClicks should not equal to 0
+            if ($maxClicks === $minClicks)
+                $maxClicks += 1;
+            //values should be int or .5
+            $score = 10;
+            $popularity = round(($hotelClicks - $minClicks) / ($maxClicks - $minClicks) * $score * 2) / 2;
+
             $hotel->popularity = $popularity;
         }
         return $resultObject;
-
-
-
-
     }
 }

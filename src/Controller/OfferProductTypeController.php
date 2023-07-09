@@ -7,14 +7,26 @@ use App\Entity\OfferProductType;
 use App\Form\OfferProdType;
 use App\Repository\OfferProductTypeRepository;
 //use App\Repository\ProductTypeRepository;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/offer/product')]
 class OfferProductTypeController extends AbstractController
 {
+
+    protected $flashy;
+    protected $translator;
+
+    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
+    {
+        $this->flashy = $flashy;
+        $this->translator = $translator;
+    }
+
     #[Route('/', name: 'app_offer_product_index', methods: ['GET'])]
     public function index(OfferProductTypeRepository $offerProductTypeRepository): Response
     {
@@ -28,23 +40,31 @@ class OfferProductTypeController extends AbstractController
     public function new(Request $request, OfferProductTypeRepository $offerProductTypeRepository): Response
     {
         $offerProductType = new OfferProductType();
-      //  $productType = new ProductType();
         $form = $this->createForm(OfferProdType::class, $offerProductType );
-        //$form = $this->createForm(ProductType::class, $productType  );
         $form->handleRequest($request);
-//&& $form2->isSubmitted() && $form2->isValid()
         if ($form->isSubmitted() && $form->isValid() )  {
-            $offerProductTypeRepository->save($offerProductType, true);
-          //  $ProductTypeRepository->save($productType, true);
+            try{
+                $offerProductTypeRepository->save($offerProductType, true);
+                $this->flashy->success("The offer product type has been successfully created.");
+            }catch (\Exception $e){
+                $this->flashy->error("The offer product type has not been created.");
+            }
+
+            if ($request->isXmlHttpRequest()) {
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
+            }
             return $this->redirectToRoute('app_offer_product_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->renderForm('offer_product/new.html.twig', [
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
+        return $this->renderForm('offer_product/'.$template, [
             'offer_product_type' => $offerProductType,
-            //'product_type' => $productType,
             'form' => $form,
-            //'form2' => $form2,
-        ]);
+        ],
+            new Response(
+                null,
+                $form->isSubmitted() && !$form->isValid() ? 422 : 200,
+            ));
     }
 
     #[Route('/{id}', name: 'app_offer_product_show', methods: ['GET'])]

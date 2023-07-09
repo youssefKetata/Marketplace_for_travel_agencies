@@ -45,7 +45,12 @@ class OfferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $offerRepository->save($offer, true);
+            try {
+                $offerRepository->save($offer, true);
+                $this->flashy->success('The offer has been successfully created.');
+            } catch (\Exception $e) {
+                $this->flashy->error('An error occurred while trying to create the offer.');
+            }
 
             return $this->redirectToRoute('app_offer_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -130,6 +135,7 @@ class OfferController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete'.$offer->getId(), $request->request->get('_token'))) {
             $offerRepository->remove($offer, true);
+            $this->flashy->success('The offer has been successfully deleted.');
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);

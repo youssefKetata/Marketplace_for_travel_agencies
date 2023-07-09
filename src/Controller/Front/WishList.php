@@ -3,10 +3,14 @@
 namespace App\Controller\Front;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class WhishList extends AbstractController
+#[Route('/wishList', name: 'app_front_')]
+class WishList extends AbstractController
 {
-    public function index()
+    #[Route('/', name: 'wishList')]
+    public function index(): Response
     {
         return $this->render('front/main/whichList.html.twig');
     }

@@ -58,6 +58,36 @@ class ApiProductClickRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+     public function findByApiProductAndDateRange($apiProduct, DateTime $startDate, DateTime $endDate)
+    {
+        return $this->createQueryBuilder('apc')
+            ->andWhere('apc.apiProduct = :apiProduct')
+            ->andWhere('apc.date >= :startDate')
+            ->andWhere('apc.date <= :endDate')
+            ->setParameter('apiProduct', $apiProduct)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByApiProductAndMonth($apiProduct, $month, $year)
+    {
+        $startOfMonth = new \DateTime("$year-$month-01");
+        $endOfMonth = clone $startOfMonth;
+        $endOfMonth->modify('last day of this month');
+        $endOfMonth->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('apc')
+            ->andWhere('apc.apiProduct = :apiProduct')
+            ->andWhere('apc.date >= :startOfMonth')
+            ->andWhere('apc.date <= :endOfMonth')
+            ->setParameter('apiProduct', $apiProduct)
+            ->setParameter('startOfMonth', $startOfMonth->format('Y-m-d H:i:s'))
+            ->setParameter('endOfMonth', $endOfMonth->format('Y-m-d H:i:s'))
+            ->getQuery()
+            ->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?ApiProductClick
 //    {

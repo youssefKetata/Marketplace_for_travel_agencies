@@ -35,7 +35,7 @@ class ApiController extends AbstractController
     }
 
     #[Route('/new/{seller?null}', name: 'app_api_new', methods: ['GET', 'POST'])]
-    public function     new(Request $request,
+    public function new(Request $request,
                         ApiRepository $apiRepository,
                         Seller $seller,
     ): Response
@@ -45,8 +45,18 @@ class ApiController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $seller->setApi($api);
-            $apiRepository->save($api, true);
+            try {
+                $seller->setApi($api);
+                $apiRepository->save($api, true);
+                $this->flashy->success('The api has been successfully created.');
+            } catch (\Exception $e) {
+                $this->flashy->error($e->getMessage());
+            }
+            if ($request->isXmlHttpRequest()) {
+                $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
+                return new Response($html->getContent(), Response::HTTP_OK);
+            }
+
 
             return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -82,8 +92,12 @@ class ApiController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $apiRepository->save($api, true);
-
+            try {
+                $apiRepository->save($api, true);
+                $this->flashy->success('The api has been successfully updated.');
+            } catch (\Exception $e) {
+                $this->flashy->error('The api has not been updated.');
+            }
             return $this->redirectToRoute('app_seller_index', [], Response::HTTP_SEE_OTHER);
         }
 

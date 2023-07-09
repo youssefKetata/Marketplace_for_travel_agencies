@@ -10,7 +10,6 @@ use App\Repository\SellerRepository;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,14 +24,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-#[Route('/seller') , IsGranted('ROLE_SUPER_ADMIN')]
+
+#[Route('/seller')]
 class SellerController extends AbstractController
 {
 
     protected $flashy;
     protected $translator;
 
-    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator)
+    public function __construct(FlashyNotifier $flashy, TranslatorInterface $translator,private MailerInterface $mailer)
     {
         $this->flashy = $flashy;
         $this->translator = $translator;
@@ -47,50 +47,24 @@ class SellerController extends AbstractController
         ]);
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     */
-    #[Route('/sendMail', name: 'app_seller_sendMail', methods: ['GET', 'POST'])]
-    public function sendMail(MailerInterface $mailer): string
-    {
-//        require 'vendor/autoload.php';
-        $email = new \SendGrid\Mail\Mail();
-        $email->setFrom("yusufketata5@gmail.com", "Example User");
-        $email->setSubject("Sending with SendGrid is Fun");
-        $email->addTo("yusufketata5@gmail.com", "Example User");
-        $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
-        $email->addContent(
-            "text/html", "<strong>and easy to do anywhere, even with PHP</strong>"
-        );
-        $sendgrid = new \SendGrid('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');
-        try {
-            $response = $sendgrid->send($email);
-            print $response->statusCode() . "\n";
-            print_r($response->headers());
-            print $response->body() . "\n";
-            return 'Email sent successfully';
-        } catch (Exception $e) {
-            return 'Caught exception: '. $e->getMessage() ."\n";
-        }
-//        $email = (new Email())
-//            ->from('yusufketata5@gmail.com')
-//            ->to('yusufketata5@gmail.com')
-//            ->subject('Hello from Symfony!')
-//            ->text('This is a test email sent from Symfony.')
-//            ->html('<p>See Twig integration for better HTML integration!</p>');
-//
-//        $sendMail = $mailer->send($email);
-//        //check if the mail was sent successfully
-//        dd($sendMail);
-//        if ($sendMail) {
-//            //if yes do something
-//            return 'Email sent successfully';
-//        } else {
-//            //if no do something else
-//            return ('Something went wrong!');
-//        }
 
+
+    #[Route('/sendMail', name: 'app_seller_sendMail', methods: ['GET', 'POST'])]
+    public function sendMail(MailerInterface $mailer): Response
+    {
+        // Create a new email message
+        $email = (new Email())
+            ->from('pfe@3t.tn')
+            ->to('yusufketata5@gmail.com')
+            ->subject('My Subject')
+            ->text('My message body.');
+
+        // Send the email message
+        $mailer->send($email);
+
+        return new Response('Email sent!', 200);
     }
+
 
     #[Route('/new/{idM?null}', name: 'app_seller_new', methods: ['GET', 'POST'])]
     public function new(Request $request,
@@ -142,6 +116,7 @@ class SellerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $testUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
             if ($testUser) {
+                $this->flashy->error('Failed to create the seller.');
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);
             }
@@ -150,20 +125,19 @@ class SellerController extends AbstractController
                 $marketSubscriptionRequest->setStatus('validated');
                 $userRepository->add($user, true);
                 $sellerRepository->save($seller, true);
+                $this->flashy->success('The seller has been successfully created.');
                 //send mail using service/mailer
             }catch (UniqueConstraintViolationException $e){
+                $this->flashy->error('Failed to create the seller.');
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);
             }
-            $this->flashy->message( $this->translator->trans('Message.Standard.SuccessSave'));
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);
             }
 
             return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
-
-            //return $this->redirectToRoute('app_market_subscription_request_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
@@ -209,7 +183,7 @@ class SellerController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$seller->getId(), $request->request->get('_token'))) {
             $sellerRepository->remove($seller, true);
-            $this->flashy->message( $this->translator->trans('Message.Facility.Delete'));
+            $this->flashy->message('The seller has been successfully deleted.');
             if ($request->isXmlHttpRequest()) {
                 $html = $this->render('@MercurySeriesFlashy/flashy.html.twig');
                 return new Response($html->getContent(), Response::HTTP_OK);

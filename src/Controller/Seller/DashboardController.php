@@ -53,16 +53,29 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/my_offers', name: 'my_offers'), IsGranted('ROLE_SELLER')]
-    public function myOffers(SellerRepository $sellerRepository): Response
+    public function myOffers(SellerRepository $sellerRepository, Request $request): Response
     {
         $user = $this->security->getUser();
         $email = $user->getUserIdentifier();
         $seller = $sellerRepository->findOneBy([
             'user' => $user
         ]);
-        $session = $this->requestStack->getSession();
+
+        // Pagination logic
+        $page = $request->query->getInt('page', 1); // Get the current page from the request query parameters
+        $offersPerPage = 10;
+        $totalOffers = $seller->getSellerOffers()->count();
+        $totalPages = ceil($totalOffers / $offersPerPage);
+        $start = ($page - 1) * $offersPerPage;
+        $end = $start + $offersPerPage;
+        $slicedOffers = $seller->getSellerOffers()->slice($start, $offersPerPage);
+
         return $this->render('seller_side/dashboardPartial/myOffers.html.twig', [
             'seller' => $seller,
+            'offers' => $slicedOffers,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'offersPerPage' => $offersPerPage,
         ]);
     }
 
@@ -112,29 +125,45 @@ class DashboardController extends AbstractController
         $apiProducts = $apiProductRepository->findBy([
             'api' => $seller->getApi()
         ]);
-        $todayClicks = 0;
+
         $yesterdayClicks = 0;
+        $lastMonthClicks = 0;
         $today = new DateTime();
         $yesterday = new DateTime();
         $yesterday->modify('-1 day');
 
-        foreach ($apiProducts as $apiProduct) {
-            $a = $apiProductClickRepository->findByApiProductAndDate($apiProduct, $today);
-            $b = $apiProductClickRepository->findByApiProductAndDate($apiProduct, $yesterday);
-            $todayClicks += count($a);
-            $yesterdayClicks += count($b);
+        $currentYear = date('Y');
+        $lastMonth = date('m') - 1;
+        if ($lastMonth < 1) {
+            $lastMonth = 12;  // Set to December
+            $currentYear--;  // Decrement the year
         }
 
-        //avg click per day
-        
 
-        //build pagination system
+        foreach ($apiProducts as $apiProduct) {
+            $b = $apiProductClickRepository->findByApiProductAndDate($apiProduct, $yesterday);
+            $c = $apiProductClickRepository->findByApiProductAndMonth($apiProduct, $lastMonth, $currentYear);
+            $yesterdayClicks += count($b);
+            $lastMonthClicks += count($c);
+        }
+
+        // Pagination logic
+        $page = $request->query->getInt('page', 1);
+        $offersPerPage = 10;
+        $totalOffers = count($activeSellerOffers);
+        $totalPages = ceil($totalOffers / $offersPerPage);
+        $start = ($page - 1) * $offersPerPage;
+
+
         return $this->render('seller_side/dashboardPartial/dashboard.html.twig', [
             'menu' => $menu,
             'seller' => $seller,
             'activeSellerOffers' => $activeSellerOffers,
-            'todayClicks' => $todayClicks,
             'yesterdayClicks' => $yesterdayClicks,
+            'lastMonthClicks' => $lastMonthClicks,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'offersPerPage' => $offersPerPage,
         ]);
     }
 
@@ -171,9 +200,10 @@ class DashboardController extends AbstractController
             'user' => $this->getUser()
         ]);
 
-        //check if the user have this offer already
+        //check if the user have this offer already adn the offer is not 'expired'
+
         foreach ($seller->getSellerOffers() as $sellerOffer) {
-            if ($sellerOffer->getOffer() === $offer) {
+            if ($sellerOffer->getOffer() === $offer && $sellerOffer->getStatus() !== 'expired') {
                 $this->addFlash('error', 'You already have this offer');
                 $this->flashy->error('You already have this offer', 'https://symfony.com/doc/current/controller.html');
                 return $this->redirectToRoute('app_seller_side_offer');
@@ -260,6 +290,14 @@ class DashboardController extends AbstractController
         ]);
     }
 
+//    #[Route('/pay', name: 'pay')]
+//    public function pay (){
+//
+//        return $this->render('seller_side/pay.html.twig');
+//    }
+//
+
+
     #[Route('/sellerBoughtOffers', name: 'sellerBoughtOffers')]
     public function sellerBoughtOffers(SellerRepository $sellerRepository): Response
     {
@@ -295,7 +333,7 @@ class DashboardController extends AbstractController
         $formData = $request->request->all();
         if ($formData == null)
             $this->redirectToRoute('app_seller_side_sellerCard');
-        // simplify fromData
+        // return error if date is not valid
         try {
             $selectedDates = [];
             foreach ($formData["form"] as $id => $date)
@@ -327,16 +365,28 @@ class DashboardController extends AbstractController
                 $offer = $offerRepository->findOneBy([
                     'id' => $selectedOffer
                 ]);
-                //verify if the seller has the offer
+                //verify if the seller has the offer and if the offer is not expired
+                $renew = false;
                 foreach ($seller->getSellerOffers() as $sellerOffer) {
-                    if ($sellerOffer->getOffer()->getId() === $offer->getId()) {
+                    if ($sellerOffer->getOffer()->getId() === $offer->getId() && $sellerOffer->getStatus() !=='expired') {
                         $this->addFlash('error', 'You have this offer: ' . $offer->getName() . '. Remove it form the card');
                         $newPageUrl = $this->generateUrl('app_seller_side_sellerCard');
                         return new JsonResponse(['newPageUrl' => $newPageUrl]);
+                    }elseif ($sellerOffer->getOffer()->getId() === $offer->getId() && $sellerOffer->getStatus() ==='expired'){
+                        $renew = true;
                     }
                 }
-
-                $sellerOffer = new SellerOffer();
+                //crate a new seller offer if it is not renew and update the existing one if it is renew
+                $sellerOffer = null;
+                if ($renew){
+                    $sellerOffer = $sellerOfferRepository->findOneBy([
+                        'seller' => $seller,
+                        'offer' => $offer
+                    ]);
+                }else{
+                    $sellerOffer = new SellerOffer();
+                }
+//                $sellerOffer = new SellerOffer();
                 $sellerOffer->setSeller($seller);
                 $sellerOffer->setOffer($offer);
                 $sellerOffer->setCreationDate(new DateTime());
@@ -433,8 +483,9 @@ class DashboardController extends AbstractController
                         $this->getParameter('brochures_directory'),
                         $newFilename
                     );
+                    $this->addFlash('success', 'Your logo has been updated successfully');
                 } catch (FileException $e) {
-                    dd($e->getMessage());
+                    $this->addFlash('error', 'Error occurred while updating your logo');
                 }
 
                 // updates the 'brochureFilename' property to store the image file name
@@ -451,6 +502,7 @@ class DashboardController extends AbstractController
                     $seller->getUser()->setPassword(
                         $passwordHasher->hashPassword($seller->getUser(), $newPassword)
                     );
+                    $this->addFlash('success', 'Your password has been updated successfully');
                 } else {
                     $form->get('oldPassword')->addError(new FormError('invalid password.'));
                     return $this->renderForm('seller_side/dashboardPartial/profile.html.twig', [
@@ -461,6 +513,7 @@ class DashboardController extends AbstractController
             }
             try {
                 $sellerRepository->save($seller, true);
+                $this->addFlash('success', 'Your profile has been updated successfully');
             } catch (\PHPUnit\Exception $e) {
                 $form->addError(new FormError('error'));
                 return $this->render('profile/index.html.twig');

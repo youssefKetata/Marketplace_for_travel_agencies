@@ -33,6 +33,10 @@ The admin interface provides functionality for managing:
 ## link to youtube
 youtube video describing funcitons and features of the website: [Youtube video](https://www.youtube.com/watch?v=ORSIti3kAJU&ab_channel=YoussefKetata)
 
+## screenshots
+![](./screenshot/resultpage.png)
+[other screenshots](./screenshot)
+
 ## Technology Stack
 The Tourism Marketplace is built using the following technologies:
 * Frontend: React and twig
